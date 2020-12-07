@@ -6,8 +6,8 @@
  */
 
 #pragma once
-#define SCREEN_WIDTH 768
-#define SCREEN_HEIGHT 1024
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 720
 
  // gameState
 enum gameStates {

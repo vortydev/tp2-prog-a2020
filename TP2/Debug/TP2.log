@@ -1,46 +1,7 @@
-﻿  assetManager.cpp
-  game.cpp
+﻿  game.cpp
 C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\game.cpp(14,15): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
   gameState.cpp
-  inputManager.cpp
-C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\inputManager.cpp(16,69): warning C4244: 'argument' : conversion de 'T' en 'T', perte possible de données
-          with
-          [
-              T=float
-          ]
-          and
-          [
-              T=int
-          ]
-C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\inputManager.cpp(16,37): warning C4244: 'argument' : conversion de 'T' en 'T', perte possible de données
-          with
-          [
-              T=float
-          ]
-          and
-          [
-              T=int
-          ]
-C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\inputManager.cpp(15,70): warning C4244: 'argument' : conversion de 'const T' en 'T', perte possible de données
-          with
-          [
-              T=float
-          ]
-          and
-          [
-              T=int
-          ]
-C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\inputManager.cpp(15,46): warning C4244: 'argument' : conversion de 'const T' en 'T', perte possible de données
-          with
-          [
-              T=float
-          ]
-          and
-          [
-              T=int
-          ]
   main.cpp
   mainMenuState.cpp
-  stateMachine.cpp
   Génération de code en cours...
   TP2.vcxproj -> C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\Debug\TP2.exe
