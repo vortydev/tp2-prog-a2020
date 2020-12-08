@@ -14,6 +14,8 @@
 #include "game.h"
 #include "state.hpp"
 
+#include "grid.h"
+
 using namespace sf;
 using namespace std;
 
@@ -35,6 +37,8 @@ private:
     Sprite _menuBody; //temp? might be it's own file
     Sprite _playerZone;
     Sprite _enemyZone;
+
+    grid* _grid;    // pointeur sur la grid
 
 public:
     gameState(gameDataRef data);

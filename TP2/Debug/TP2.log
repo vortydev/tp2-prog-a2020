@@ -1,2 +1,6 @@
-﻿  gameState.cpp
+﻿  grid.cpp
+C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\grid.cpp(30,65): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\grid.cpp(30,51): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+  mainMenuState.cpp
+  Génération de code en cours...
   TP2.vcxproj -> C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\Debug\TP2.exe

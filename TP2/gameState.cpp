@@ -17,10 +17,9 @@ gameState::gameState(gameDataRef data) : _data(data)
 
 gameState::~gameState()
 {
-
+    delete _grid;
 }
 
-//load l’image du background à l’aide du assetManager ds _data et la set au Sprite
 void gameState::init()
 {
     // set le game state
@@ -44,6 +43,15 @@ void gameState::init()
     _data->assets.loadTexture("game menu body", GAME_MENU_BODY_FILEPATH);
     _menuBody.setTexture(_data->assets.getTexture("game menu body"));
     _menuBody.setPosition(75, SCREEN_HEIGHT - _menuBody.getGlobalBounds().height - 50);
+
+    // load grid
+    _data->assets.loadTexture("grid cell empty", GRID_CELL_EMPTY_FILEPATH);
+    _data->assets.loadTexture("grid cell white", GRID_CELL_WHITE_FILEPATH);
+    _data->assets.loadTexture("grid cell grey", GRID_CELL_GREY_FILEPATH);
+    _data->assets.loadTexture("grid cell red", GRID_CELL_RED_FILEPATH);
+    _data->assets.loadTexture("grid cell green", GRID_CELL_GREEN_FILEPATH);
+    _data->assets.loadTexture("grid cell blue", GRID_CELL_BLUE_FILEPATH);
+    _grid = new grid(_data);
 }
 
 //fenêtre qui reste ouverte tant qu’elle n’est pas fermée
@@ -54,10 +62,13 @@ void gameState::handleInput()
     {
         if (event.type == Event::Closed)
             _data->window.close();
+        else if (_data->input.isSpriteClicked(_background, Mouse::Left, _data->window)) {
+            _grid->toggleGrid(); // temp
+        }
     }
 }
 
-//gère le délai, après 3 secondes, on veut afficher la prochaine fenêtre
+// core update loop
 void gameState::update(float dt)
 {
     
@@ -72,6 +83,8 @@ void gameState::draw(float dt) const
     _data->window.draw(_playerZone);
     _data->window.draw(_enemyZone);
     _data->window.draw(_menuBody);
+
+    _grid->drawGrid();
 
     _data->window.display();
 }
