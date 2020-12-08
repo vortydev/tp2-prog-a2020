@@ -31,6 +31,11 @@ private:
     int _gameState; // état du jeu
     int _score;     // score du joueur
 
+    Sprite _background;
+    Sprite _menuBody; //temp? might be it's own file
+    Sprite _playerZone;
+    Sprite _enemyZone;
+
 public:
     gameState(gameDataRef data);
     ~gameState();
