@@ -17,6 +17,7 @@ struct cell {
     int cellX;
     int cellY;
     bool occupied;
+    bool selected;
     Sprite sprite;
 };
 
@@ -34,7 +35,12 @@ public:
     void toggleGrid();  // toggles the grid on and off
 
     bool isOccupied(int cellX, int cellY)const; // retourne si la cellule est occupée
+    bool isOccupied(const cell& c)const;
     void setOccupied(int cellX, int cellY);
+    void setOccupied(cell& c);
+
+    bool isSelected(const cell& c)const;    // retourne si la cellule est sélectionnée
+    void setSelected(cell& c);
 
     int xPosScreen(int cellX)const;  // retourne la valeur x du coin haut gauche de la cellule en paramètre
     int yPosScreen(int cellY)const;  // retourne la valeur y du coin haut gauche de la cellule en paramètre

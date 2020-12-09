@@ -20,6 +20,7 @@ grid::grid(gameDataRef data) : _data(data)
             _grid[i][j].cellX = j;
             _grid[i][j].cellY = i;
             _grid[i][j].occupied = false;
+            _grid[i][j].selected = false;
 
             _grid[i][j].sprite.setTexture(_data->assets.getTexture("grid cell white"));
             _grid[i][j].sprite.setPosition(80 * j + 240, 80 * i + 50);
@@ -35,8 +36,11 @@ void grid::drawGrid() const
         for (int j = 0; j < _grid.nbCol(); j++)
         {
             if (_gridToggle) {
-                if (_grid[i][j].occupied)
-                    _grid[i][j].sprite.setTexture(_data->assets.getTexture("grid cell red"));
+                if (_grid[i][j].selected) {
+                    _grid[i][j].sprite.setTexture(_data->assets.getTexture("grid cell blue"));
+                }
+                else if (_grid[i][j].occupied)
+                    _grid[i][j].sprite.setTexture(_data->assets.getTexture("grid cell grey"));
                 else
                     _grid[i][j].sprite.setTexture(_data->assets.getTexture("grid cell white"));
             }
@@ -54,15 +58,40 @@ void grid::toggleGrid()
     _gridToggle = !_gridToggle; // flips the bool
 }
 
-// retourne si la cellule de la grid est occupée
+// retourne si la cell de la grid est occupée
 bool grid::isOccupied(int cellX, int cellY) const
 {
     return _grid[cellY][cellX].occupied;
 }
 
+// retourne si la cell de la grid est occupée
+bool grid::isOccupied(const cell& c) const
+{
+    return c.occupied;
+}
+
+// toggles si la cell est occupée
 void grid::setOccupied(int cellX, int cellY)
 {
     _grid[cellY][cellX].occupied = !_grid[cellY][cellX].occupied;
+}
+
+// toggles si la cell est occupée
+void grid::setOccupied(cell& c)
+{
+    c.occupied = !c.occupied;
+}
+
+// retournes si la cell est selectionnée
+bool grid::isSelected(const cell& c)const
+{
+    return c.selected;
+}
+
+// toggles si la cell est selectionnée
+void grid::setSelected(cell& c)
+{
+    c.selected = !c.selected;
 }
 
 // retourne la valeur x du coin haut gauche de la cellule en paramètre
