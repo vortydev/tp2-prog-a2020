@@ -9,15 +9,10 @@
 
 grid::grid(gameDataRef data) : _data(data) 
 {
-    initGrid();
-}
-
-void grid::initGrid()
-{
     _grid.resize(5, 10);    // sets grid's size
     _gridToggle = true;     // sets if the grid is visible or not
 
-    // loads chaque cellule de la grid
+    // loads chaque cell de la grid
     for (int i = 0; i < _grid.nbLine(); i++)
     {
         for (int j = 0; j < _grid.nbCol(); j++)

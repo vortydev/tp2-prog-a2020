@@ -28,8 +28,6 @@ private:
 
     bool _gridToggle;   // if the grid is on or off
 
-    void initGrid();
-
 public:
     grid(gameDataRef data);
     void drawGrid()const;

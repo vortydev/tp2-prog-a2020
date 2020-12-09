@@ -15,6 +15,7 @@
 #include "state.hpp"
 
 #include "grid.h"
+#include "gameMenu.h"
 
 using namespace sf;
 using namespace std;
@@ -31,14 +32,15 @@ private:
     Clock _clock;
 
     int _gameState; // état du jeu
+    int _prepPhase; // état de la phase prep
     int _score;     // score du joueur
 
     Sprite _background;
-    Sprite _menuBody; //temp? might be it's own file
     Sprite _playerZone;
     Sprite _enemyZone;
 
-    grid* _grid;    // pointeur sur la grid
+    grid* _grid;        // pointeur sur la grid
+    gameMenu* _menu;    // pointeur sur le menu
 
 public:
     gameState(gameDataRef data);

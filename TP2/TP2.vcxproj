@@ -145,6 +145,7 @@
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="gameMenu.cpp" />
     <ClCompile Include="gameState.cpp" />
     <ClCompile Include="grid.cpp" />
     <ClCompile Include="inputManager.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="enemy.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="gameMenu.h" />
     <ClInclude Include="gameState.h" />
     <ClInclude Include="grid.h" />
     <ClInclude Include="inputManager.h" />

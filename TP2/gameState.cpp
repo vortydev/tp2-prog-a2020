@@ -10,21 +10,20 @@
  //le constructeur utilise les : pour initialiser _data avant même l’exécution du contenu{}
 gameState::gameState(gameDataRef data) : _data(data)
 {
-    _score = 0;
+    _gameState = gameStates::loading;
+    _prepPhase = prepPhases::hold;
 
-    _gameState = gameStates::ready;
+    _score = 0;
 }
 
 gameState::~gameState()
 {
     delete _grid;
+    delete _menu;
 }
 
 void gameState::init()
 {
-    // set le game state
-    _gameState = gameStates::ready;
-
     // load bg sprite
     _data->assets.loadTexture("game state background", GAME_BACKGROUND_FILEPATH);
     _background.setTexture(_data->assets.getTexture("game state background"));
@@ -39,11 +38,6 @@ void gameState::init()
     _enemyZone.setTexture(_data->assets.getTexture("enemy zone"));
     _enemyZone.setPosition(SCREEN_WIDTH - _enemyZone.getGlobalBounds().width - 75, 50);
 
-    // load menu body
-    _data->assets.loadTexture("game menu body", GAME_MENU_BODY_FILEPATH);
-    _menuBody.setTexture(_data->assets.getTexture("game menu body"));
-    _menuBody.setPosition(75, SCREEN_HEIGHT - _menuBody.getGlobalBounds().height - 50);
-
     // load grid
     _data->assets.loadTexture("grid cell empty", GRID_CELL_EMPTY_FILEPATH);
     _data->assets.loadTexture("grid cell white", GRID_CELL_WHITE_FILEPATH);
@@ -52,9 +46,19 @@ void gameState::init()
     _data->assets.loadTexture("grid cell green", GRID_CELL_GREEN_FILEPATH);
     _data->assets.loadTexture("grid cell blue", GRID_CELL_BLUE_FILEPATH);
     _grid = new grid(_data);
+
+    // load game menu
+    _data->assets.loadFont("game font", GAME_FONT_FILEPATH);
+    _data->assets.loadTexture("game menu body", GAME_MENU_BODY_FILEPATH);
+    _data->assets.loadTexture("game menu button", GAME_MENU_BUTTON_FILEPATH);
+    _menu = new gameMenu(_data);
+
+    // set le game state et prepPhase
+    _gameState = gameStates::prep;
+    _prepPhase = prepPhases::unitSelection;
 }
 
-//fenêtre qui reste ouverte tant qu’elle n’est pas fermée
+// handles all user input
 void gameState::handleInput()
 {
     Event event;
@@ -62,20 +66,32 @@ void gameState::handleInput()
     {
         if (event.type == Event::Closed)
             _data->window.close();
-        else if (_data->input.isSpriteClicked(_grid->getCell(_data).sprite, Mouse::Left, _data->window)) {
-            cell selectedCell = _grid->getCell(_data);
-            _grid->setOccupied(selectedCell.cellX, selectedCell.cellY); // temp
+        else if (_gameState == gameStates::prep && _menu->isConfirmButtonEnabled() && _data->input.isSpriteClicked(_menu->getConfirmButton().buttonSprite, Mouse::Left, _data->window)) {
+            _menu->clickConfirmButton(_prepPhase, _gameState);
         }
-        else if (_data->input.isSpriteClicked(_background, Mouse::Left, _data->window)) {
-            _grid->toggleGrid(); // temp
+        else if (_gameState == gameStates::prep && _menu->isCancelButtonEnabled() && _data->input.isSpriteClicked(_menu->getCancelButton().buttonSprite, Mouse::Left, _data->window)) {
+            _menu->clickCancelButton(_prepPhase);
         }
+        //else if (_data->input.isSpriteClicked(_grid->getCell(_data).sprite, Mouse::Left, _data->window)) {
+        //    cell selectedCell = _grid->getCell(_data);
+        //    _grid->setOccupied(selectedCell.cellX, selectedCell.cellY); // temp
+        //}
+        //else if (_data->input.isSpriteClicked(_background, Mouse::Left, _data->window)) {
+        //    //_grid->toggleGrid(); // temp
+        //    //_menu->toggleButton(_menu->getCancelButton()); // temp
+            /*if (_prepPhase < 3)
+                _prepPhase++;
+            else
+                _prepPhase = 0;
+            _menu->prepUpdate(_prepPhase);*/
+        //}
     }
 }
 
 // core update loop
 void gameState::update(float dt)
 {
-    
+
 }
 
 //clear, dessine le background et display la fenêtre. (dt n’est pas utilisé ici)
@@ -86,9 +102,9 @@ void gameState::draw(float dt) const
     _data->window.draw(_background);
     _data->window.draw(_playerZone);
     _data->window.draw(_enemyZone);
-    _data->window.draw(_menuBody);
 
     _grid->drawGrid();
+    _menu->drawMenu();
 
     _data->window.display();
 }
