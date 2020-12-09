@@ -39,6 +39,15 @@ void grid::drawGrid() const
     {
         for (int j = 0; j < _grid.nbCol(); j++)
         {
+            if (_gridToggle) {
+                if (_grid[i][j].occupied)
+                    _grid[i][j].sprite.setTexture(_data->assets.getTexture("grid cell red"));
+                else
+                    _grid[i][j].sprite.setTexture(_data->assets.getTexture("grid cell white"));
+            }
+            else
+                _grid[i][j].sprite.setTexture(_data->assets.getTexture("grid cell empty"));
+            
             _data->window.draw(_grid[i][j].sprite);
         }
     }
@@ -48,19 +57,6 @@ void grid::drawGrid() const
 void grid::toggleGrid()
 {
     _gridToggle = !_gridToggle; // flips the bool
-
-    // sets the correct texture
-    for (int i = 0; i < _grid.nbLine(); i++)
-    {
-        for (int j = 0; j < _grid.nbCol(); j++)
-        {
-            if (_gridToggle)
-                _grid[i][j].sprite.setTexture(_data->assets.getTexture("grid cell white"));
-            else
-                _grid[i][j].sprite.setTexture(_data->assets.getTexture("grid cell empty"));
-        }
-    }
-
 }
 
 // retourne si la cellule de la grid est occupée
@@ -84,4 +80,16 @@ int grid::xPosScreen(int cellX) const
 int grid::yPosScreen(int cellY) const
 {
     return 80 * cellY + 50;
+}
+
+cell& grid::getCell(gameDataRef data) const
+{
+    for (int i = 0; i < _grid.nbLine(); i++)
+    {
+        for (int j = 0; j < _grid.nbCol(); j++)
+        {
+            if (data->input.isSpriteClicked(_grid[i][j].sprite, Mouse::Left, data->window))
+                return _grid[i][j];
+        }
+    }
 }

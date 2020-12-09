@@ -40,5 +40,6 @@ public:
 
     int xPosScreen(int cellX)const;  // retourne la valeur x du coin haut gauche de la cellule en paramètre
     int yPosScreen(int cellY)const;  // retourne la valeur y du coin haut gauche de la cellule en paramètre
-};
 
+    cell& getCell(gameDataRef data)const;
+};

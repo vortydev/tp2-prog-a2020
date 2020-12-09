@@ -62,6 +62,10 @@ void gameState::handleInput()
     {
         if (event.type == Event::Closed)
             _data->window.close();
+        else if (_data->input.isSpriteClicked(_grid->getCell(_data).sprite, Mouse::Left, _data->window)) {
+            cell selectedCell = _grid->getCell(_data);
+            _grid->setOccupied(selectedCell.cellX, selectedCell.cellY); // temp
+        }
         else if (_data->input.isSpriteClicked(_background, Mouse::Left, _data->window)) {
             _grid->toggleGrid(); // temp
         }
