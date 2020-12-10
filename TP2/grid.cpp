@@ -26,6 +26,8 @@ grid::grid(gameDataRef data) : _data(data)
             _grid[i][j].sprite.setPosition(80 * j + 240, 80 * i + 50);
         }
     }
+
+    selectedCell();
 }
 
 // draw toutes les cases de la grid
@@ -36,9 +38,8 @@ void grid::drawGrid() const
         for (int j = 0; j < _grid.nbCol(); j++)
         {
             if (_gridToggle) {
-                if (_grid[i][j].selected) {
+                if (_grid[i][j].selected)
                     _grid[i][j].sprite.setTexture(_data->assets.getTexture("grid cell blue"));
-                }
                 else if (_grid[i][j].occupied)
                     _grid[i][j].sprite.setTexture(_data->assets.getTexture("grid cell grey"));
                 else
@@ -76,10 +77,20 @@ void grid::setOccupied(int cellX, int cellY)
     _grid[cellY][cellX].occupied = !_grid[cellY][cellX].occupied;
 }
 
-// toggles si la cell est occupée
 void grid::setOccupied(cell& c)
 {
     c.occupied = !c.occupied;
+}
+
+void grid::selectedCell()
+{
+    _selectedCell.cellX = -1;
+    _selectedCell.selected = false;
+}
+
+bool grid::isSelected(int cellX, int cellY)const
+{
+    return _grid[cellY][cellX].selected;
 }
 
 // retournes si la cell est selectionnée
@@ -89,6 +100,36 @@ bool grid::isSelected(const cell& c)const
 }
 
 // toggles si la cell est selectionnée
+void grid::setSelected(int cellX, int cellY)
+{   
+    // if no cell has been selected yet
+    if (_selectedCell.cellX == -1) {
+        _selectedCell.cellX = cellX;
+        _selectedCell.cellY = cellY;
+        setSelected(_selectedCell);
+        setSelected(_grid[cellY][cellX]);
+    }
+    // if the selected cell is the same as the one in memory
+    else if (_selectedCell.cellX == cellX && _selectedCell.cellY == cellY) {
+        setSelected(_selectedCell);
+        setSelected(_grid[cellY][cellX]);
+    }
+    else {
+        // de-select the previous cell
+        if (isSelected(_selectedCell)) {
+            setSelected(_selectedCell);
+            setSelected(_grid[_selectedCell.cellY][_selectedCell.cellX]);
+        }
+
+        // set the new cell's position
+        _selectedCell.cellX = cellX;
+        _selectedCell.cellY = cellY;
+
+        setSelected(_selectedCell);
+        setSelected(_grid[cellY][cellX]);
+    }
+}
+
 void grid::setSelected(cell& c)
 {
     c.selected = !c.selected;

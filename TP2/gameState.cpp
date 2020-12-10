@@ -66,16 +66,19 @@ void gameState::handleInput()
     {
         if (event.type == Event::Closed)
             _data->window.close();
+        // click Confirm / Wave button
         else if (_gameState == gameStates::prep && _menu->isConfirmButtonEnabled() && _data->input.isSpriteClicked(_menu->getConfirmButton().buttonSprite, Mouse::Left, _data->window)) {
             _menu->clickConfirmButton(_prepPhase, _gameState);
         }
+        // click Cancel button
         else if (_gameState == gameStates::prep && _menu->isCancelButtonEnabled() && _data->input.isSpriteClicked(_menu->getCancelButton().buttonSprite, Mouse::Left, _data->window)) {
             _menu->clickCancelButton(_prepPhase);
         }
-        //else if (_data->input.isSpriteClicked(_grid->getCell(_data).sprite, Mouse::Left, _data->window)) {
-        //    cell selectedCell = _grid->getCell(_data);
-        //    _grid->setOccupied(selectedCell.cellX, selectedCell.cellY); // temp
-        //}
+        // select cell on grid
+        else if (_data->input.isSpriteClicked(_grid->getCell(_data).sprite, Mouse::Left, _data->window)) {
+            cell selectedCell = _grid->getCell(_data);
+            _grid->setSelected(selectedCell.cellX, selectedCell.cellY);
+        }
         //else if (_data->input.isSpriteClicked(_background, Mouse::Left, _data->window)) {
         //    //_grid->toggleGrid(); // temp
         //    //_menu->toggleButton(_menu->getCancelButton()); // temp
