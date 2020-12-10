@@ -14,7 +14,7 @@ gameMenu::gameMenu(gameDataRef data) : _data(data)
     _menuBody.setPosition(75, SCREEN_HEIGHT - _menuBody.getGlobalBounds().height - 50);
 
     // sets buttons to their initial state
-    _confirmButton.enabled = true;
+    _confirmButton.enabled = false;
     _cancelButton.enabled = false;
 
     // loads confirm button sprite
@@ -23,7 +23,7 @@ gameMenu::gameMenu(gameDataRef data) : _data(data)
 
     // loads confirm button text
     _confirmButton.buttonText.setFont(_data->assets.getFont("game font"));
-    _confirmButton.buttonText.setString("Wave");
+    _confirmButton.buttonText.setString("Confirm");
     _confirmButton.buttonText.setCharacterSize(42);
     _confirmButton.buttonText.setFillColor(Color::White);
     _confirmButton.buttonText.setOrigin(_confirmButton.buttonText.getGlobalBounds().width / 2, _confirmButton.buttonText.getGlobalBounds().height / 2);
@@ -40,6 +40,10 @@ gameMenu::gameMenu(gameDataRef data) : _data(data)
     _cancelButton.buttonText.setFillColor(Color::White);
     _cancelButton.buttonText.setOrigin(_cancelButton.buttonText.getGlobalBounds().width / 2, _cancelButton.buttonText.getGlobalBounds().height / 2);
     _cancelButton.buttonText.setPosition(SCREEN_WIDTH - 90 - _cancelButton.buttonSprite.getGlobalBounds().width / 2, SCREEN_HEIGHT - 65 - _cancelButton.buttonSprite.getGlobalBounds().height / 2);
+
+    // load temp unit
+    _tempUnit.setTexture(_data->assets.getTexture("grid cell grey"));
+    _tempUnit.setPosition(85, SCREEN_HEIGHT - _menuBody.getGlobalBounds().height - _tempUnit.getGlobalBounds().height / 2);
 }
 
 // draws the menu and the buttons if they're enabled
@@ -56,14 +60,16 @@ void gameMenu::drawMenu() const
         _data->window.draw(_cancelButton.buttonSprite);
         _data->window.draw(_cancelButton.buttonText);
     }
+
+    _data->window.draw(_tempUnit);
 }
 
 // toggles on and off buttons depending of the prep phase
 void gameMenu::prepUpdate(int& prepPhase)
 {
     if (prepPhase == prepPhases::unitSelection) {
-        _confirmButton.enabled = true;
-        _confirmButton.buttonText.setString("Wave");
+        _confirmButton.enabled = false;
+        _confirmButton.buttonText.setString("Confirm");
         _confirmButton.buttonText.setPosition(SCREEN_WIDTH - 90 - _confirmButton.buttonSprite.getGlobalBounds().width / 2, SCREEN_HEIGHT - 45 - _menuBody.getGlobalBounds().height + _confirmButton.buttonSprite.getGlobalBounds().height / 2);
 
         _cancelButton.enabled = false;
@@ -74,10 +80,14 @@ void gameMenu::prepUpdate(int& prepPhase)
     }
     else if (prepPhase == prepPhases::unitTransaction) {
         _confirmButton.enabled = true;
-        _confirmButton.buttonText.setString("Confirm");
-        _confirmButton.buttonText.setPosition(SCREEN_WIDTH - 115 - _confirmButton.buttonSprite.getGlobalBounds().width / 2, SCREEN_HEIGHT - 45 - _menuBody.getGlobalBounds().height + _confirmButton.buttonSprite.getGlobalBounds().height / 2);
-
         _cancelButton.enabled = true;
+    }
+    else if (prepPhase == prepPhases::awaitingWave) {
+        _confirmButton.enabled = true;
+        _confirmButton.buttonText.setString("Wave");
+        _confirmButton.buttonText.setPosition(SCREEN_WIDTH - 90 - _confirmButton.buttonSprite.getGlobalBounds().width / 2, SCREEN_HEIGHT - 45 - _menuBody.getGlobalBounds().height + _confirmButton.buttonSprite.getGlobalBounds().height / 2);
+    
+        _cancelButton.enabled = false;
     }
     else if (prepPhase == prepPhases::hold) {
         _confirmButton.enabled = false;
@@ -109,33 +119,75 @@ bool gameMenu::isCancelButtonEnabled() const
     return _cancelButton.enabled;
 }
 
-// does different things depending of the prep phase
-void gameMenu::clickConfirmButton(int& prepPhase, int& gameState)
+void gameMenu::toggleButton(button& b)
 {
-    // si on est au début et on click sur Wave, on part la phase wave
+    b.enabled = !b.enabled;
+}
+
+// when the wave button is clicked
+void gameMenu::clickWaveButton(int& prepPhase, int& gameState)
+{
+    prepPhase = prepPhases::hold;   // updates the prepPhase
+    prepUpdate(prepPhase);          // updates buttons
+
+    gameState = gameStates::wave;   // updates the gameState
+}
+
+// when the confirm button is clicked
+void gameMenu::clickConfirmButton(int& prepPhase)
+{
     if (prepPhase == prepPhases::unitSelection) {
-        prepPhase = prepPhases::hold;   // updates the prepPhase
-        prepUpdate(prepPhase);         // updates buttons
-
-        gameState = gameStates::wave;   // updates the gameState
+        prepPhase = prepPhases::unitPlacement;
+        prepUpdate(prepPhase);
     }
-    // effectues la transaction de l'unit et reset la prep phase au début
+    else if (prepPhase == prepPhases::unitPlacement) {
+        prepPhase = prepPhases::unitTransaction;
+        prepUpdate(prepPhase);
+    }
     else if (prepPhase == prepPhases::unitTransaction) {
-        prepPhase = prepPhases::unitSelection; //updates the prepPhase
-        prepUpdate(prepPhase);                 // updates the buttons
+        //unitTransaction();                    // does the unit transaction
 
-        unitTransaction();                      // does the unit transaction
+        prepPhase = prepPhases::awaitingWave;   //updates the prepPhase
+        prepUpdate(prepPhase);                  // updates the buttons
     }
 }
 
 // resets the prep phase to unitSelection
 void gameMenu::clickCancelButton(int& prepPhase)
 {
+    // unselect selected unit
+    // unselect selected grid cell
+
     prepPhase = prepPhases::unitSelection;  // updates the prepPhase
     prepUpdate(prepPhase);                 // updates the buttons
 }
 
-void gameMenu::unitTransaction() // TODO
+Sprite& gameMenu::getTempUnit()
 {
+    return _tempUnit;
+}
 
+void gameMenu::unitSelected()
+{
+    _tempUnit.setTexture(_data->assets.getTexture("grid cell green"));
+
+    if (!isConfirmButtonEnabled())
+        toggleButton(_confirmButton);
+
+    if (!isCancelButtonEnabled())
+        toggleButton(_cancelButton);
+}
+
+cell& gameMenu::getSelectedCell()
+{
+    return _selectedCell;
+}
+
+void gameMenu::cellSelected(cell& c)
+{
+    _selectedCell.cellX = c.cellX;
+    _selectedCell.cellY = c.cellY;
+
+    if (!isConfirmButtonEnabled())
+        toggleButton(_confirmButton);
 }

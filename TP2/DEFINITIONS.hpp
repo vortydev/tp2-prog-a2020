@@ -36,6 +36,7 @@ enum prepPhases {
     unitSelection,
     unitPlacement,
     unitTransaction,
+    awaitingWave,
     hold
 };
 #define GAME_MENU_BODY_FILEPATH "Resources/res/game_menu_body.png"

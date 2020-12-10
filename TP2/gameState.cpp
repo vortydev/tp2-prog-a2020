@@ -66,28 +66,36 @@ void gameState::handleInput()
     {
         if (event.type == Event::Closed)
             _data->window.close();
-        // click Confirm / Wave button
-        else if (_gameState == gameStates::prep && _menu->isConfirmButtonEnabled() && _data->input.isSpriteClicked(_menu->getConfirmButton().buttonSprite, Mouse::Left, _data->window)) {
-            _menu->clickConfirmButton(_prepPhase, _gameState);
-        }
         // click Cancel button
         else if (_gameState == gameStates::prep && _menu->isCancelButtonEnabled() && _data->input.isSpriteClicked(_menu->getCancelButton().buttonSprite, Mouse::Left, _data->window)) {
+            // if a unit was selected
+            if (_prepPhase >= prepPhases::unitSelection)
+                // TODO
+
+            // if a cell was selected
+            if (_prepPhase >= prepPhases::unitPlacement)
+                _grid->setSelected(_menu->getSelectedCell().cellX, _menu->getSelectedCell().cellY);
+
             _menu->clickCancelButton(_prepPhase);
         }
-        // select cell on grid
-        else if (_data->input.isSpriteClicked(_grid->getCell(_data).sprite, Mouse::Left, _data->window)) {
+        // click Wave button
+        else if (_gameState == gameStates::prep && _prepPhase == prepPhases::awaitingWave && _menu->isConfirmButtonEnabled() && _data->input.isSpriteClicked(_menu->getConfirmButton().buttonSprite, Mouse::Left, _data->window)) {
+            _menu->clickWaveButton(_prepPhase, _gameState);
+        }
+        else if (_gameState == gameStates::prep && _menu->isConfirmButtonEnabled() && _data->input.isSpriteClicked(_menu->getConfirmButton().buttonSprite, Mouse::Left, _data->window)) {
+            _menu->clickConfirmButton(_prepPhase);
+        }
+        // prep::unitSelection. Select an a affordable unit
+        else if (_prepPhase == prepPhases::unitSelection && _data->input.isSpriteClicked(_menu->getTempUnit(), Mouse::Left, _data->window)) {
+            _menu->unitSelected();
+        }
+        // prep::unitPlacement. Select cell on grid
+        else if (_prepPhase == prepPhases::unitPlacement && _data->input.isSpriteClicked(_grid->getCell(_data).sprite, Mouse::Left, _data->window)) {
             cell selectedCell = _grid->getCell(_data);
             _grid->setSelected(selectedCell.cellX, selectedCell.cellY);
+
+            _menu->cellSelected(selectedCell);
         }
-        //else if (_data->input.isSpriteClicked(_background, Mouse::Left, _data->window)) {
-        //    //_grid->toggleGrid(); // temp
-        //    //_menu->toggleButton(_menu->getCancelButton()); // temp
-            /*if (_prepPhase < 3)
-                _prepPhase++;
-            else
-                _prepPhase = 0;
-            _menu->prepUpdate(_prepPhase);*/
-        //}
     }
 }
 

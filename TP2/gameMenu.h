@@ -9,6 +9,7 @@
 #include <SFML/Graphics.hpp>
 #include "DEFINITIONS.hpp"
 #include "game.h"
+#include "grid.h"
 #include "Resources/include/vecteur.hpp"
 
 using namespace sf;
@@ -27,9 +28,12 @@ private:
     // vecteur des units à implémenter
 
     Sprite _menuBody;
+    Sprite _tempUnit;
 
     button _confirmButton;
     button _cancelButton;
+
+    cell _selectedCell;
 
 public:
     gameMenu(gameDataRef data);
@@ -40,10 +44,20 @@ public:
     button& getCancelButton();
     bool isConfirmButtonEnabled()const;
     bool isCancelButtonEnabled()const;
+    void toggleButton(button& b);
 
-    void clickConfirmButton(int& prepPhase, int& gameState);
+    void clickWaveButton(int& prepPhase, int& gameState);
+    void clickConfirmButton(int& prepPhase);
     void clickCancelButton(int& prepPhase);
 
-    void unitTransaction(); // TODO
-};
+    // unitSelection
+    Sprite& getTempUnit();
+    void unitSelected();
 
+    //unitPlacement
+    cell& getSelectedCell();
+    void cellSelected(cell& c);
+
+    //unitTransaction
+    //void unitTransaction(); // TODO
+};
