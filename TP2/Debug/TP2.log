@@ -1,5 +1,7 @@
-﻿  grid.cpp
-C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\grid.cpp(26,65): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\grid.cpp(26,51): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\grid.cpp(160): warning C4715: 'grid::getCell' : les chemins de contrôle ne retournent pas tous une valeur
+﻿  game.cpp
+C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\game.cpp(14,15): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
+  gameMenu.cpp
+  gameState.cpp
+  mainMenuState.cpp
+  Génération de code en cours...
   TP2.vcxproj -> C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\Debug\TP2.exe

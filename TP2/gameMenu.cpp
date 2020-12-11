@@ -9,6 +9,9 @@
 
 gameMenu::gameMenu(gameDataRef data) : _data(data)
 {
+    // loads variables
+    _unitListEmpty = true;
+
     // loads menu body
     _menuBody.setTexture(_data->assets.getTexture("game menu body"));
     _menuBody.setPosition(75, SCREEN_HEIGHT - _menuBody.getGlobalBounds().height - 50);
@@ -120,28 +123,27 @@ void gameMenu::toggleButton(button& b)
     b.enabled = !b.enabled;
 }
 
-// when the wave button is clicked
-void gameMenu::clickWaveButton(int& prepPhase, int& gameState)
-{
-    prepPhase = prepPhases::hold;   // updates the prepPhase
-    prepPhaseUpdate(prepPhase);     // updates buttons
-
-    gameState = gameStates::wave;   // updates the gameState
-}
-
 // when the confirm button is clicked
-void gameMenu::clickConfirmButton(int& prepPhase)
+void gameMenu::clickConfirmButton(int& prepPhase, int& gameState)
 {
     if (prepPhase == prepPhases::unitSelection) {
         prepPhase = prepPhases::unitPlacement;
         prepPhaseUpdate(prepPhase);
     }
     else if (prepPhase == prepPhases::unitPlacement) {
+        _tempUnit.setTexture(_data->assets.getTexture("grid cell grey")); // temp
+
         prepPhase = prepPhases::unitTransaction;
         //unitTransaction();    // does the unit transaction (might get it's own file)
 
         prepPhase = prepPhases::awaitingWave;   //updates the prepPhase
         prepPhaseUpdate(prepPhase);                  // updates the buttons
+    }
+    else if (prepPhase == prepPhases::awaitingWave) {
+        prepPhase = prepPhases::hold;   // updates the prepPhase
+        prepPhaseUpdate(prepPhase);     // updates buttons
+
+        gameState = gameStates::wave;   // updates the gameState
     }
 }
 
@@ -150,12 +152,12 @@ void gameMenu::clickCancelButton(int& prepPhase)
 {
     // if a unit was selected
     if (prepPhase >= prepPhases::unitSelection)
-        _tempUnit.setTexture(_data->assets.getTexture("grid cell grey"));
+        _tempUnit.setTexture(_data->assets.getTexture("grid cell grey")); // temp
 
-    // if the list of board units is empty
-    prepPhase = prepPhases::unitSelection;  // updates the prepPhase
-    // else 
-    // prepPhase = prepPhases::awaitWave;
+    if (_unitListEmpty)
+        prepPhase = prepPhases::unitSelection;  // updates the prepPhase
+    else
+        prepPhase = prepPhases::awaitingWave;
 
     prepPhaseUpdate(prepPhase);             // updates the buttons
 }
@@ -165,8 +167,11 @@ Sprite& gameMenu::getTempUnit()
     return _tempUnit;
 }
 
-void gameMenu::unitSelected()
+void gameMenu::unitSelected(int& prePhase)
 {
+    prePhase = prepPhases::unitSelection;
+    prepPhaseUpdate(prePhase);
+
     _tempUnit.setTexture(_data->assets.getTexture("grid cell green"));
 
     if (!isButtonEnabled(getConfirmButton()))
@@ -178,14 +183,8 @@ void gameMenu::unitSelected()
 
 cell& gameMenu::getSelectedCell()
 {
-    return _selectedCell;
-}
-
-void gameMenu::cellSelected(cell& c)
-{
-    _selectedCell.cellX = c.cellX;
-    _selectedCell.cellY = c.cellY;
-
     if (!isButtonEnabled(_confirmButton))
         toggleButton(_confirmButton);
+
+    return _selectedCell;
 }

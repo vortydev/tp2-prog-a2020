@@ -27,13 +27,15 @@ private:
 
     Sprite _menuBody;
 
-    // vecteur des units à implémenter
-    Sprite _tempUnit;
-
     button _confirmButton;
     button _cancelButton;
 
+    // vecteur des units à implémenter
+    Sprite _tempUnit;
+
     cell _selectedCell;
+
+    bool _unitListEmpty;
 
 public:
     gameMenu(gameDataRef data);
@@ -46,17 +48,15 @@ public:
     bool isButtonEnabled(const button& b)const;
     void toggleButton(button& b);
 
-    void clickWaveButton(int& prepPhase, int& gameState);
-    void clickConfirmButton(int& prepPhase);
+    void clickConfirmButton(int& prepPhase, int& gameState);
     void clickCancelButton(int& prepPhase);
 
     // unitSelection
     Sprite& getTempUnit();
-    void unitSelected();
+    void unitSelected(int& prepPhase);
 
     //unitPlacement
     cell& getSelectedCell();
-    void cellSelected(cell& c);
 
     //unitTransaction
     //void unitTransaction(); // TODO

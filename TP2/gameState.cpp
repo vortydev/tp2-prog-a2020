@@ -75,24 +75,21 @@ void gameState::handleInput()
 
             _menu->clickCancelButton(_prepPhase);
         }
+        // click Confirm button
         else if (_gameState == gameStates::prep && _menu->isButtonEnabled(_menu->getConfirmButton()) && _data->input.isSpriteClicked(_menu->getConfirmButton().buttonSprite, Mouse::Left, _data->window)) {
             if (_prepPhase >= prepPhases::unitPlacement)
                 _grid->unSelectCell(_menu->getSelectedCell());
             
-            _menu->clickConfirmButton(_prepPhase);
+            _menu->clickConfirmButton(_prepPhase, _gameState);
         }
         // prep::unitSelection. Select an a affordable unit
-        else if (_prepPhase == prepPhases::unitSelection && _data->input.isSpriteClicked(_menu->getTempUnit(), Mouse::Left, _data->window)) {
-            _menu->unitSelected();
+        else if ((_prepPhase == prepPhases::unitSelection || _prepPhase == prepPhases::awaitingWave) && _data->input.isSpriteClicked(_menu->getTempUnit(), Mouse::Left, _data->window)) {
+            _menu->unitSelected(_prepPhase);
         }
         // prep::unitPlacement. Select cell on grid
         else if (_prepPhase == prepPhases::unitPlacement && _data->input.isSpriteClicked(_grid->getCell(_data).sprite, Mouse::Left, _data->window)) {
             cell tempCell = _grid->getCell(_data);
             _grid->setSelected(tempCell.cellX, tempCell.cellY, _menu->getSelectedCell());
-        }
-        // click Wave button
-        else if (_prepPhase == prepPhases::awaitingWave && _menu->isButtonEnabled(_menu->getConfirmButton()) && _data->input.isSpriteClicked(_menu->getConfirmButton().buttonSprite, Mouse::Left, _data->window)) {
-            _menu->clickWaveButton(_prepPhase, _gameState);
         }
     }
 }
