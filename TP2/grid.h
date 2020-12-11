@@ -28,7 +28,6 @@ private:
     mapp<cell> _grid;
 
     bool _gridToggle;   // if the grid is on or off
-    cell _selectedCell;
 
 public:
     grid(gameDataRef data);
@@ -40,11 +39,12 @@ public:
     void setOccupied(int cellX, int cellY);
     void setOccupied(cell& c);
 
-    void selectedCell();
-    bool isSelected(int cellX, int cellY)const;
     bool isSelected(const cell& c)const;    // retourne si la cellule est sélectionnée
-    void setSelected(int cellX, int cellY);
+    bool isSelected(int cellX, int cellY)const;
     void setSelected(cell& c);
+    void setSelected(int cellX, int cellY);
+    void setSelected(int cellX, int cellY, cell& c);
+    void unSelectCell(cell& c);
 
     int xPosScreen(int cellX)const;  // retourne la valeur x du coin haut gauche de la cellule en paramètre
     int yPosScreen(int cellY)const;  // retourne la valeur y du coin haut gauche de la cellule en paramètre

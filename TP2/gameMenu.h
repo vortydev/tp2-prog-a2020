@@ -25,9 +25,9 @@ class gameMenu
 private:
     gameDataRef _data;
 
-    // vecteur des units à implémenter
-
     Sprite _menuBody;
+
+    // vecteur des units à implémenter
     Sprite _tempUnit;
 
     button _confirmButton;
@@ -38,12 +38,12 @@ private:
 public:
     gameMenu(gameDataRef data);
     void drawMenu()const;
-    void prepUpdate(int& prepPhase);
+    void drawButton(const button& b)const;
+    void prepPhaseUpdate(int& prepPhase);
 
     button& getConfirmButton();
     button& getCancelButton();
-    bool isConfirmButtonEnabled()const;
-    bool isCancelButtonEnabled()const;
+    bool isButtonEnabled(const button& b)const;
     void toggleButton(button& b);
 
     void clickWaveButton(int& prepPhase, int& gameState);

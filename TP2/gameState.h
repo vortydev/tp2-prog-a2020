@@ -33,7 +33,9 @@ private:
 
     int _gameState; // état du jeu
     int _prepPhase; // état de la phase prep
+
     int _score;     // score du joueur
+    int _currency;  // currency du joueur
 
     Sprite _background;
     Sprite _playerZone;

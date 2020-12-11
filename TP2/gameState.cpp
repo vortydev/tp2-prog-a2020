@@ -14,6 +14,7 @@ gameState::gameState(gameDataRef data) : _data(data)
     _prepPhase = prepPhases::hold;
 
     _score = 0;
+    _currency = 0;
 }
 
 gameState::~gameState()
@@ -67,22 +68,17 @@ void gameState::handleInput()
         if (event.type == Event::Closed)
             _data->window.close();
         // click Cancel button
-        else if (_gameState == gameStates::prep && _menu->isCancelButtonEnabled() && _data->input.isSpriteClicked(_menu->getCancelButton().buttonSprite, Mouse::Left, _data->window)) {
-            // if a unit was selected
-            if (_prepPhase >= prepPhases::unitSelection)
-                // TODO
-
-            // if a cell was selected
+        else if (_gameState == gameStates::prep && _menu->isButtonEnabled(_menu->getCancelButton()) && _data->input.isSpriteClicked(_menu->getCancelButton().buttonSprite, Mouse::Left, _data->window)) {
+             // if a cell was selected
             if (_prepPhase >= prepPhases::unitPlacement)
-                _grid->setSelected(_menu->getSelectedCell().cellX, _menu->getSelectedCell().cellY);
+                _grid->unSelectCell(_menu->getSelectedCell());
 
             _menu->clickCancelButton(_prepPhase);
         }
-        // click Wave button
-        else if (_gameState == gameStates::prep && _prepPhase == prepPhases::awaitingWave && _menu->isConfirmButtonEnabled() && _data->input.isSpriteClicked(_menu->getConfirmButton().buttonSprite, Mouse::Left, _data->window)) {
-            _menu->clickWaveButton(_prepPhase, _gameState);
-        }
-        else if (_gameState == gameStates::prep && _menu->isConfirmButtonEnabled() && _data->input.isSpriteClicked(_menu->getConfirmButton().buttonSprite, Mouse::Left, _data->window)) {
+        else if (_gameState == gameStates::prep && _menu->isButtonEnabled(_menu->getConfirmButton()) && _data->input.isSpriteClicked(_menu->getConfirmButton().buttonSprite, Mouse::Left, _data->window)) {
+            if (_prepPhase >= prepPhases::unitPlacement)
+                _grid->unSelectCell(_menu->getSelectedCell());
+            
             _menu->clickConfirmButton(_prepPhase);
         }
         // prep::unitSelection. Select an a affordable unit
@@ -91,10 +87,12 @@ void gameState::handleInput()
         }
         // prep::unitPlacement. Select cell on grid
         else if (_prepPhase == prepPhases::unitPlacement && _data->input.isSpriteClicked(_grid->getCell(_data).sprite, Mouse::Left, _data->window)) {
-            cell selectedCell = _grid->getCell(_data);
-            _grid->setSelected(selectedCell.cellX, selectedCell.cellY);
-
-            _menu->cellSelected(selectedCell);
+            cell tempCell = _grid->getCell(_data);
+            _grid->setSelected(tempCell.cellX, tempCell.cellY, _menu->getSelectedCell());
+        }
+        // click Wave button
+        else if (_prepPhase == prepPhases::awaitingWave && _menu->isButtonEnabled(_menu->getConfirmButton()) && _data->input.isSpriteClicked(_menu->getConfirmButton().buttonSprite, Mouse::Left, _data->window)) {
+            _menu->clickWaveButton(_prepPhase, _gameState);
         }
     }
 }

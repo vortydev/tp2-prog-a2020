@@ -44,6 +44,10 @@ gameMenu::gameMenu(gameDataRef data) : _data(data)
     // load temp unit
     _tempUnit.setTexture(_data->assets.getTexture("grid cell grey"));
     _tempUnit.setPosition(85, SCREEN_HEIGHT - _menuBody.getGlobalBounds().height - _tempUnit.getGlobalBounds().height / 2);
+
+    // load selectedCell
+    _selectedCell.cellX = -1;
+    _selectedCell.selected = false;
 }
 
 // draws the menu and the buttons if they're enabled
@@ -51,21 +55,23 @@ void gameMenu::drawMenu() const
 {
     _data->window.draw(_menuBody);
 
-    if (_confirmButton.enabled) {
-        _data->window.draw(_confirmButton.buttonSprite);
-        _data->window.draw(_confirmButton.buttonText);
-    }
-
-    if (_cancelButton.enabled) {
-        _data->window.draw(_cancelButton.buttonSprite);
-        _data->window.draw(_cancelButton.buttonText);
-    }
+    drawButton(_confirmButton);
+    drawButton(_cancelButton);
 
     _data->window.draw(_tempUnit);
 }
 
+// draw le bouton entré en paramètre si il est enabled
+void gameMenu::drawButton(const button& b) const
+{
+    if (b.enabled) {
+        _data->window.draw(b.buttonSprite);
+        _data->window.draw(b.buttonText);
+    }
+}
+
 // toggles on and off buttons depending of the prep phase
-void gameMenu::prepUpdate(int& prepPhase)
+void gameMenu::prepPhaseUpdate(int& prepPhase)
 {
     if (prepPhase == prepPhases::unitSelection) {
         _confirmButton.enabled = false;
@@ -76,10 +82,6 @@ void gameMenu::prepUpdate(int& prepPhase)
     }
     else if (prepPhase == prepPhases::unitPlacement) {
         _confirmButton.enabled = false;
-        _cancelButton.enabled = true;
-    }
-    else if (prepPhase == prepPhases::unitTransaction) {
-        _confirmButton.enabled = true;
         _cancelButton.enabled = true;
     }
     else if (prepPhase == prepPhases::awaitingWave) {
@@ -107,16 +109,10 @@ button& gameMenu::getCancelButton()
     return _cancelButton;
 }
 
-// retournes si le boutton est enabled
-bool gameMenu::isConfirmButtonEnabled() const
+// retournes si le bouton est enabled
+bool gameMenu::isButtonEnabled(const button& b) const
 {
-    return _confirmButton.enabled;
-}
-
-// retournes si le boutton est enabled
-bool gameMenu::isCancelButtonEnabled() const
-{
-    return _cancelButton.enabled;
+    return b.enabled;
 }
 
 void gameMenu::toggleButton(button& b)
@@ -128,7 +124,7 @@ void gameMenu::toggleButton(button& b)
 void gameMenu::clickWaveButton(int& prepPhase, int& gameState)
 {
     prepPhase = prepPhases::hold;   // updates the prepPhase
-    prepUpdate(prepPhase);          // updates buttons
+    prepPhaseUpdate(prepPhase);     // updates buttons
 
     gameState = gameStates::wave;   // updates the gameState
 }
@@ -138,28 +134,30 @@ void gameMenu::clickConfirmButton(int& prepPhase)
 {
     if (prepPhase == prepPhases::unitSelection) {
         prepPhase = prepPhases::unitPlacement;
-        prepUpdate(prepPhase);
+        prepPhaseUpdate(prepPhase);
     }
     else if (prepPhase == prepPhases::unitPlacement) {
         prepPhase = prepPhases::unitTransaction;
-        prepUpdate(prepPhase);
-    }
-    else if (prepPhase == prepPhases::unitTransaction) {
-        //unitTransaction();                    // does the unit transaction
+        //unitTransaction();    // does the unit transaction (might get it's own file)
 
         prepPhase = prepPhases::awaitingWave;   //updates the prepPhase
-        prepUpdate(prepPhase);                  // updates the buttons
+        prepPhaseUpdate(prepPhase);                  // updates the buttons
     }
 }
 
 // resets the prep phase to unitSelection
 void gameMenu::clickCancelButton(int& prepPhase)
 {
-    // unselect selected unit
-    // unselect selected grid cell
+    // if a unit was selected
+    if (prepPhase >= prepPhases::unitSelection)
+        _tempUnit.setTexture(_data->assets.getTexture("grid cell grey"));
 
+    // if the list of board units is empty
     prepPhase = prepPhases::unitSelection;  // updates the prepPhase
-    prepUpdate(prepPhase);                 // updates the buttons
+    // else 
+    // prepPhase = prepPhases::awaitWave;
+
+    prepPhaseUpdate(prepPhase);             // updates the buttons
 }
 
 Sprite& gameMenu::getTempUnit()
@@ -171,10 +169,10 @@ void gameMenu::unitSelected()
 {
     _tempUnit.setTexture(_data->assets.getTexture("grid cell green"));
 
-    if (!isConfirmButtonEnabled())
+    if (!isButtonEnabled(getConfirmButton()))
         toggleButton(_confirmButton);
 
-    if (!isCancelButtonEnabled())
+    if (!isButtonEnabled(getCancelButton()))
         toggleButton(_cancelButton);
 }
 
@@ -188,6 +186,6 @@ void gameMenu::cellSelected(cell& c)
     _selectedCell.cellX = c.cellX;
     _selectedCell.cellY = c.cellY;
 
-    if (!isConfirmButtonEnabled())
+    if (!isButtonEnabled(_confirmButton))
         toggleButton(_confirmButton);
 }
