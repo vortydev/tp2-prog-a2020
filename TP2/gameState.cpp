@@ -77,8 +77,10 @@ void gameState::handleInput()
         }
         // click Confirm button
         else if (_gameState == gameStates::prep && _menu->isButtonEnabled(_menu->getConfirmButton()) && _data->input.isSpriteClicked(_menu->getConfirmButton().buttonSprite, Mouse::Left, _data->window)) {
-            if (_prepPhase >= prepPhases::unitPlacement)
-                _grid->unSelectCell(_menu->getSelectedCell());
+            if (_prepPhase >= prepPhases::unitPlacement) {
+                _grid->setOccupied(_menu->getSelectedCell().cellX, _menu->getSelectedCell().cellY);
+                _grid->unSelectCell(_menu->getSelectedCell()); 
+            }
             
             _menu->clickConfirmButton(_prepPhase, _gameState);
         }

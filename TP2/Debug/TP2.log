@@ -1,7 +1,2 @@
-﻿  game.cpp
-C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\game.cpp(14,15): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
-  gameMenu.cpp
-  gameState.cpp
-  mainMenuState.cpp
-  Génération de code en cours...
+﻿  gameState.cpp
   TP2.vcxproj -> C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\Debug\TP2.exe
