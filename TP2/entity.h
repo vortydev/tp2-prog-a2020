@@ -18,9 +18,8 @@ using namespace std;
 class entity
 {
 private:
-    gameDataRef _data;
-
     int _id;
+    int _type;
     string _name;
     Sprite _sprite;
 
@@ -29,22 +28,24 @@ private:
 
     // combat
     bool _alive;
-    int _maxHealth;
-    int _curHealth;
-    int _attackRange;
+    int _maxHP;
+    int _curHP;
+    int _range;
 
     // pour les units (just 0 pour les mobs)
     int _cost;
 
 public:
-    entity(gameDataRef data);
+    entity();
     ~entity();
-
-    void drawEntity()const;
 
     // ID
     int getID()const;
     void setID(int id);
+
+    // type
+    int getType()const;
+    void setType(int type);
 
     // name
     string getName()const;
@@ -52,7 +53,7 @@ public:
 
     // sprite
     Sprite& getSprite();
-    void setSprite(string sprite);
+    void setSprite(gameDataRef data, string sprite, int type);
 
     // position on grid
     int getCellX()const;
@@ -68,15 +69,15 @@ public:
     void toggleAlive();
 
     // health
-    int getMaxHealth()const;
-    int getCurHealth()const;
-    void setMaxHealth(int health);
-    void setCurHealth(int health);
-    void setHealth(int health);
+    int getMaxHP()const;
+    int getCurHP()const;
+    void setMaxHP(int hp);
+    void setCurHP(int hp);
+    void setHP(int hp);
 
     // attack range
-    int getAttackRange()const;
-    void setAttackRange(int range);
+    int getRange()const;
+    void setRange(int range);
 
     // cost
     int getCost()const;

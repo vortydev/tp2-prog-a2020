@@ -9,6 +9,7 @@
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 #define GAME_FONT_FILEPATH "Resources/fonts/Planetesimal-Regular.ttf"
+#define ENTITY_LIST_FILEPATH "Resources/entityList.txt"
 
 // gameState
 enum gameStates {

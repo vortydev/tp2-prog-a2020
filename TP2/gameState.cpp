@@ -21,6 +21,7 @@ gameState::~gameState()
 {
     delete _grid;
     delete _menu;
+    delete _entityManager;
 }
 
 void gameState::init()
@@ -52,7 +53,13 @@ void gameState::init()
     _data->assets.loadFont("game font", GAME_FONT_FILEPATH);
     _data->assets.loadTexture("game menu body", GAME_MENU_BODY_FILEPATH);
     _data->assets.loadTexture("game menu button", GAME_MENU_BUTTON_FILEPATH);
+
+    // load shop units
+    _data->assets.loadTexture("unit temp", UNIT_TEMP_FILEPATH);
     _menu = new gameMenu(_data);
+
+    // load the entity manager
+    _entityManager = new entityManager(_data);
 
     // set le game state et prepPhase
     _gameState = gameStates::prep;
@@ -81,8 +88,11 @@ void gameState::handleInput()
                 _grid->setOccupied(_menu->getSelectedCell().cellX, _menu->getSelectedCell().cellY);
                 _grid->unSelectCell(_menu->getSelectedCell()); 
             }
-            
+
             _menu->clickConfirmButton(_prepPhase, _gameState);
+
+            if (_prepPhase == hold)
+                _grid->toggleGrid();
         }
         // prep::unitSelection. Select an a affordable unit
         else if ((_prepPhase == prepPhases::unitSelection || _prepPhase == prepPhases::awaitingWave) && _data->input.isSpriteClicked(_menu->getTempUnit(), Mouse::Left, _data->window)) {

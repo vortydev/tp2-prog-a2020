@@ -7,9 +7,10 @@
 
 #include "entity.h"
 
-entity::entity(gameDataRef data) : _data(data)
+entity::entity()
 {
     _id = 0;
+    _type = 0;  // 1 = unit, 2 = mob
     _name = "";
     // on ne loadera pas de sprites dans la template
 
@@ -18,8 +19,8 @@ entity::entity(gameDataRef data) : _data(data)
     _cellY = -1;
 
     _alive = false;
-    _maxHealth = _curHealth = 0;
-    _attackRange = 0;
+    _maxHP = _curHP = 0;
+    _range = 0;
     _cost = 0;
 }
 
@@ -27,19 +28,14 @@ entity::entity(gameDataRef data) : _data(data)
 entity::~entity()
 {
     _id = 0;
+    _type = 0;
     _name = "";
     _cellX = -1;
     _cellY = -1;
     _alive = false;
-    _maxHealth = _curHealth = 0;
-    _attackRange = 0;
+    _maxHP = _curHP = 0;
+    _range = 0;
     _cost = 0;
-}
-
-// draw l'entity
-void entity::drawEntity() const
-{
-    _data->window.draw(_sprite);
 }
 
 // retournes l'id de l'entity
@@ -53,6 +49,19 @@ void entity::setID(int id)
 {
     assert(id >= 0);
     _id = id;
+}
+
+// retournes le type de l'entity
+int entity::getType() const
+{
+    return _type;
+}
+
+// set le type de l'entity
+void entity::setType(int type)
+{
+    assert(type >= 0 && type < 3);  // on veut un type de 0, 1 ou 2 seulement
+    _type = type;
 }
 
 // retournes le nom de l'entity
@@ -75,9 +84,21 @@ Sprite& entity::getSprite()
 }
 
 // set le sprite de l'entity en utilisant le asset manager
-void entity::setSprite(string name)
+void entity::setSprite(gameDataRef data, string name, int type)
 {
-    _sprite.setTexture(_data->assets.getTexture(name));
+    string path;
+    // change le filepath dépendant du type d'entity
+    switch (type) {
+    case 1:
+        path = "Resources/res/unit_" + name + ".png";
+        break;
+    case 2:
+        path = "Resources/res/mob_" + name + ".png";
+        break;
+    }
+
+    data->assets.loadTexture(name, path);
+    _sprite.setTexture(data->assets.getTexture(name));
 }
 
 // retournes la position x de l'entity sur la grille
@@ -140,49 +161,49 @@ void entity::toggleAlive()
 }
 
 // retournes le max health de l'entity
-int entity::getMaxHealth() const
+int entity::getMaxHP() const
 {
-    return _maxHealth;
+    return _maxHP;
 }
 
 // retournes le current health de l'entity
-int entity::getCurHealth() const
+int entity::getCurHP() const
 {
-    return _curHealth;
+    return _curHP;
 }
 
 // set le max health de l'entity
-void entity::setMaxHealth(int health)
+void entity::setMaxHP(int hp)
 {
-    assert(health >= 0);
-    _maxHealth = health;
+    assert(hp >= 0);
+    _maxHP = hp;
 }
 
 // set le current health de l'entity
-void entity::setCurHealth(int health)
+void entity::setCurHP(int hp)
 {
-    assert(health >= 0);
-    _curHealth = health;
+    assert(hp >= 0);
+    _curHP = hp;
 }
 
 // set le max et current health
-void entity::setHealth(int health)
+void entity::setHP(int hp)
 {
-    setMaxHealth(health);
-    setCurHealth(health);
+    setMaxHP(hp);
+    setCurHP(hp);
 }
 
 // retournes le attack range de l'entity
-int entity::getAttackRange() const
+int entity::getRange() const
 {
-    return _attackRange;
+    return _range;
 }
 
 // set l'attack range de l'entity
-void entity::setAttackRange(int range)
+void entity::setRange(int range)
 {
     assert(range >= 0);
-    _attackRange = range;
+    _range = range;
 }
 
 // retournes le cost de l'entity

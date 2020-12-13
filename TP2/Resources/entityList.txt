@@ -1,0 +1,3 @@
+Peasant temp 1 10 1 10
+Soldier temp 1 20 1 20
+Archer temp 1 10 4 25

@@ -16,6 +16,7 @@
 
 #include "grid.h"
 #include "gameMenu.h"
+#include "entityManager.h"
 
 using namespace sf;
 using namespace std;
@@ -43,6 +44,7 @@ private:
 
     grid* _grid;        // pointeur sur la grid
     gameMenu* _menu;    // pointeur sur le menu
+    entityManager* _entityManager;
 
 public:
     gameState(gameDataRef data);
