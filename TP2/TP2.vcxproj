@@ -142,8 +142,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="assetManager.cpp" />
-    <ClCompile Include="enemy.cpp" />
     <ClCompile Include="entity.cpp" />
+    <ClCompile Include="entityManager.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gameMenu.cpp" />
     <ClCompile Include="gameState.cpp" />
@@ -152,13 +152,12 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainMenuState.cpp" />
     <ClCompile Include="stateMachine.cpp" />
-    <ClCompile Include="unit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="assetManager.h" />
     <ClInclude Include="DEFINITIONS.hpp" />
-    <ClInclude Include="enemy.h" />
     <ClInclude Include="entity.h" />
+    <ClInclude Include="entityManager.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameMenu.h" />
     <ClInclude Include="gameState.h" />
@@ -167,7 +166,9 @@
     <ClInclude Include="mainMenuState.h" />
     <ClInclude Include="state.hpp" />
     <ClInclude Include="stateMachine.h" />
-    <ClInclude Include="unit.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resources\entityList.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

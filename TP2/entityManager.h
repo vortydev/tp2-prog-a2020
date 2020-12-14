@@ -30,13 +30,19 @@ private:
     ifstream _entityList;
     vecteur<entity> _refEntities;
     vecteur<entity> _shopUnits;
+    vecteur<Sprite> _shopUnitsCells;
     list<entity> _boardEntities;
 
 public:
     entityManager(gameDataRef data);
 
-    void loadRefEntities();     // intialise et remplis le vecteur avec les entities dans une liste
-    //void loadShopUnits();       // initialise le vecteur de shop units
+    void loadRefEntities();             // intialise et remplis le vecteur avec les entities dans une liste
+    const entity& getRefEntity(int id); // retourne l'entity avec l'id en paramètre
+
+    void loadShopUnits();       // initialise le vecteur de shop units
+    void loadShopUnitsCells();
+    void drawShopUnits(int currency)const;
+
     //void loadBoardEntities();   // initialise la liste de board entities
 };
 

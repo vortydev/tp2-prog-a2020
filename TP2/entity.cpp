@@ -18,9 +18,12 @@ entity::entity()
     _cellX = -1;
     _cellY = -1;
 
-    _alive = false;
+    // combat
+    _alive = true;
     _maxHP = _curHP = 0;
     _range = 0;
+    _damage = 0;
+
     _cost = 0;
 }
 
@@ -35,6 +38,7 @@ entity::~entity()
     _alive = false;
     _maxHP = _curHP = 0;
     _range = 0;
+    _damage = 0;
     _cost = 0;
 }
 
@@ -202,8 +206,21 @@ int entity::getRange() const
 // set l'attack range de l'entity
 void entity::setRange(int range)
 {
-    assert(range >= 0);
+    assert(range > 0);
     _range = range;
+}
+
+// retournes le dommage de l'entity
+int entity::getDamage() const
+{
+    return _damage;
+}
+
+// set le dommage de l'entity
+void entity::setDamage(int damage)
+{
+    assert(damage > 0);
+    _damage = damage;
 }
 
 // retournes le cost de l'entity

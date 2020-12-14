@@ -31,6 +31,7 @@ private:
     int _maxHP;
     int _curHP;
     int _range;
+    int _damage;
 
     // pour les units (just 0 pour les mobs)
     int _cost;
@@ -75,9 +76,13 @@ public:
     void setCurHP(int hp);
     void setHP(int hp);
 
-    // attack range
+    // range
     int getRange()const;
     void setRange(int range);
+
+    // damage
+    int getDamage()const;
+    void setDamage(int damage);
 
     // cost
     int getCost()const;

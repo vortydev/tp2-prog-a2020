@@ -1,2 +1,5 @@
-﻿  gameState.cpp
+﻿  entityManager.cpp
+C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\entityManager.cpp(88,61): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\entityManager.cpp(90,59): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\entityManager.cpp(91,70): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
   TP2.vcxproj -> C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\Debug\TP2.exe

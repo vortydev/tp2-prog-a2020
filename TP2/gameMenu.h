@@ -20,40 +20,49 @@ struct button {
     bool enabled;
 };
 
+struct shopUnit {
+    int cost;
+    Text costText;
+    Sprite unitCell;
+    Sprite unitSprite;
+};
+
 class gameMenu
 {
 private:
     gameDataRef _data;
+
+    bool _unitListEmpty;
 
     Sprite _menuBody;
 
     button _confirmButton;
     button _cancelButton;
 
-    // vecteur des units à implémenter
+    vecteur<shopUnit> _shopUnits;
     Sprite _tempUnit;
 
     cell _selectedCell;
 
-    bool _unitListEmpty;
-
 public:
     gameMenu(gameDataRef data);
+
     void drawMenu()const;
     void drawButton(const button& b)const;
-    void prepPhaseUpdate(int& prepPhase);
+    //void drawShopUnits()const;
 
     button& getConfirmButton();
     button& getCancelButton();
     bool isButtonEnabled(const button& b)const;
     void toggleButton(button& b);
 
+    void buttonVisibilityUpdate(int& prepPhase);
     void clickConfirmButton(int& prepPhase, int& gameState);
     void clickCancelButton(int& prepPhase);
 
     // unitSelection
-    Sprite& getTempUnit();
-    void unitSelected(int& prepPhase);
+    //Sprite& getTempUnit();
+    //void unitSelected(int& prepPhase);
 
     //unitPlacement
     cell& getSelectedCell();

@@ -14,7 +14,7 @@ gameState::gameState(gameDataRef data) : _data(data)
     _prepPhase = prepPhases::hold;
 
     _score = 0;
-    _currency = 0;
+    _currency = 100;
 }
 
 gameState::~gameState()
@@ -53,10 +53,10 @@ void gameState::init()
     _data->assets.loadFont("game font", GAME_FONT_FILEPATH);
     _data->assets.loadTexture("game menu body", GAME_MENU_BODY_FILEPATH);
     _data->assets.loadTexture("game menu button", GAME_MENU_BUTTON_FILEPATH);
+    _menu = new gameMenu(_data);
 
     // load shop units
-    _data->assets.loadTexture("unit temp", UNIT_TEMP_FILEPATH);
-    _menu = new gameMenu(_data);
+    //_data->assets.loadTexture("unit temp", UNIT_TEMP_FILEPATH);
 
     // load the entity manager
     _entityManager = new entityManager(_data);
@@ -95,9 +95,9 @@ void gameState::handleInput()
                 _grid->toggleGrid();
         }
         // prep::unitSelection. Select an a affordable unit
-        else if ((_prepPhase == prepPhases::unitSelection || _prepPhase == prepPhases::awaitingWave) && _data->input.isSpriteClicked(_menu->getTempUnit(), Mouse::Left, _data->window)) {
-            _menu->unitSelected(_prepPhase);
-        }
+        //else if ((_prepPhase == prepPhases::unitSelection || _prepPhase == prepPhases::awaitingWave) && _data->input.isSpriteClicked(_menu->getTempUnit(), Mouse::Left, _data->window)) {
+            //_menu->unitSelected(_prepPhase);
+        //}
         // prep::unitPlacement. Select cell on grid
         else if (_prepPhase == prepPhases::unitPlacement && _data->input.isSpriteClicked(_grid->getCell(_data).sprite, Mouse::Left, _data->window)) {
             cell tempCell = _grid->getCell(_data);
@@ -123,6 +123,7 @@ void gameState::draw(float dt) const
 
     _grid->drawGrid();
     _menu->drawMenu();
+    _entityManager->drawShopUnits(_currency);
 
     _data->window.display();
 }
