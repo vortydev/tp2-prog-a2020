@@ -44,13 +44,15 @@ public:
 
     void loadShopUnits();       // initialise le vecteur de shop units
     void loadShopUnitsCells();
-    void drawShopUnits(int currency)const;
+    void drawShopUnits(const int currency)const;
 
     cell& getShopUnitCell(gameDataRef data)const;
     void setSelected(cell& c);
     void setSelected(int cellX, cell& c);
     void unSelectCell(cell& c);
 
-    //void loadBoardEntities();   // initialise la liste de board entities
+    const int boardEntitiesSize();
+    void addUnitToBoard(const cell& cU, const cell& cP);
+    void unitTransaction(const cell& c, int& currency);
+    void drawBoardEntities();
 };
-

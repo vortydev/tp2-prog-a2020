@@ -81,13 +81,19 @@ void gameState::handleInput()
             if (_prepPhase >= prepPhases::unitPlacement)
                 _grid->unSelectCell(_menu->getSelectedCell());
 
-            _menu->clickCancelButton(_prepPhase, 0); // 0 is temp
+            _menu->clickCancelButton(_prepPhase, _entityManager->boardEntitiesSize());
         }
         // click Confirm button
         else if (_gameState == gameStates::prep && _menu->isButtonEnabled(_menu->getConfirmButton()) && _data->input.isSpriteClicked(_menu->getConfirmButton().buttonSprite, Mouse::Left, _data->window)) {
             _menu->clickConfirmButton(_prepPhase, _gameState);
 
-            if (_prepPhase == prepPhases::awaitingWave) {
+            if (_prepPhase == prepPhases::unitTransaction) {
+                _entityManager->addUnitToBoard(_menu->getSelectedUnit(), _menu->getSelectedCell());
+                _entityManager->unitTransaction(_menu->getSelectedUnit(), _currency);
+
+                _prepPhase = prepPhases::awaitingWave;      //updates the prepPhase
+                _menu->buttonVisibilityUpdate(_prepPhase);  // updates the buttons
+
                 _entityManager->unSelectCell(_menu->getSelectedUnit());
 
                 _grid->setOccupied(_menu->getSelectedCell().cellX, _menu->getSelectedCell().cellY);
@@ -95,8 +101,7 @@ void gameState::handleInput()
 
                 _menu->toggleButton(_menu->getCancelButton());
             }
-
-            if (_prepPhase == hold)
+            else if (_prepPhase == hold)
                 _grid->toggleGrid();
         }
         // prep::unitSelection. Select an a affordable unit
@@ -110,7 +115,10 @@ void gameState::handleInput()
             _entityManager->setSelected(tempUnit.cellX, _menu->getSelectedUnit());
         }
         // prep::unitPlacement. Select cell on grid
-        else if (_prepPhase == prepPhases::unitPlacement && _data->input.isSpriteClicked(_grid->getCell(_data).sprite, Mouse::Left, _data->window)) {
+        else if ((_prepPhase == prepPhases::unitSelection || _prepPhase == prepPhases::unitPlacement) && _data->input.isSpriteClicked(_grid->getCell(_data).sprite, Mouse::Left, _data->window)) {
+            if (_prepPhase != prepPhases::unitPlacement)
+                _prepPhase = prepPhases::unitPlacement;
+            
             cell tempCell = _grid->getCell(_data);
             if (!_grid->isOccupied(tempCell))
                 _grid->setSelected(tempCell.cellX, tempCell.cellY, _menu->getSelectedCell());
@@ -136,6 +144,7 @@ void gameState::draw(float dt) const
     _grid->drawGrid();
     _menu->drawMenu();
     _entityManager->drawShopUnits(_currency);
+    _entityManager->drawBoardEntities();
 
     _data->window.display();
 }

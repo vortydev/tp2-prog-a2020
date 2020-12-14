@@ -136,7 +136,6 @@ void entity::setPosition(int cellX, int cellY)
 {
     setCellX(cellX);    // update la position x
     setCellY(cellY);    // update la position y
-    updatePosition();   // mets à jour la position du sprite
 }
 
 // check si l'entity est sur la grid
@@ -149,7 +148,7 @@ bool entity::isOnGrid() const
 void entity::updatePosition()
 {
     if (isOnGrid())
-        _sprite.setPosition(80 * _cellX + 240 + 14, 80 * _cellY + 50 + 14); // needs tweaking
+        _sprite.setPosition(80 * _cellX + 240 + 8, 80 * _cellY + 50 + 8); // needs tweaking
 }
 
 // retournes si l'entity est en vie

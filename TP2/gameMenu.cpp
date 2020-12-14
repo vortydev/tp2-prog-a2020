@@ -124,17 +124,9 @@ void gameMenu::buttonVisibilityUpdate(int& prepPhase)
 // when the confirm button is clicked
 void gameMenu::clickConfirmButton(int& prepPhase, int& gameState)
 {
-    if (prepPhase == prepPhases::unitSelection) {
-        prepPhase = prepPhases::unitPlacement;
-        buttonVisibilityUpdate(prepPhase);
-    }
-    else if (prepPhase == prepPhases::unitPlacement) {
+    if (prepPhase == prepPhases::unitPlacement) {
         prepPhase = prepPhases::unitTransaction;
         buttonVisibilityUpdate(prepPhase);
-        //unitTransaction();    // does the unit transaction (might get it's own file)
-
-        prepPhase = prepPhases::awaitingWave;   //updates the prepPhase
-        buttonVisibilityUpdate(prepPhase);                  // updates the buttons
     }
     else if (prepPhase == prepPhases::awaitingWave) {
         prepPhase = prepPhases::hold;   // updates the prepPhase
@@ -147,7 +139,7 @@ void gameMenu::clickConfirmButton(int& prepPhase, int& gameState)
 // resets the prep phase to unitSelection
 void gameMenu::clickCancelButton(int& prepPhase, int listSize)
 {
-    if (listSize == 0) // to be changed
+    if (listSize == 0)
         prepPhase = prepPhases::unitSelection;  // updates the prepPhase
     else
         prepPhase = prepPhases::awaitingWave;
@@ -157,9 +149,6 @@ void gameMenu::clickCancelButton(int& prepPhase, int listSize)
 
 cell& gameMenu::getSelectedUnit()
 {
-    if (!isButtonEnabled(_confirmButton))
-        toggleButton(_confirmButton);
-
     if (!isButtonEnabled(_cancelButton))
         toggleButton(_cancelButton);
 

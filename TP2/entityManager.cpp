@@ -78,7 +78,7 @@ void entityManager::loadShopUnitsCells()
 }
 
 // draw les units qui sont affordables
-void entityManager::drawShopUnits(int currency) const
+void entityManager::drawShopUnits(const int currency) const
 {
     int slot = 0;
     for (int i = 0; i < _shopUnits.size(); i++) {
@@ -150,4 +150,43 @@ void entityManager::unSelectCell(cell& c)
 {
     setSelected(_shopUnitsCells[c.cellX]);
     c.cellX = -1;
+}
+
+// retournes le nombre d'entités dans la liste
+const int entityManager::boardEntitiesSize()
+{
+    int size = 0;
+    list<entity>::iterator it = _boardEntities.begin();
+    while (it != _boardEntities.end()) {
+        size++;
+    }
+
+    return size;
+}
+
+// ajoutes l'unité dans la liste d'entités sur le board
+void entityManager::addUnitToBoard(const cell& cU, const cell& cP)
+{
+    list<entity>::iterator it = _boardEntities.begin();
+    it = _boardEntities.insert(it, getRefEntity(_shopUnits[cU.cellX].getID()));
+    _boardEntities[it].setPosition(cP.cellX, cP.cellY);
+}
+
+// effectues la transaction monétaire
+void entityManager::unitTransaction(const cell& c, int& currency)
+{
+    currency -= _shopUnits[c.cellX].getCost();
+
+    if (currency < 0)
+        currency = 0;
+}
+
+// draw les entités dans la board list
+void entityManager::drawBoardEntities()
+{
+    list<entity>::iterator it = _boardEntities.begin();
+    while (it != _boardEntities.end()) {
+        _data->window.draw(_boardEntities[it].getSprite());
+        it++;
+    }
 }

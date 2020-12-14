@@ -52,11 +52,7 @@ public:
 
     // unitSelection
     cell& getSelectedUnit();
-    //void unitSelected(int& prepPhase);
 
     //unitPlacement
     cell& getSelectedCell();
-
-    //unitTransaction
-    //void unitTransaction(); // TODO
 };
