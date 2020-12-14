@@ -12,6 +12,7 @@
 #include <fstream>
 #include "DEFINITIONS.hpp"
 #include "game.h"
+#include "grid.h"
 #include "entity.h"
 
 #include "Resources/include/vecteur.hpp"
@@ -29,8 +30,10 @@ private:
 
     ifstream _entityList;
     vecteur<entity> _refEntities;
+
     vecteur<entity> _shopUnits;
-    vecteur<Sprite> _shopUnitsCells;
+    vecteur<cell> _shopUnitsCells;
+
     list<entity> _boardEntities;
 
 public:
@@ -42,6 +45,11 @@ public:
     void loadShopUnits();       // initialise le vecteur de shop units
     void loadShopUnitsCells();
     void drawShopUnits(int currency)const;
+
+    cell& getShopUnitCell(gameDataRef data)const;
+    void setSelected(cell& c);
+    void setSelected(int cellX, cell& c);
+    void unSelectCell(cell& c);
 
     //void loadBoardEntities();   // initialise la liste de board entities
 };

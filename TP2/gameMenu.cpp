@@ -44,9 +44,9 @@ gameMenu::gameMenu(gameDataRef data) : _data(data)
     _cancelButton.buttonText.setOrigin(_cancelButton.buttonText.getGlobalBounds().width / 2, _cancelButton.buttonText.getGlobalBounds().height / 2);
     _cancelButton.buttonText.setPosition(SCREEN_WIDTH - 90 - _cancelButton.buttonSprite.getGlobalBounds().width / 2, SCREEN_HEIGHT - 65 - _cancelButton.buttonSprite.getGlobalBounds().height / 2);
 
-    // load temp unit
-    //_tempUnit.setTexture(_data->assets.getTexture("grid cell grey"));
-    //_tempUnit.setPosition(85, SCREEN_HEIGHT - _menuBody.getGlobalBounds().height - _tempUnit.getGlobalBounds().height / 2);
+    // load selectedUnit
+    _selectedUnit.cellX = -1;
+    _selectedUnit.selected = false;
 
     // load selectedCell
     _selectedCell.cellX = -1;
@@ -60,9 +60,6 @@ void gameMenu::drawMenu() const
 
     drawButton(_confirmButton);
     drawButton(_cancelButton);
-
-    //_data->window.draw(_tempUnit);
-    //drawShopUnits();
 }
 
 // draw le bouton entré en paramètre si il est enabled
@@ -73,15 +70,6 @@ void gameMenu::drawButton(const button& b) const
         _data->window.draw(b.buttonText);
     }
 }
-
-//void gameMenu::drawShopUnits() const
-//{
-//    for (int i = 0; i < _shopUnits.size(); i++) {
-//        _data->window.draw(_shopUnits[i].unitCell);
-//        _data->window.draw(_shopUnits[i].unitSprite);
-//        _data->window.draw(_shopUnits[i].costText);
-//    }
-//}
 
 // retournes le bouton confirm
 button& gameMenu::getConfirmButton()
@@ -141,9 +129,8 @@ void gameMenu::clickConfirmButton(int& prepPhase, int& gameState)
         buttonVisibilityUpdate(prepPhase);
     }
     else if (prepPhase == prepPhases::unitPlacement) {
-        _tempUnit.setTexture(_data->assets.getTexture("grid cell grey")); // temp
-
         prepPhase = prepPhases::unitTransaction;
+        buttonVisibilityUpdate(prepPhase);
         //unitTransaction();    // does the unit transaction (might get it's own file)
 
         prepPhase = prepPhases::awaitingWave;   //updates the prepPhase
@@ -158,13 +145,9 @@ void gameMenu::clickConfirmButton(int& prepPhase, int& gameState)
 }
 
 // resets the prep phase to unitSelection
-void gameMenu::clickCancelButton(int& prepPhase)
+void gameMenu::clickCancelButton(int& prepPhase, int listSize)
 {
-    // if a unit was selected
-    if (prepPhase >= prepPhases::unitSelection)
-        _tempUnit.setTexture(_data->assets.getTexture("grid cell grey")); // temp
-
-    if (_unitListEmpty)
+    if (listSize == 0) // to be changed
         prepPhase = prepPhases::unitSelection;  // updates the prepPhase
     else
         prepPhase = prepPhases::awaitingWave;
@@ -172,24 +155,16 @@ void gameMenu::clickCancelButton(int& prepPhase)
     buttonVisibilityUpdate(prepPhase);             // updates the buttons
 }
 
-//Sprite& gameMenu::getTempUnit()
-//{
-//    return _tempUnit;
-//}
+cell& gameMenu::getSelectedUnit()
+{
+    if (!isButtonEnabled(_confirmButton))
+        toggleButton(_confirmButton);
 
-//void gameMenu::unitSelected(int& prePhase)
-//{
-//    prePhase = prepPhases::unitSelection;
-//    buttonVisibilityUpdate(prePhase);
-//
-//    _tempUnit.setTexture(_data->assets.getTexture("grid cell green"));
-//
-//    if (!isButtonEnabled(getConfirmButton()))
-//        toggleButton(_confirmButton);
-//
-//    if (!isButtonEnabled(getCancelButton()))
-//        toggleButton(_cancelButton);
-//}
+    if (!isButtonEnabled(_cancelButton))
+        toggleButton(_cancelButton);
+
+    return _selectedUnit;
+}
 
 cell& gameMenu::getSelectedCell()
 {

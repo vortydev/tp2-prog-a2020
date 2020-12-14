@@ -55,9 +55,6 @@ void gameState::init()
     _data->assets.loadTexture("game menu button", GAME_MENU_BUTTON_FILEPATH);
     _menu = new gameMenu(_data);
 
-    // load shop units
-    //_data->assets.loadTexture("unit temp", UNIT_TEMP_FILEPATH);
-
     // load the entity manager
     _entityManager = new entityManager(_data);
 
@@ -76,32 +73,47 @@ void gameState::handleInput()
             _data->window.close();
         // click Cancel button
         else if (_gameState == gameStates::prep && _menu->isButtonEnabled(_menu->getCancelButton()) && _data->input.isSpriteClicked(_menu->getCancelButton().buttonSprite, Mouse::Left, _data->window)) {
-             // if a cell was selected
+            // if a unit was selected
+            if (_prepPhase >= prepPhases::unitSelection)
+                _entityManager->unSelectCell(_menu->getSelectedUnit());
+            
+            // if a cell was selected
             if (_prepPhase >= prepPhases::unitPlacement)
                 _grid->unSelectCell(_menu->getSelectedCell());
 
-            _menu->clickCancelButton(_prepPhase);
+            _menu->clickCancelButton(_prepPhase, 0); // 0 is temp
         }
         // click Confirm button
         else if (_gameState == gameStates::prep && _menu->isButtonEnabled(_menu->getConfirmButton()) && _data->input.isSpriteClicked(_menu->getConfirmButton().buttonSprite, Mouse::Left, _data->window)) {
-            if (_prepPhase >= prepPhases::unitPlacement) {
-                _grid->setOccupied(_menu->getSelectedCell().cellX, _menu->getSelectedCell().cellY);
-                _grid->unSelectCell(_menu->getSelectedCell()); 
-            }
-
             _menu->clickConfirmButton(_prepPhase, _gameState);
+
+            if (_prepPhase == prepPhases::awaitingWave) {
+                _entityManager->unSelectCell(_menu->getSelectedUnit());
+
+                _grid->setOccupied(_menu->getSelectedCell().cellX, _menu->getSelectedCell().cellY);
+                _grid->unSelectCell(_menu->getSelectedCell());
+
+                _menu->toggleButton(_menu->getCancelButton());
+            }
 
             if (_prepPhase == hold)
                 _grid->toggleGrid();
         }
         // prep::unitSelection. Select an a affordable unit
-        //else if ((_prepPhase == prepPhases::unitSelection || _prepPhase == prepPhases::awaitingWave) && _data->input.isSpriteClicked(_menu->getTempUnit(), Mouse::Left, _data->window)) {
-            //_menu->unitSelected(_prepPhase);
-        //}
+        else if ((_prepPhase == prepPhases::unitSelection || _prepPhase == prepPhases::awaitingWave) && _data->input.isSpriteClicked(_entityManager->getShopUnitCell(_data).sprite, Mouse::Left, _data->window)) {
+            if (_prepPhase != prepPhases::unitSelection) {
+                _prepPhase = prepPhases::unitSelection;
+                _menu->buttonVisibilityUpdate(_prepPhase);
+            }
+            
+            cell tempUnit = _entityManager->getShopUnitCell(_data);
+            _entityManager->setSelected(tempUnit.cellX, _menu->getSelectedUnit());
+        }
         // prep::unitPlacement. Select cell on grid
         else if (_prepPhase == prepPhases::unitPlacement && _data->input.isSpriteClicked(_grid->getCell(_data).sprite, Mouse::Left, _data->window)) {
             cell tempCell = _grid->getCell(_data);
-            _grid->setSelected(tempCell.cellX, tempCell.cellY, _menu->getSelectedCell());
+            if (!_grid->isOccupied(tempCell))
+                _grid->setSelected(tempCell.cellX, tempCell.cellY, _menu->getSelectedCell());
         }
     }
 }

@@ -10,8 +10,9 @@
 entityManager::entityManager(gameDataRef data) : _data(data)
 {
     loadRefEntities();      // initialise le vecteur d'entities de référence
+
     loadShopUnits();        // initialise le vecteur de shop units
-    //loadBoardEntities();  // initialise la liste de board entities
+    loadShopUnitsCells();   // initialise le vecteur de cells pour les shop units
 }
 
 // loads le vecteur de entities de références
@@ -60,19 +61,23 @@ void entityManager::loadShopUnits()
             _shopUnits.push_back(getRefEntity(i));
         }
     }
-
-    loadShopUnitsCells();
 }
 
+// load le vecteur de cellules pour les shop units
 void entityManager::loadShopUnitsCells()
 {
     for (int i = 0; i < _shopUnits.size(); i++) {
-        Sprite tempCell;
-        tempCell.setTexture(_data->assets.getTexture("grid cell grey"));
+        cell tempCell;
+
+        tempCell.sprite.setTexture(_data->assets.getTexture("grid cell grey"));
+        tempCell.cellX = i;
+        tempCell.selected = false;
+
         _shopUnitsCells.push_back(tempCell);
     }
 }
 
+// draw les units qui sont affordables
 void entityManager::drawShopUnits(int currency) const
 {
     int slot = 0;
@@ -87,14 +92,62 @@ void entityManager::drawShopUnits(int currency) const
             costText.setOrigin(costText.getGlobalBounds().width / 2, costText.getGlobalBounds().height / 2);
             costText.setPosition(85 + slot * 80 + slot * 15 + 40, SCREEN_HEIGHT - 100);
 
-            _shopUnitsCells[i].setPosition(85 + slot * 80 + slot * 15, SCREEN_HEIGHT - 190);
+            _shopUnitsCells[i].sprite.setPosition(85 + slot * 80 + slot * 15, SCREEN_HEIGHT - 190);
             _shopUnits[i].getSprite().setPosition(85 + 8 + slot * 80 + slot * 15, SCREEN_HEIGHT - 182);
 
-            _data->window.draw(_shopUnitsCells[i]);
+            if (_shopUnitsCells[i].selected)
+                _shopUnitsCells[i].sprite.setTexture(_data->assets.getTexture("grid cell green"));
+            else 
+                _shopUnitsCells[i].sprite.setTexture(_data->assets.getTexture("grid cell grey"));
+
+            _data->window.draw(_shopUnitsCells[i].sprite);
             _data->window.draw(_shopUnits[i].getSprite());
             _data->window.draw(costText);
 
             slot++;
         }
     }
+}
+
+// retournes la cellule cliquée
+cell& entityManager::getShopUnitCell(gameDataRef data) const
+{
+    for (int i = 0; i < _shopUnitsCells.size(); i++) {
+        if (data->input.isSpriteClicked(_shopUnitsCells[i].sprite, Mouse::Left, data->window))
+            return _shopUnitsCells[i];
+    }
+}
+
+// toggles the cell as selected or not
+void entityManager::setSelected(cell& c)
+{
+    c.selected = !c.selected;
+}
+
+// toggles si la cell est selectionnée
+void entityManager::setSelected(int cellX, cell& c)
+{
+    // if no cell has been selected yet
+    if (c.cellX == -1) {
+        c.cellX = cellX;
+        setSelected(_shopUnitsCells[cellX]);
+    }
+    // if la cell est différente de celle déjà selectionnée
+    else if (c.cellX != cellX) {
+        // deselects the previous cell
+        setSelected(_shopUnitsCells[c.cellX]);
+
+        // set the new cell's position
+        c.cellX = cellX;
+
+        // selects the new cell
+        setSelected(_shopUnitsCells[cellX]);
+    }
+}
+
+// unselects the selected cell
+void entityManager::unSelectCell(cell& c)
+{
+    setSelected(_shopUnitsCells[c.cellX]);
+    c.cellX = -1;
 }
