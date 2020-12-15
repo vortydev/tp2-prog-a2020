@@ -84,10 +84,10 @@ void entity::setSprite(gameDataRef data, string name, int type)
     // change le filepath dépendant du type d'entity
     switch (type) {
     case 1:
-        path = "Resources/res/unit_" + name + ".png";
+        path = "Resources/res/entitySprites/unit_" + name + "_idle_0000.png";
         break;
     case 2:
-        path = "Resources/res/mob_" + name + ".png";
+        path = "Resources/res/entitySprites/mob_" + name + "_idle_0000.png";
         break;
     }
 
