@@ -1,4 +1,4 @@
-Peasant temp 1 10 10 1 2
-Soldier temp 1 20 20 1 5
-Archer temp 1 25 10 4 5
-Slime temp 2 0 5 1 2
+Peasant temp 1 10 10 1 2 1
+Soldier temp 1 20 20 1 5 1
+Archer temp 1 25 10 4 5 1
+Slime temp 2 0 5 1 2 1

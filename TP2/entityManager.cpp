@@ -19,24 +19,25 @@ entityManager::entityManager(gameDataRef data) : _data(data)
 void entityManager::loadRefEntities()
 {
     int id = 0;
-    int type, cost, hp, range, damage;
+    int type, cost, hp, range, damage, movement;
     string name, sprite;
 
     _entityList.open(ENTITY_LIST_FILEPATH);
     while (!_entityList.eof()) {
         entity tempEntity;
 
-        _entityList >> name >> sprite >> type >> cost >> hp >> range >> damage;
+        _entityList >> name >> sprite >> type >> cost >> hp >> range >> damage >> movement;
         
         // set les valeurs à l'entity temporaire
         tempEntity.setID(id);
         tempEntity.setType(type);
         tempEntity.setName(name);
         tempEntity.setSprite(_data, sprite, type);
+        tempEntity.setCost(cost);
         tempEntity.setHP(hp);
         tempEntity.setRange(range);
         tempEntity.setDamage(damage);
-        tempEntity.setCost(cost);
+        tempEntity.setMovement(movement);
 
         // push back l'entity temp dans le vecteur de références
         _refEntities.push_back(tempEntity);
