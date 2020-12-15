@@ -1,45 +1,118 @@
 /*
  * Author:		Étienne Ménard
  * Date:		13/12/2020
- * File:		entity.cpp
- * Description:	Défénitions des méthodes de entity
+ * File:		entity.h
+ * Description:	Template de base des entités (mobs et units) du jeu.
  */
 
-#include "entity.h"
+#pragma once
+#include <SFML/Graphics.hpp>
+#include <string>
+#include <cassert>
+#include "DEFINITIONS.hpp"
+#include "game.h"
 
-entity::entity()
+using namespace sf;
+using namespace std;
+
+class entity
 {
-    _id = 0;
-    _type = 0;  // 1 = unit, 2 = mob
-    _name = "";
-    // on ne loadera pas de sprites dans la template
+private:
+    int _id;
+    int _type;
+    string _name;
+    Sprite _sprite;
 
-    // on mets la position de base hors de la grid
-    _cellX = -1;
-    _cellY = -1;
+    // position sur la grid
+    int _cellX;
+    int _cellY;
+
+    // pour les units (just 0 pour les mobs)
+    int _cost;
+
+    // health
+    bool _alive;
+    int _maxHP;
+    int _curHP;
 
     // combat
-    _alive = true;
-    _maxHP = _curHP = 0;
-    _range = 0;
-    _damage = 0;
+    int _range;
+    int _damage;
+    int _movement;
 
-    _cost = 0;
+public:
+    entity();
+    ~entity();
+
+    // ID
+    int getID()const;
+    void setID(int id);
+
+    // type
+    int getType()const;
+    void setType(int type);
+
+    // name
+    string getName()const;
+    void setName(string name);
+
+    // sprite
+    Sprite& getSprite();
+    void setSprite(gameDataRef data, string sprite, int type);
+
+    // position on grid
+    int getCellX()const;
+    int getCellY()const;
+    void setCellX(int cellX);
+    void setCellY(int cellY);
+    void setPosition(int cellX, int cellY);
+    bool isOnGrid()const;
+    void updatePosition();
+
+    // cost
+    int getCost()const;
+    void setCost(int cost);
+
+    // health
+    bool isAlive()const;
+    void toggleAlive();
+    int getMaxHP()const;
+    int getCurHP()const;
+    void setMaxHP(int hp);
+    void setCurHP(int hp);
+    void setHP(int hp);
+
+    // range
+    int getRange()const;
+    void setRange(int range);
+
+    // damage
+    int getDamage()const;
+    void setDamage(int damage);
+
+    // movement
+    int getMovement()const;
+    void setMovement(int movement);
+};
+
+// constructeur
+entity::entity()
+{
+    // init ints à 0
+    _id = _type = _cost = _maxHP = _curHP = _range = _damage = _movement = 0;
+    _name = ""; // no name
+    // on ne loadera pas de sprites dans la template
+    _cellX = _cellY = -1;   // set pos dehors de la grid
+    _alive = true;  // sera seulement à false if killed
 }
 
 // destructeur
 entity::~entity()
 {
-    _id = 0;
-    _type = 0;
-    _name = "";
-    _cellX = -1;
-    _cellY = -1;
-    _alive = false;
-    _maxHP = _curHP = 0;
-    _range = 0;
-    _damage = 0;
-    _cost = 0;
+    _id = _type = _cost = _maxHP = _curHP = _range = _damage = _movement = 0;
+    _name = ""; // no name
+    _cellX = _cellY = -1;
+    _alive = false; // entity is dead
 }
 
 // retournes l'id de l'entity
@@ -151,6 +224,19 @@ void entity::updatePosition()
         _sprite.setPosition(80 * _cellX + 240 + 8, 80 * _cellY + 50 + 8); // needs tweaking
 }
 
+// retournes le cost de l'entity
+int entity::getCost() const
+{
+    return _cost;
+}
+
+// set le cost de l'entity
+void entity::setCost(int cost)
+{
+    assert(cost >= 0);
+    _cost = cost;
+}
+
 // retournes si l'entity est en vie
 bool entity::isAlive() const
 {
@@ -222,15 +308,15 @@ void entity::setDamage(int damage)
     _damage = damage;
 }
 
-// retournes le cost de l'entity
-int entity::getCost() const
+// retournes le nb de cells que l'entity peut parcourir d'une shot
+int entity::getMovement() const
 {
-    return _cost;
+    return _movement;
 }
 
-// set le cost de l'entity
-void entity::setCost(int cost)
+// set le movement de l'entity
+void entity::setMovement(int movement)
 {
-    assert(cost >= 0);
-    _cost = cost;
+    assert(movement > 0);
+    _movement = movement;
 }

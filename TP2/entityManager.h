@@ -13,7 +13,7 @@
 #include "DEFINITIONS.hpp"
 #include "game.h"
 #include "grid.h"
-#include "entity.h"
+#include "entity.hpp"
 
 #include "Resources/include/vecteur.hpp"
 #include "Resources/include/list.hpp"
