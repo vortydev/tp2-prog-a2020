@@ -3,6 +3,7 @@
 *********
 
 Slime
+- Attacking (2 frames)
 - Idle (1 frame)
 - Moving (2 frames)
 - Sleepy (46 frames !!4 fps!!)
