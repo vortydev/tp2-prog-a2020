@@ -17,6 +17,7 @@
 #include "grid.h"
 #include "gameMenu.h"
 #include "entityManager.h"
+#include "waveManager.h"
 
 using namespace sf;
 using namespace std;
@@ -42,9 +43,12 @@ private:
     Sprite _playerZone;
     Sprite _enemyZone;
 
+    Text _currencyText;
+
     grid* _grid;        // pointeur sur la grid
     gameMenu* _menu;    // pointeur sur le menu
     entityManager* _entityManager;
+    waveManager* _waveManager;
 
 public:
     gameState(gameDataRef data);

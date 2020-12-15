@@ -22,6 +22,7 @@ gameState::~gameState()
     delete _grid;
     delete _menu;
     delete _entityManager;
+    delete _waveManager;
 }
 
 void gameState::init()
@@ -40,6 +41,15 @@ void gameState::init()
     _enemyZone.setTexture(_data->assets.getTexture("enemy zone"));
     _enemyZone.setPosition(SCREEN_WIDTH - _enemyZone.getGlobalBounds().width - 75, 50);
 
+    // load currency text
+    _data->assets.loadFont("game font", GAME_FONT_FILEPATH);
+    _currencyText.setFont(_data->assets.getFont("game font"));
+    _currencyText.setString(to_string(_currency));
+    _currencyText.setCharacterSize(36);
+    _currencyText.setFillColor(Color::Yellow);
+    _currencyText.setOrigin(_currencyText.getGlobalBounds().width / 2, _currencyText.getGlobalBounds().height / 2);
+    _currencyText.setPosition(75 + _playerZone.getGlobalBounds().width / 2, 75);
+
     // load grid
     _data->assets.loadTexture("grid cell empty", GRID_CELL_EMPTY_FILEPATH);
     _data->assets.loadTexture("grid cell white", GRID_CELL_WHITE_FILEPATH);
@@ -50,13 +60,15 @@ void gameState::init()
     _grid = new grid(_data);
 
     // load game menu
-    _data->assets.loadFont("game font", GAME_FONT_FILEPATH);
     _data->assets.loadTexture("game menu body", GAME_MENU_BODY_FILEPATH);
     _data->assets.loadTexture("game menu button", GAME_MENU_BUTTON_FILEPATH);
     _menu = new gameMenu(_data);
 
     // load the entity manager
     _entityManager = new entityManager(_data);
+
+    // load the waveManager
+    _waveManager = new waveManager(_data);
 
     // set le game state et prepPhase
     _gameState = gameStates::prep;
@@ -90,6 +102,7 @@ void gameState::handleInput()
             if (_prepPhase == prepPhases::unitTransaction) {
                 _entityManager->addUnitToBoard(_menu->getSelectedUnit(), _menu->getSelectedCell());
                 _entityManager->unitTransaction(_menu->getSelectedUnit(), _currency);
+                _currencyText.setString(to_string(_currency));
 
                 _prepPhase = prepPhases::awaitingWave;      //updates the prepPhase
                 _menu->buttonVisibilityUpdate(_prepPhase);  // updates the buttons
@@ -142,8 +155,11 @@ void gameState::draw(float dt) const
     _data->window.draw(_enemyZone);
 
     _grid->drawGrid();
+
     _menu->drawMenu();
     _entityManager->drawShopUnits(_currency);
+    _data->window.draw(_currencyText);
+
     _entityManager->drawBoardEntities();
 
     _data->window.display();
