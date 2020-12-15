@@ -1,0 +1,12 @@
+*********
+** MOB **
+*********
+
+Slime
+- Idle (1 frame)
+- Moving (2 frames)
+- Sleepy (46 frames !!4 fps!!)
+
+**********
+** UNIT **
+**********
