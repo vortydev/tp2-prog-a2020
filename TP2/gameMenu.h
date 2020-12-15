@@ -25,8 +25,6 @@ class gameMenu
 private:
     gameDataRef _data;
 
-    bool _unitListEmpty;
-
     Sprite _menuBody;
 
     button _confirmButton;
@@ -52,6 +50,7 @@ public:
 
     // unitSelection
     cell& getSelectedUnit();
+    const bool isUnitSelected();
 
     //unitPlacement
     cell& getSelectedCell();

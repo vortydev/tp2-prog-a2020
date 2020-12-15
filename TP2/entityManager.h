@@ -13,7 +13,8 @@
 #include "DEFINITIONS.hpp"
 #include "game.h"
 #include "grid.h"
-#include "entity.hpp"
+#include "entity.h"
+#include "behavioredEntity.h"
 
 #include "Resources/include/vecteur.hpp"
 #include "Resources/include/list.hpp"
@@ -24,7 +25,7 @@ using namespace std;
 class entityManager
 {
 private:
-    //struct entityVisualizer // to do
+    //struct entityVisualizer // to do?
 
     gameDataRef _data;
 
@@ -34,7 +35,7 @@ private:
     vecteur<entity> _shopUnits;
     vecteur<cell> _shopUnitsCells;
 
-    list<entity> _boardEntities;
+    list<behavioredEntity> _boardEntities;
 
 public:
     entityManager(gameDataRef data);

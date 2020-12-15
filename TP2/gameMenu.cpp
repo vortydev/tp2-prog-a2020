@@ -9,10 +9,7 @@
 
 gameMenu::gameMenu(gameDataRef data) : _data(data)
 {
-    // loads variables
-    _unitListEmpty = true;
-
-    // loads menu body
+     // loads menu body
     _menuBody.setTexture(_data->assets.getTexture("game menu body"));
     _menuBody.setPosition(75, SCREEN_HEIGHT - _menuBody.getGlobalBounds().height - 50);
 
@@ -153,6 +150,11 @@ cell& gameMenu::getSelectedUnit()
         toggleButton(_cancelButton);
 
     return _selectedUnit;
+}
+
+const bool gameMenu::isUnitSelected()
+{
+    return _selectedUnit.cellX != -1;
 }
 
 cell& gameMenu::getSelectedCell()

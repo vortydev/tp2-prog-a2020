@@ -115,7 +115,7 @@ void gameState::handleInput()
             _entityManager->setSelected(tempUnit.cellX, _menu->getSelectedUnit());
         }
         // prep::unitPlacement. Select cell on grid
-        else if ((_prepPhase == prepPhases::unitSelection || _prepPhase == prepPhases::unitPlacement) && _data->input.isSpriteClicked(_grid->getCell(_data).sprite, Mouse::Left, _data->window)) {
+        else if (_menu->isUnitSelected() && _data->input.isSpriteClicked(_grid->getCell(_data).sprite, Mouse::Left, _data->window)) {
             if (_prepPhase != prepPhases::unitPlacement)
                 _prepPhase = prepPhases::unitPlacement;
             
