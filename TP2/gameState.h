@@ -43,6 +43,7 @@ private:
     Sprite _playerZone;
     Sprite _enemyZone;
 
+    Sprite _coin;
     Text _currencyText;
 
     grid* _grid;        // pointeur sur la grid

@@ -1,2 +1,23 @@
-﻿  gameMenu.cpp
+﻿  behavioredEntity.cpp
+  entity.cpp
+C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\entity.cpp(136,69): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\entity.cpp(136,47): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+  entityManager.cpp
+C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\entityManager.cpp(94,61): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\entityManager.cpp(96,66): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\entityManager.cpp(97,70): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+  game.cpp
+C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\game.cpp(14,15): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
+  gameMenu.cpp
+  gameState.cpp
+  grid.cpp
+C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\grid.cpp(27,65): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\grid.cpp(27,51): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+  main.cpp
+  mainMenuState.cpp
+  waveManager.cpp
+  Génération de code en cours...
+C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\grid.cpp(178): warning C4715: 'grid::getCell' : les chemins de contrôle ne retournent pas tous une valeur
+C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\entityManager.cpp(120): warning C4715: 'entityManager::getShopUnitCell' : les chemins de contrôle ne retournent pas tous une valeur
+C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\entityManager.cpp(178): warning C4715: 'entityManager::getBoardEntity' : les chemins de contrôle ne retournent pas tous une valeur
   TP2.vcxproj -> C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\Debug\TP2.exe

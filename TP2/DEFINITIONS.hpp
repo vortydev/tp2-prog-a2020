@@ -53,3 +53,4 @@ enum prepPhases {
 
 #define GAME_MENU_BODY_FILEPATH "Resources/res/game_menu_body.png"
 #define GAME_MENU_BUTTON_FILEPATH "Resources/res/game_menu_button.png"
+#define GAME_CURRENCY_FILEPATH "Resources/res/game_currency.png"

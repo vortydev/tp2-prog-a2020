@@ -50,6 +50,11 @@ void gameState::init()
     _currencyText.setOrigin(_currencyText.getGlobalBounds().width / 2, _currencyText.getGlobalBounds().height / 2);
     _currencyText.setPosition(75 + _playerZone.getGlobalBounds().width / 2, 75);
 
+    // load coin sprite
+    _data->assets.loadTexture("coin", GAME_CURRENCY_FILEPATH);
+    _coin.setTexture(_data->assets.getTexture("coin"));
+    _coin.setPosition(70, 85 - _coin.getGlobalBounds().height / 2);
+
     // load grid
     _data->assets.loadTexture("grid cell empty", GRID_CELL_EMPTY_FILEPATH);
     _data->assets.loadTexture("grid cell white", GRID_CELL_WHITE_FILEPATH);
@@ -195,6 +200,10 @@ void gameState::draw(float dt) const
     _data->window.draw(_playerZone);
     _data->window.draw(_enemyZone);
 
+    // currency
+    _data->window.draw(_coin);
+    _data->window.draw(_currencyText);
+
     // board
     _grid->drawGrid();
     _entityManager->drawBoardEntities();
@@ -202,7 +211,6 @@ void gameState::draw(float dt) const
     // shop
     _menu->drawMenu();
     _entityManager->drawShopUnits(_currency);
-    _data->window.draw(_currencyText);
 
     _data->window.display();
 }
