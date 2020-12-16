@@ -7,6 +7,7 @@
 
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <cassert>
 #include "DEFINITIONS.hpp"
 #include "game.h"
 #include "Resources/include/map.hpp"
@@ -28,11 +29,13 @@ private:
     mapp<cell> _grid;
 
     bool _gridToggle;   // if the grid is on or off
+    int _selectColor;
 
 public:
     grid(gameDataRef data);
     void drawGrid()const;
     void toggleGrid();  // toggles the grid on and off
+    void setSelectColor(int color);
 
     bool isOccupied(int cellX, int cellY)const; // retourne si la cellule est occupée
     bool isOccupied(const cell& c)const;

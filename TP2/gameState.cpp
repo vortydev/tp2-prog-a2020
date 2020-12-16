@@ -54,7 +54,11 @@ void gameState::init()
     _data->assets.loadTexture("grid cell empty", GRID_CELL_EMPTY_FILEPATH);
     _data->assets.loadTexture("grid cell white", GRID_CELL_WHITE_FILEPATH);
     _data->assets.loadTexture("grid cell grey", GRID_CELL_GREY_FILEPATH);
+    _data->assets.loadTexture("grid cell pink", GRID_CELL_PINK_FILEPATH);
     _data->assets.loadTexture("grid cell red", GRID_CELL_RED_FILEPATH);
+    _data->assets.loadTexture("grid cell blood", GRID_CELL_BLOOD_FILEPATH);
+    _data->assets.loadTexture("grid cell yellow", GRID_CELL_YELLOW_FILEPATH);
+    _data->assets.loadTexture("grid cell mustard", GRID_CELL_MUSTARD_FILEPATH);
     _data->assets.loadTexture("grid cell green", GRID_CELL_GREEN_FILEPATH);
     _data->assets.loadTexture("grid cell blue", GRID_CELL_BLUE_FILEPATH);
     _grid = new grid(_data);
@@ -86,36 +90,48 @@ void gameState::handleInput()
         // click Cancel button
         else if (_gameState == gameStates::prep && _menu->isButtonEnabled(_menu->getCancelButton()) && _data->input.isSpriteClicked(_menu->getCancelButton().buttonSprite, Mouse::Left, _data->window)) {
             // if a unit was selected
-            if (_prepPhase >= prepPhases::unitSelection)
+            if (_menu->isUnitSelected())
                 _entityManager->unSelectCell(_menu->getSelectedUnit());
             
             // if a cell was selected
-            if (_prepPhase >= prepPhases::unitPlacement)
-                _grid->unSelectCell(_menu->getSelectedCell());
+            if (_menu->isPlacementSelected())
+                _grid->unSelectCell(_menu->getSelectedPlacement());
 
             _menu->clickCancelButton(_prepPhase, _entityManager->boardEntitiesSize());
         }
         // click Confirm button
         else if (_gameState == gameStates::prep && _menu->isButtonEnabled(_menu->getConfirmButton()) && _data->input.isSpriteClicked(_menu->getConfirmButton().buttonSprite, Mouse::Left, _data->window)) {
+            if (_prepPhase == prepPhases::unitSelling) {
+                _entityManager->sellUnit(_menu->getSelectedPlacement(), _currency);
+                _currencyText.setString(to_string(_currency));
+
+                _grid->setOccupied(_menu->getSelectedPlacement().cellX, _menu->getSelectedPlacement().cellY);
+                _grid->unSelectCell(_menu->getSelectedPlacement());
+            }
+
             _menu->clickConfirmButton(_prepPhase, _gameState);
 
             if (_prepPhase == prepPhases::unitTransaction) {
-                _entityManager->addUnitToBoard(_menu->getSelectedUnit(), _menu->getSelectedCell());
-                _entityManager->unitTransaction(_menu->getSelectedUnit(), _currency);
+                // soustrait le cout de l'unit de la currency et update le text
+                _entityManager->buyUnit(_menu->getSelectedUnit(), _currency);
                 _currencyText.setString(to_string(_currency));
 
-                _prepPhase = prepPhases::awaitingWave;      //updates the prepPhase
-                _menu->buttonVisibilityUpdate(_prepPhase);  // updates the buttons
+                // ajoutes une copie de l'unit dans la liste d'entitées sur le board
+                _entityManager->addUnitToBoard(_menu->getSelectedUnit(), _menu->getSelectedPlacement());
 
+                // déselectionne la shop unit cell
                 _entityManager->unSelectCell(_menu->getSelectedUnit());
 
-                _grid->setOccupied(_menu->getSelectedCell().cellX, _menu->getSelectedCell().cellY);
-                _grid->unSelectCell(_menu->getSelectedCell());
+                // set la cell sélectionnée as occupied et la déselectionne
+                _grid->setOccupied(_menu->getSelectedPlacement().cellX, _menu->getSelectedPlacement().cellY);
+                _grid->unSelectCell(_menu->getSelectedPlacement());
 
-                _menu->toggleButton(_menu->getCancelButton());
+                _prepPhase = prepPhases::awaitingWave;      //updates the prepPhase
             }
             else if (_prepPhase == hold)
                 _grid->toggleGrid();
+
+            _menu->buttonVisibilityUpdate(_prepPhase);  // updates the buttons
         }
         // prep::unitSelection. Select an a affordable unit
         else if ((_prepPhase == prepPhases::unitSelection || _prepPhase == prepPhases::awaitingWave) && _data->input.isSpriteClicked(_entityManager->getShopUnitCell(_data).sprite, Mouse::Left, _data->window)) {
@@ -127,15 +143,40 @@ void gameState::handleInput()
             cell tempUnit = _entityManager->getShopUnitCell(_data);
             _entityManager->setSelected(tempUnit.cellX, _menu->getSelectedUnit());
         }
-        // prep::unitPlacement. Select cell on grid
-        else if (_menu->isUnitSelected() && _data->input.isSpriteClicked(_grid->getCell(_data).sprite, Mouse::Left, _data->window)) {
-            if (_prepPhase != prepPhases::unitPlacement)
-                _prepPhase = prepPhases::unitPlacement;
-            
-            cell tempCell = _grid->getCell(_data);
-            if (!_grid->isOccupied(tempCell))
-                _grid->setSelected(tempCell.cellX, tempCell.cellY, _menu->getSelectedCell());
-        }
+        // prep::unitPlacement Select cell on grid
+        else if (_gameState == gameStates::prep && _data->input.isSpriteClicked(_grid->getCell(_data).sprite, Mouse::Left, _data->window)) {
+            // prep::unitPlacement
+            if (_menu->isUnitSelected()) {
+                // set la prepPhase à unitPlacement
+                if (_prepPhase != prepPhases::unitPlacement) {
+                    _prepPhase = prepPhases::unitPlacement;
+                    _menu->buttonVisibilityUpdate(_prepPhase);
+                }
+
+                cell tempCell = _grid->getCell(_data);
+                if (!_grid->isOccupied(tempCell)) {
+                    _grid->setSelectColor(selectColor::blue);
+                    _grid->setSelected(tempCell.cellX, tempCell.cellY, _menu->getSelectedPlacement());
+                }
+            }
+            // prep::unitSelling
+            else {
+                cell tempCell = _grid->getCell(_data);
+                if (_grid->isOccupied(tempCell)) {
+                    if (_prepPhase != prepPhases::unitSelling) {
+                        _prepPhase = prepPhases::unitSelling;
+                        _menu->buttonVisibilityUpdate(_prepPhase);
+                    }
+
+                    if (_entityManager->getBoardEntity(tempCell).isNew())
+                        _grid->setSelectColor(selectColor::yellow);
+                    else
+                        _grid->setSelectColor(selectColor::mustard);
+
+                    _grid->setSelected(tempCell.cellX, tempCell.cellY, _menu->getSelectedPlacement());
+                }
+            }
+        }    
     }
 }
 
@@ -154,13 +195,14 @@ void gameState::draw(float dt) const
     _data->window.draw(_playerZone);
     _data->window.draw(_enemyZone);
 
+    // board
     _grid->drawGrid();
+    _entityManager->drawBoardEntities();
 
+    // shop
     _menu->drawMenu();
     _entityManager->drawShopUnits(_currency);
     _data->window.draw(_currencyText);
-
-    _entityManager->drawBoardEntities();
 
     _data->window.display();
 }

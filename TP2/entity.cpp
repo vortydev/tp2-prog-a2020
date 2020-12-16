@@ -15,7 +15,7 @@ entity::entity()
     _name = ""; // no name
     // on ne loadera pas de sprites dans la template
     _cellX = _cellY = -1;   // set pos dehors de la grid
-    _alive = true;  // sera seulement à false if killed
+    _new = _alive = true;  // sera seulement à false if killed
 }
 
 // destructeur
@@ -24,12 +24,7 @@ entity::~entity()
     _id = _type = _cost = _maxHP = _curHP = _range = _damage = _movement = 0;
     _name = ""; // no name
     _cellX = _cellY = -1;
-    _alive = false; // entity is dead
-}
-
-entity& entity::getEntity()
-{
-    return *this;
+    _new = _alive = false; // entity is dead
 }
 
 // retournes l'id de l'entity
@@ -152,6 +147,18 @@ void entity::setCost(int cost)
 {
     assert(cost >= 0);
     _cost = cost;
+}
+
+// retournes si l'entity est nouvelle
+bool entity::isNew() const
+{
+    return _new;
+}
+
+// toggle le bool _new de l'entity
+void entity::toggleNew()
+{
+    _new = !_new;
 }
 
 // retournes si l'entity est en vie

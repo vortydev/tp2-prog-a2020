@@ -29,6 +29,7 @@ private:
 
     // pour les units (just 0 pour les mobs)
     int _cost;
+    bool _new;
 
     // health
     bool _alive;
@@ -43,7 +44,6 @@ private:
 public:
     entity();
     ~entity();
-    entity& getEntity();
 
     // ID
     int getID()const;
@@ -70,9 +70,11 @@ public:
     bool isOnGrid()const;
     void updatePosition();
 
-    // cost
+    // cost and selling
     int getCost()const;
     void setCost(int cost);
+    bool isNew()const;
+    void toggleNew();
 
     // health
     bool isAlive()const;

@@ -11,6 +11,7 @@ grid::grid(gameDataRef data) : _data(data)
 {
     _grid.resize(5, 10);    // sets grid's size
     _gridToggle = true;     // sets if the grid is visible or not
+    _selectColor = selectColor::blue;
 
     // loads chaque cell de la grid
     for (int i = 0; i < _grid.nbLine(); i++)
@@ -36,8 +37,21 @@ void grid::drawGrid() const
         for (int j = 0; j < _grid.nbCol(); j++)
         {
             if (_gridToggle) {
-                if (_grid[i][j].selected)
-                    _grid[i][j].sprite.setTexture(_data->assets.getTexture("grid cell blue"));
+                if (_grid[i][j].selected) {
+                    switch (_selectColor) {
+                        case selectColor::blue:
+                            _grid[i][j].sprite.setTexture(_data->assets.getTexture("grid cell blue"));
+                            break;
+
+                        case selectColor::yellow:
+                            _grid[i][j].sprite.setTexture(_data->assets.getTexture("grid cell yellow"));
+                            break;
+
+                        case selectColor::mustard:
+                            _grid[i][j].sprite.setTexture(_data->assets.getTexture("grid cell mustard"));
+                            break;
+                    }
+                }
                 else if (_grid[i][j].occupied)
                     _grid[i][j].sprite.setTexture(_data->assets.getTexture("grid cell grey"));
                 else
@@ -55,6 +69,13 @@ void grid::drawGrid() const
 void grid::toggleGrid()
 {
     _gridToggle = !_gridToggle; // flips the bool
+}
+
+// change la couleur de la cell selected
+void grid::setSelectColor(int color)
+{
+    assert(color >= 0 && color < 3);
+    _selectColor = color;
 }
 
 // retourne si la cell de la grid est occupée
@@ -105,26 +126,23 @@ void grid::setSelected(int cellX, int cellY)
 // toggles si la cell est selectionnée
 void grid::setSelected(int cellX, int cellY, cell& c)
 {
-    // si la cell n'est pas déjà occupée
-    if (!isOccupied(_grid[cellY][cellX])) {
-        // if no cell has been selected yet
-        if (c.cellX == -1) {
-            c.cellX = cellX;
-            c.cellY = cellY;
-            setSelected(_grid[cellY][cellX]);
-        }
-        // if la cell est différente de celle déjà selectionnée
-        else if (!(c.cellX == cellX && c.cellY == cellY)) {
-            // deselects the previous cell
-            setSelected(_grid[c.cellY][c.cellX]);
+    // if no cell has been selected yet
+    if (c.cellX == -1) {
+        c.cellX = cellX;
+        c.cellY = cellY;
+        setSelected(_grid[cellY][cellX]);
+    }
+    // if la cell est différente de celle déjà selectionnée
+    else if (!(c.cellX == cellX && c.cellY == cellY)) {
+        // deselects the previous cell
+        setSelected(_grid[c.cellY][c.cellX]);
 
-            // set the new cell's position
-            c.cellX = cellX;
-            c.cellY = cellY;
+        // set the new cell's position
+        c.cellX = cellX;
+        c.cellY = cellY;
 
-            // selects the new cell
-            setSelected(_grid[cellY][cellX]);
-        }
+        // selects the new cell
+        setSelected(_grid[cellY][cellX]);
     }
 }
 

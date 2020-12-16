@@ -160,9 +160,21 @@ const int entityManager::boardEntitiesSize()
     list<behavioredEntity>::iterator it = _boardEntities.begin();
     while (it != _boardEntities.end()) {
         size++;
+        it++;
     }
 
     return size;
+}
+
+const entity& entityManager::getBoardEntity(cell c)
+{
+    list<behavioredEntity>::iterator it = _boardEntities.begin();
+    while (it != _boardEntities.end()) {
+        if (_boardEntities[it].getEntity().getCellX() == c.cellX && _boardEntities[it].getEntity().getCellY() == c.cellY)
+            return _boardEntities[it].getEntity();
+        else
+            it++;
+    }
 }
 
 // ajoutes l'unité dans la liste d'entités sur le board
@@ -176,15 +188,6 @@ void entityManager::addUnitToBoard(const cell& cU, const cell& cP)
     it = _boardEntities.insert(it, temp);
 }
 
-// effectues la transaction monétaire
-void entityManager::unitTransaction(const cell& c, int& currency)
-{
-    currency -= _shopUnits[c.cellX].getCost();
-
-    if (currency < 0)
-        currency = 0;
-}
-
 // draw les entités dans la board list
 void entityManager::drawBoardEntities()
 {
@@ -192,5 +195,31 @@ void entityManager::drawBoardEntities()
     while (it != _boardEntities.end()) {
         _data->window.draw(_boardEntities[it].getEntity().getSprite());
         it++;
+    }
+}
+
+// achète l'unité
+void entityManager::buyUnit(const cell& c, int& currency)
+{
+    currency -= _shopUnits[c.cellX].getCost();
+
+    if (currency < 0)
+        currency = 0;
+}
+
+void entityManager::sellUnit(const cell& c, int& currency)
+{
+    list<behavioredEntity>::iterator it = _boardEntities.begin();
+    while (it != _boardEntities.end()) {
+        if (_boardEntities[it].getEntity().getCellX() == c.cellX && _boardEntities[it].getEntity().getCellY() == c.cellY) {
+            if (_boardEntities[it].getEntity().isNew())
+                currency += _boardEntities[it].getEntity().getCost();
+            else
+                currency += _boardEntities[it].getEntity().getCost() / 2;
+
+            it = _boardEntities.erase(it);
+        }
+        else
+            it++;
     }
 }

@@ -31,7 +31,7 @@ private:
     button _cancelButton;
 
     cell _selectedUnit;
-    cell _selectedCell;
+    cell _selectedPlacement;
 
 public:
     gameMenu(gameDataRef data);
@@ -53,5 +53,6 @@ public:
     const bool isUnitSelected();
 
     //unitPlacement
-    cell& getSelectedCell();
+    cell& getSelectedPlacement();
+    const bool isPlacementSelected();
 };

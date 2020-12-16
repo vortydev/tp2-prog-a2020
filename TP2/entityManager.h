@@ -53,7 +53,10 @@ public:
     void unSelectCell(cell& c);
 
     const int boardEntitiesSize();
+    const entity& getBoardEntity(cell c);
     void addUnitToBoard(const cell& cU, const cell& cP);
-    void unitTransaction(const cell& c, int& currency);
     void drawBoardEntities();
+
+    void buyUnit(const cell& c, int& currency);
+    void sellUnit(const cell& c, int& currency);
 };

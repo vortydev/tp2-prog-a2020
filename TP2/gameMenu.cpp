@@ -46,8 +46,8 @@ gameMenu::gameMenu(gameDataRef data) : _data(data)
     _selectedUnit.selected = false;
 
     // load selectedCell
-    _selectedCell.cellX = -1;
-    _selectedCell.selected = false;
+    _selectedPlacement.cellX = -1;
+    _selectedPlacement.selected = false;
 }
 
 // draws the menu and the buttons if they're enabled
@@ -105,6 +105,13 @@ void gameMenu::buttonVisibilityUpdate(int& prepPhase)
         _confirmButton.enabled = false;
         _cancelButton.enabled = true;
     }
+    else if (prepPhase == prepPhases::unitSelling) {
+        _confirmButton.enabled = true;
+        _confirmButton.buttonText.setString("Sell");
+        _confirmButton.buttonText.setPosition(SCREEN_WIDTH - 90 - _confirmButton.buttonSprite.getGlobalBounds().width / 2, SCREEN_HEIGHT - 45 - _menuBody.getGlobalBounds().height + _confirmButton.buttonSprite.getGlobalBounds().height / 2);
+
+        _cancelButton.enabled = true;
+    }
     else if (prepPhase == prepPhases::awaitingWave) {
         _confirmButton.enabled = true;
         _confirmButton.buttonText.setString("Wave");
@@ -123,6 +130,10 @@ void gameMenu::clickConfirmButton(int& prepPhase, int& gameState)
 {
     if (prepPhase == prepPhases::unitPlacement) {
         prepPhase = prepPhases::unitTransaction;
+        buttonVisibilityUpdate(prepPhase);
+    }
+    else if (prepPhase == prepPhases::unitSelling) {
+        prepPhase = prepPhases::unitSelection;
         buttonVisibilityUpdate(prepPhase);
     }
     else if (prepPhase == prepPhases::awaitingWave) {
@@ -157,10 +168,15 @@ const bool gameMenu::isUnitSelected()
     return _selectedUnit.cellX != -1;
 }
 
-cell& gameMenu::getSelectedCell()
+cell& gameMenu::getSelectedPlacement()
 {
     if (!isButtonEnabled(_confirmButton))
         toggleButton(_confirmButton);
 
-    return _selectedCell;
+    return _selectedPlacement;
+}
+
+const bool gameMenu::isPlacementSelected()
+{
+    return _selectedPlacement.cellX != -1;
 }

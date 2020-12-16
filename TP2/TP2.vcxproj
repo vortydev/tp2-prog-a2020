@@ -153,6 +153,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainMenuState.cpp" />
     <ClCompile Include="stateMachine.cpp" />
+    <ClCompile Include="waveManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="assetManager.h" />
@@ -168,6 +169,7 @@
     <ClInclude Include="mainMenuState.h" />
     <ClInclude Include="state.hpp" />
     <ClInclude Include="stateMachine.h" />
+    <ClInclude Include="waveManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\entityList.txt" />

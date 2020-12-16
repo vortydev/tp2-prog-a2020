@@ -28,15 +28,25 @@ enum gameStates {
 #define GRID_CELL_EMPTY_FILEPATH "Resources/res/grid_cell_empty.png"
 #define GRID_CELL_WHITE_FILEPATH "Resources/res/grid_cell_white.png"
 #define GRID_CELL_GREY_FILEPATH "Resources/res/grid_cell_grey.png"
+#define GRID_CELL_PINK_FILEPATH "Resources/res/grid_cell_pink.png"
 #define GRID_CELL_RED_FILEPATH "Resources/res/grid_cell_red.png"
+#define GRID_CELL_BLOOD_FILEPATH "Resources/res/grid_cell_blood.png"
+#define GRID_CELL_YELLOW_FILEPATH "Resources/res/grid_cell_yellow.png"
+#define GRID_CELL_MUSTARD_FILEPATH "Resources/res/grid_cell_mustard.png"
 #define GRID_CELL_GREEN_FILEPATH "Resources/res/grid_cell_green.png"
 #define GRID_CELL_BLUE_FILEPATH "Resources/res/grid_cell_blue.png"
+enum selectColor {
+    blue,
+    yellow,
+    mustard
+};
 
 // game menu
 enum prepPhases {
     unitSelection,
     unitPlacement,
     unitTransaction,
+    unitSelling,
     awaitingWave,
     hold
 };
