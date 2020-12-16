@@ -208,8 +208,10 @@ void entityManager::cleanBoard()
     while (it != _boardEntities.end()) {
         if (!_boardEntities[it].getEntity().isAlive())
             it = _boardEntities.erase(it);
-        else
+        else {
+            _boardEntities[it].getEntity().toggleNew();
             it++;
+        }
     }
 }
 
