@@ -206,6 +206,12 @@ void entity::setHP(int hp)
     setCurHP(hp);
 }
 
+// remets le curHP au max
+void entity::healHP()
+{
+    setCurHP(getMaxHP());
+}
+
 // retournes le attack range de l'entity
 int entity::getRange() const
 {

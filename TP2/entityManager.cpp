@@ -166,6 +166,7 @@ const int entityManager::boardEntitiesSize()
     return size;
 }
 
+// retourne l'entity sur le board à l'emplacement de la cell en paramètre
 const entity& entityManager::getBoardEntity(cell c)
 {
     list<behavioredEntity>::iterator it = _boardEntities.begin();
@@ -194,6 +195,28 @@ void entityManager::drawBoardEntities()
     list<behavioredEntity>::iterator it = _boardEntities.begin();
     while (it != _boardEntities.end()) {
         _data->window.draw(_boardEntities[it].getEntity().getSprite());
+        it++;
+    }
+}
+
+// supprime de la liste les entités mortes
+void entityManager::cleanBoard()
+{
+    list<behavioredEntity>::iterator it = _boardEntities.begin();
+    while (it != _boardEntities.end()) {
+        if (!_boardEntities[it].getEntity().isAlive())
+            it = _boardEntities.erase(it);
+        else
+            it++;
+    }
+}
+
+// remet à full HP les entities sur le board
+void entityManager::revitalizeEntities()
+{
+    list<behavioredEntity>::iterator it = _boardEntities.begin();
+    while (it != _boardEntities.end()) {
+        _boardEntities[it].getEntity().healHP();
         it++;
     }
 }

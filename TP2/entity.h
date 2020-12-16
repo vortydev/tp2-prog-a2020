@@ -84,6 +84,7 @@ public:
     void setMaxHP(int hp);
     void setCurHP(int hp);
     void setHP(int hp);
+    void healHP();
 
     // range
     int getRange()const;

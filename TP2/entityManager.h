@@ -56,6 +56,8 @@ public:
     const entity& getBoardEntity(cell c);
     void addUnitToBoard(const cell& cU, const cell& cP);
     void drawBoardEntities();
+    void cleanBoard();
+    void revitalizeEntities();
 
     void buyUnit(const cell& c, int& currency);
     void sellUnit(const cell& c, int& currency);
