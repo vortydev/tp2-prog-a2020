@@ -15,6 +15,7 @@
 #include "grid.h"
 #include "entity.h"
 #include "behavioredEntity.h"
+#include "behavioredMonster.h"
 
 #include "Resources/include/vecteur.hpp"
 #include "Resources/include/list.hpp"
@@ -36,6 +37,7 @@ private:
     vecteur<cell> _shopUnitsCells;
 
     list<behavioredEntity> _boardEntities;
+    list<behavioredMonster> _boardMonster;
 
 public:
     entityManager(gameDataRef data);
@@ -60,5 +62,8 @@ public:
     void revitalizeEntities();
 
     void buyUnit(const cell& c, int& currency);
-    void sellUnit(const cell& c, int& currency);
+    void sellUnit(const cell& c, int& currency); 
+
+    void processEntityBehavior(void);
+    
 };

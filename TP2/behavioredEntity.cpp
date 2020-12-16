@@ -24,7 +24,17 @@ entity& behavioredEntity::getEntity()
     return _entity;
 }
 
+characterBehavior behavioredEntity::getBehavior()
+{
+    return _behavior;
+}
+
 void behavioredEntity::setEntity(const entity& e)
 {
     _entity = e;
+}
+
+void behavioredEntity::setBehavior(characterBehavior behavior)
+{
+    _behavior = behavior;
 }

@@ -250,3 +250,60 @@ void entityManager::sellUnit(const cell& c, int& currency)
             it++;
     }
 }
+
+void entityManager::processEntityBehavior(void)
+{
+    //entity behavior
+    for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
+
+        if (_boardEntities[it].getBehavior() == characterBehavior::idle) {
+
+            //check si dans un certain range 2 case devant 1 diagonale + coté
+            for (list<behavioredMonster>::iterator itM = _boardMonster.begin(); itM != _boardMonster.end(); itM++) {
+
+                /*va devenir it.isInRange(itM) dans le if*/
+                if (_boardEntities[it].getEntity().getCellY() - _boardMonster[itM].getEntity().getCellY()/* <= something */) {
+                    /* méthode it.chasing(itm) retient le target + change le behavior*/
+                    _boardEntities[it].setBehavior(characterBehavior::chasing);
+                }
+            }
+        }
+
+        if (_boardEntities[it].getBehavior() == characterBehavior::chasing) {
+            //se deplace vers son target trouver dans idle moveTowardTarget()
+
+            //check si path bloqué utilise path alternatif
+        }
+
+        if (_boardEntities[it].getBehavior() == characterBehavior::attack) {
+            //attack le target lorsque in range     attackTarget()
+            //retourne un bool pour effacer le target et changer la behavior
+        }
+    }
+
+    //monster behavior va etre refait
+    for (list<behavioredMonster>::iterator itM = _boardMonster.begin(); itM != _boardMonster.end(); itM++) {
+
+        if (_boardMonster[itM].getBehavior() == monsterBehavior::moving) {
+            //va vers la gauche si un target est trouvé il va vers le target
+            if (/*An enemy is in range*/false) {
+
+            }
+            else {
+                /*move right*/
+            }
+        }
+
+        else if (_boardMonster[itM].getBehavior() == monsterBehavior::engage) {
+            //se deplace vers son target trouver dans moving
+
+            //check si path bloqué utilise path alternatif
+        }
+
+        else if (_boardMonster[itM].getBehavior() == monsterBehavior::attacking) {
+            //attack le target lorsque in range
+        }
+    }
+}
+
+
