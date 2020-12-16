@@ -194,7 +194,9 @@ void entityManager::drawBoardEntities()
 {
     list<behavioredEntity>::iterator it = _boardEntities.begin();
     while (it != _boardEntities.end()) {
-        _data->window.draw(_boardEntities[it].getEntity().getSprite());
+        if (_boardEntities[it].getEntity().isAlive())
+            _data->window.draw(_boardEntities[it].getEntity().getSprite());
+
         it++;
     }
 }
