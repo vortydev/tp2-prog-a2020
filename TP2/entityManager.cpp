@@ -24,7 +24,7 @@ void entityManager::loadRefEntities()
 
     _entityList.open(ENTITY_LIST_FILEPATH);
     while (!_entityList.eof()) {
-        entity tempEntity;
+        behavioredEntity tempEntity;
 
         _entityList >> name >> sprite >> type >> cost >> hp >> range >> damage >> movement;
         
@@ -48,7 +48,7 @@ void entityManager::loadRefEntities()
 }
 
 // retourne l'entity avec l'id en paramètre
-const entity& entityManager::getRefEntity(int id)
+const behavioredEntity& entityManager::getRefEntity(int id)
 {
     assert(id >= 0 && id < _refEntities.size());
     return _refEntities[id];
@@ -167,12 +167,12 @@ const int entityManager::boardEntitiesSize()
 }
 
 // retourne l'entity sur le board à l'emplacement de la cell en paramètre
-const entity& entityManager::getBoardEntity(cell c)
+const behavioredEntity& entityManager::getBoardEntity(cell c)
 {
     list<behavioredEntity>::iterator it = _boardEntities.begin();
     while (it != _boardEntities.end()) {
-        if (_boardEntities[it].getEntity().getCellX() == c.cellX && _boardEntities[it].getEntity().getCellY() == c.cellY)
-            return _boardEntities[it].getEntity();
+        if (_boardEntities[it].getCellX() == c.cellX && _boardEntities[it].getCellY() == c.cellY)
+            return _boardEntities[it];
         else
             it++;
     }
@@ -182,8 +182,8 @@ const entity& entityManager::getBoardEntity(cell c)
 void entityManager::addUnitToBoard(const cell& cU, const cell& cP)
 {
     behavioredEntity temp;
-    temp.setEntity(getRefEntity(_shopUnits[cU.cellX].getID()));
-    temp.getEntity().setPosition(cP.cellX, cP.cellY);
+    temp = getRefEntity(_shopUnits[cU.cellX].getID());
+    temp.setPosition(cP.cellX, cP.cellY);
 
     list<behavioredEntity>::iterator it = _boardEntities.begin();
     it = _boardEntities.insert(it, temp);
@@ -194,8 +194,8 @@ void entityManager::drawBoardEntities()
 {
     list<behavioredEntity>::iterator it = _boardEntities.begin();
     while (it != _boardEntities.end()) {
-        if (_boardEntities[it].getEntity().isAlive())
-            _data->window.draw(_boardEntities[it].getEntity().getSprite());
+        if (_boardEntities[it].isAlive())
+            _data->window.draw(_boardEntities[it].getSprite());
 
         it++;
     }
@@ -206,10 +206,10 @@ void entityManager::cleanBoard()
 {
     list<behavioredEntity>::iterator it = _boardEntities.begin();
     while (it != _boardEntities.end()) {
-        if (!_boardEntities[it].getEntity().isAlive())
+        if (!_boardEntities[it].isAlive())
             it = _boardEntities.erase(it);
         else {
-            _boardEntities[it].getEntity().toggleNew();
+            _boardEntities[it].toggleNew();
             it++;
         }
     }
@@ -220,7 +220,7 @@ void entityManager::revitalizeEntities()
 {
     list<behavioredEntity>::iterator it = _boardEntities.begin();
     while (it != _boardEntities.end()) {
-        _boardEntities[it].getEntity().healHP();
+        _boardEntities[it].healHP();
         it++;
     }
 }
@@ -238,11 +238,11 @@ void entityManager::sellUnit(const cell& c, int& currency)
 {
     list<behavioredEntity>::iterator it = _boardEntities.begin();
     while (it != _boardEntities.end()) {
-        if (_boardEntities[it].getEntity().getCellX() == c.cellX && _boardEntities[it].getEntity().getCellY() == c.cellY) {
-            if (_boardEntities[it].getEntity().isNew())
-                currency += _boardEntities[it].getEntity().getCost();
+        if (_boardEntities[it].getCellX() == c.cellX && _boardEntities[it].getCellY() == c.cellY) {
+            if (_boardEntities[it].isNew())
+                currency += _boardEntities[it].getCost();
             else
-                currency += _boardEntities[it].getEntity().getCost() / 2;
+                currency += _boardEntities[it].getCost() / 2;
 
             it = _boardEntities.erase(it);
         }
@@ -262,7 +262,7 @@ void entityManager::processEntityBehavior(void)
             for (list<behavioredMonster>::iterator itM = _boardMonster.begin(); itM != _boardMonster.end(); itM++) {
 
                 /*va devenir it.isInRange(itM) dans le if*/
-                if (_boardEntities[it].getEntity().getCellY() - _boardMonster[itM].getEntity().getCellY()/* <= something */) {
+                if (_boardEntities[it].getCellY() - _boardMonster[itM].getCellY()/* <= something */) {
                     /* méthode it.chasing(itm) retient le target + change le behavior*/
                     _boardEntities[it].setBehavior(characterBehavior::chasing);
                 }

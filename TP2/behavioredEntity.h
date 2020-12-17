@@ -12,18 +12,16 @@
 #include "entity.h"
 // #include behavior stuff
 
-class behavioredEntity {
+class behavioredEntity : public entity{
 private:
-    entity _entity;
+    
     characterBehavior _behavior;
 
 public:
     behavioredEntity();
     ~behavioredEntity();
 
-    entity& getEntity();
     characterBehavior getBehavior();
 
-    void setEntity(const entity& e);
     void setBehavior(characterBehavior behavior);
 };

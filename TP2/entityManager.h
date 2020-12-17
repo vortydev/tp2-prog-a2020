@@ -13,7 +13,6 @@
 #include "DEFINITIONS.hpp"
 #include "game.h"
 #include "grid.h"
-#include "entity.h"
 #include "behavioredEntity.h"
 #include "behavioredMonster.h"
 
@@ -31,9 +30,9 @@ private:
     gameDataRef _data;
 
     ifstream _entityList;
-    vecteur<entity> _refEntities;
+    vecteur<behavioredEntity> _refEntities;
 
-    vecteur<entity> _shopUnits;
+    vecteur<behavioredEntity> _shopUnits;
     vecteur<cell> _shopUnitsCells;
 
     list<behavioredEntity> _boardEntities;
@@ -43,7 +42,7 @@ public:
     entityManager(gameDataRef data);
 
     void loadRefEntities();             // intialise et remplis le vecteur avec les entities dans une liste
-    const entity& getRefEntity(int id); // retourne l'entity avec l'id en paramètre
+    const behavioredEntity& getRefEntity(int id); // retourne l'entity avec l'id en paramètre
 
     void loadShopUnits();       // initialise le vecteur de shop units
     void loadShopUnitsCells();
@@ -55,7 +54,7 @@ public:
     void unSelectCell(cell& c);
 
     const int boardEntitiesSize();
-    const entity& getBoardEntity(cell c);
+    const behavioredEntity& getBoardEntity(cell c);
     void addUnitToBoard(const cell& cU, const cell& cP);
     void drawBoardEntities();
     void cleanBoard();

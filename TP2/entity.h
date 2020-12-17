@@ -17,7 +17,7 @@ using namespace std;
 
 class entity
 {
-private:
+protected:
     int _id;
     int _type;
     string _name;

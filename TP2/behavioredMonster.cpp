@@ -19,19 +19,9 @@ behavioredMonster::~behavioredMonster()
 
 }
 
-entity& behavioredMonster::getEntity()
-{
-    return _entity;
-}
-
 characterBehavior behavioredMonster::getBehavior()
 {
     return _behavior;
-}
-
-void behavioredMonster::setEntity(const entity& e)
-{
-    _entity = e;
 }
 
 void behavioredMonster::setBehavior(characterBehavior behavior)

@@ -11,20 +11,18 @@
 #include "DEFINITIONS.hpp"
 #include "game.h"
 #include "entity.h"
- // #include behavior stuff
 
-class behavioredMonster {
+
+class behavioredMonster : public entity{
 private:
-    entity _entity;
+    
     characterBehavior _behavior;
 
 public:
     behavioredMonster();
     ~behavioredMonster();
 
-    entity& getEntity();
     characterBehavior getBehavior();
-
-    void setEntity(const entity& e);
+    
     void setBehavior(characterBehavior behavior);
 };
