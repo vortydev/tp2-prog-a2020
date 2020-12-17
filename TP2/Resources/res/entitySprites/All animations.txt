@@ -11,3 +11,6 @@ Slime
 **********
 ** UNIT **
 **********
+
+Peasent
+- Idle (1 frame)
