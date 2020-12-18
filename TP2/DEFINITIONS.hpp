@@ -11,6 +11,8 @@
 #define GAME_FONT_FILEPATH "Resources/fonts/Planetesimal-Regular.ttf"
 #define ENTITY_LIST_FILEPATH "Resources/entityList.txt"
 
+#define SPLASH_SLIME_ANIMATION_DURATION 1.0f
+
 // gameState
 enum gameStates {
     loading,

@@ -7,12 +7,12 @@
 
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "DEFINITIONS.hpp"
-#include "game.h"
-#include "gameState.h"
-#include "state.hpp"
 #include <sstream>
 #include <iostream>
+#include "DEFINITIONS.hpp"
+#include "game.h"
+#include "state.hpp"
+#include "gameState.h"
 
 using namespace sf;
 using namespace std;

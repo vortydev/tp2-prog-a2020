@@ -153,6 +153,8 @@
     <ClCompile Include="inputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainMenuState.cpp" />
+    <ClCompile Include="splashSlime.cpp" />
+    <ClCompile Include="splashState.cpp" />
     <ClCompile Include="stateMachine.cpp" />
     <ClCompile Include="waveManager.cpp" />
   </ItemGroup>
@@ -169,6 +171,8 @@
     <ClInclude Include="grid.h" />
     <ClInclude Include="inputManager.h" />
     <ClInclude Include="mainMenuState.h" />
+    <ClInclude Include="splashSlime.h" />
+    <ClInclude Include="splashState.h" />
     <ClInclude Include="state.hpp" />
     <ClInclude Include="stateMachine.h" />
     <ClInclude Include="waveManager.h" />

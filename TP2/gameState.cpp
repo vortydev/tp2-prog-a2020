@@ -42,7 +42,6 @@ void gameState::init()
     _enemyZone.setPosition(SCREEN_WIDTH - _enemyZone.getGlobalBounds().width - 75, 50);
 
     // load currency text
-    _data->assets.loadFont("game font", GAME_FONT_FILEPATH);
     _currencyText.setFont(_data->assets.getFont("game font"));
     _currencyText.setString(to_string(_currency));
     _currencyText.setCharacterSize(36);
