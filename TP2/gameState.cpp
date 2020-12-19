@@ -146,6 +146,7 @@ void gameState::handleInput()
             else if (_prepPhase == hold) {
                 _grid->toggleGrid();
                 _actionGuide->untoggleHelp();
+                //spawn slime here
             }
 
             _menu->buttonVisibilityUpdate(_prepPhase);  // updates the buttons

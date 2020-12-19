@@ -9,333 +9,341 @@
 
 entityManager::entityManager(gameDataRef data) : _data(data)
 {
-    loadRefEntities();      // initialise le vecteur d'entities de référence
+	loadRefEntities();      // initialise le vecteur d'entities de référence
 
-    loadShopUnits();        // initialise le vecteur de shop units
-    loadShopUnitsCells();   // initialise le vecteur de cells pour les shop units
+	loadShopUnits();        // initialise le vecteur de shop units
+	loadShopUnitsCells();   // initialise le vecteur de cells pour les shop units
 }
 
 // loads le vecteur de entities de références
 void entityManager::loadRefEntities()
 {
-    int id = 0;
-    int type, cost, hp, range, damage, movement;
-    string name, sprite;
+	int id = 0;
+	int type, cost, hp, range, damage, movement;
+	string name, sprite;
 
-    _entityList.open(ENTITY_LIST_FILEPATH);
-    while (!_entityList.eof()) {
-        behavioredEntity tempEntity;
+	_entityList.open(ENTITY_LIST_FILEPATH);
+	while (!_entityList.eof()) {
+		behavioredEntity tempEntity;
 
-        _entityList >> name >> sprite >> type >> cost >> hp >> range >> damage >> movement;
-        
-        // set les valeurs à l'entity temporaire
-        tempEntity.setID(id);
-        tempEntity.setType(type);
-        tempEntity.setName(name);
-        tempEntity.setSprite(_data, sprite, type);
-        tempEntity.setCost(cost);
-        tempEntity.setHP(hp);
-        tempEntity.setRange(range);
-        tempEntity.setDamage(damage);
-        tempEntity.setMovement(movement);
+		_entityList >> name >> sprite >> type >> cost >> hp >> range >> damage >> movement;
 
-        // push back l'entity temp dans le vecteur de références
-        _refEntities.push_back(tempEntity);
+		// set les valeurs à l'entity temporaire
+		tempEntity.setID(id);
+		tempEntity.setType(type);
+		tempEntity.setName(name);
+		tempEntity.setSprite(_data, sprite, type);
+		tempEntity.setCost(cost);
+		tempEntity.setHP(hp);
+		tempEntity.setRange(range);
+		tempEntity.setDamage(damage);
+		tempEntity.setMovement(movement);
 
-        id++;
-    }
-    _entityList.close();
+		// push back l'entity temp dans le vecteur de références
+		_refEntities.push_back(tempEntity);
+
+		id++;
+	}
+	_entityList.close();
 }
 
 // retourne l'entity avec l'id en paramètre
 const behavioredEntity& entityManager::getRefEntity(int id)
 {
-    assert(id >= 0 && id < _refEntities.size());
-    return _refEntities[id];
+	assert(id >= 0 && id < _refEntities.size());
+	return _refEntities[id];
 }
 
 // initialise le vecteur de shop units
 void entityManager::loadShopUnits()
 {
-    for (int i = 0; i < _refEntities.size(); i++) {
-        if (_refEntities[i].getType() == 1) {
-            _shopUnits.push_back(getRefEntity(i));
-        }
-    }
+	for (int i = 0; i < _refEntities.size(); i++) {
+		if (_refEntities[i].getType() == 1) {
+			_shopUnits.push_back(getRefEntity(i));
+		}
+	}
 }
 
 // load le vecteur de cellules pour les shop units
 void entityManager::loadShopUnitsCells()
 {
-    for (int i = 0; i < _shopUnits.size(); i++) {
-        cell tempCell;
+	for (int i = 0; i < _shopUnits.size(); i++) {
+		cell tempCell;
 
-        tempCell.sprite.setTexture(_data->assets.getTexture("grid cell grey"));
-        tempCell.cellX = i;
-        tempCell.selected = false;
+		tempCell.sprite.setTexture(_data->assets.getTexture("grid cell grey"));
+		tempCell.cellX = i;
+		tempCell.selected = false;
 
-        _shopUnitsCells.push_back(tempCell);
-    }
+		_shopUnitsCells.push_back(tempCell);
+	}
 }
 
 // draw les units qui sont affordables
 void entityManager::drawShopUnits(const int currency) const
 {
-    int slot = 0;
-    for (int i = 0; i < _shopUnits.size(); i++) {
-        if (_shopUnits[i].getCost() <= currency) {
-            Text costText;
+	int slot = 0;
+	for (int i = 0; i < _shopUnits.size(); i++) {
+		if (_shopUnits[i].getCost() <= currency) {
+			Text costText;
 
-            costText.setFont(_data->assets.getFont("game font"));
-            costText.setString(to_string(_shopUnits[i].getCost()));
-            costText.setCharacterSize(24);
-            costText.setFillColor(Color::Black);
-            costText.setOrigin(costText.getGlobalBounds().width / 2, costText.getGlobalBounds().height / 2);
-            costText.setPosition(85 + slot * 80 + slot * 15 + 40, SCREEN_HEIGHT - 100);
+			costText.setFont(_data->assets.getFont("game font"));
+			costText.setString(to_string(_shopUnits[i].getCost()));
+			costText.setCharacterSize(24);
+			costText.setFillColor(Color::Black);
+			costText.setOrigin(costText.getGlobalBounds().width / 2, costText.getGlobalBounds().height / 2);
+			costText.setPosition(85 + slot * 80 + slot * 15 + 40, SCREEN_HEIGHT - 100);
 
-            _shopUnitsCells[i].sprite.setPosition(85 + slot * 80 + slot * 15, SCREEN_HEIGHT - 190);
-            _shopUnits[i].getSprite().setPosition(85 + 8 + slot * 80 + slot * 15, SCREEN_HEIGHT - 182);
+			_shopUnitsCells[i].sprite.setPosition(85 + slot * 80 + slot * 15, SCREEN_HEIGHT - 190);
+			_shopUnits[i].getSprite().setPosition(85 + 8 + slot * 80 + slot * 15, SCREEN_HEIGHT - 182);
 
-            if (_shopUnitsCells[i].selected)
-                _shopUnitsCells[i].sprite.setTexture(_data->assets.getTexture("grid cell green"));
-            else 
-                _shopUnitsCells[i].sprite.setTexture(_data->assets.getTexture("grid cell grey"));
+			if (_shopUnitsCells[i].selected)
+				_shopUnitsCells[i].sprite.setTexture(_data->assets.getTexture("grid cell green"));
+			else
+				_shopUnitsCells[i].sprite.setTexture(_data->assets.getTexture("grid cell grey"));
 
-            _data->window.draw(_shopUnitsCells[i].sprite);
-            _data->window.draw(_shopUnits[i].getSprite());
-            _data->window.draw(costText);
+			_data->window.draw(_shopUnitsCells[i].sprite);
+			_data->window.draw(_shopUnits[i].getSprite());
+			_data->window.draw(costText);
 
-            slot++;
-        }
-    }
+			slot++;
+		}
+	}
 }
 
 // retournes la cellule cliquée
 cell& entityManager::getShopUnitCell(gameDataRef data) const
 {
-    for (int i = 0; i < _shopUnitsCells.size(); i++) {
-        if (data->input.isSpriteClicked(_shopUnitsCells[i].sprite, Mouse::Left, data->window))
-            return _shopUnitsCells[i];
-    }
+	for (int i = 0; i < _shopUnitsCells.size(); i++) {
+		if (data->input.isSpriteClicked(_shopUnitsCells[i].sprite, Mouse::Left, data->window))
+			return _shopUnitsCells[i];
+	}
 }
 
 // toggles the cell as selected or not
 void entityManager::setSelected(cell& c)
 {
-    c.selected = !c.selected;
+	c.selected = !c.selected;
 }
 
 // toggles si la cell est selectionnée
 void entityManager::setSelected(int cellX, cell& c)
 {
-    // if no cell has been selected yet
-    if (c.cellX == -1) {
-        c.cellX = cellX;
-        setSelected(_shopUnitsCells[cellX]);
-    }
-    // if la cell est différente de celle déjà selectionnée
-    else if (c.cellX != cellX) {
-        // deselects the previous cell
-        setSelected(_shopUnitsCells[c.cellX]);
+	// if no cell has been selected yet
+	if (c.cellX == -1) {
+		c.cellX = cellX;
+		setSelected(_shopUnitsCells[cellX]);
+	}
+	// if la cell est différente de celle déjà selectionnée
+	else if (c.cellX != cellX) {
+		// deselects the previous cell
+		setSelected(_shopUnitsCells[c.cellX]);
 
-        // set the new cell's position
-        c.cellX = cellX;
+		// set the new cell's position
+		c.cellX = cellX;
 
-        // selects the new cell
-        setSelected(_shopUnitsCells[cellX]);
-    }
+		// selects the new cell
+		setSelected(_shopUnitsCells[cellX]);
+	}
 }
 
 // unselects the selected cell
 void entityManager::unSelectCell(cell& c)
 {
-    setSelected(_shopUnitsCells[c.cellX]);
-    c.cellX = -1;
+	setSelected(_shopUnitsCells[c.cellX]);
+	c.cellX = -1;
 }
 
 // retournes le nombre d'entités dans la liste
 const int entityManager::boardEntitiesSize()
 {
-    int size = 0;
-    list<behavioredEntity>::iterator it = _boardEntities.begin();
-    while (it != _boardEntities.end()) {
-        size++;
-        it++;
-    }
+	int size = 0;
+	list<behavioredEntity>::iterator it = _boardEntities.begin();
+	while (it != _boardEntities.end()) {
+		size++;
+		it++;
+	}
 
-    return size;
+	return size;
 }
 
 // retourne l'entity sur le board à l'emplacement de la cell en paramètre
 const behavioredEntity& entityManager::getBoardEntity(cell c)
 {
-    list<behavioredEntity>::iterator it = _boardEntities.begin();
-    while (it != _boardEntities.end()) {
-        if (_boardEntities[it].getCellX() == c.cellX && _boardEntities[it].getCellY() == c.cellY)
-            return _boardEntities[it];
-        else
-            it++;
-    }
+	list<behavioredEntity>::iterator it = _boardEntities.begin();
+	while (it != _boardEntities.end()) {
+		if (_boardEntities[it].getCellX() == c.cellX && _boardEntities[it].getCellY() == c.cellY)
+			return _boardEntities[it];
+		else
+			it++;
+	}
 }
 
 // ajoutes l'unité dans la liste d'entités sur le board
 void entityManager::addUnitToBoard(const cell& cU, const cell& cP)
 {
-    behavioredEntity temp;
-    temp = getRefEntity(_shopUnits[cU.cellX].getID());
-    temp.setPosition(cP.cellX, cP.cellY);
+	behavioredEntity temp;
+	temp = getRefEntity(_shopUnits[cU.cellX].getID());
+	temp.setPosition(cP.cellX, cP.cellY);
 
-    list<behavioredEntity>::iterator it = _boardEntities.begin();
-    it = _boardEntities.insert(it, temp);
+	list<behavioredEntity>::iterator it = _boardEntities.begin();
+	it = _boardEntities.insert(it, temp);
 }
 
 // draw les entités dans la board list
 void entityManager::drawBoardEntities()
 {
-    list<behavioredEntity>::iterator it = _boardEntities.begin();
-    while (it != _boardEntities.end()) {
-        if (_boardEntities[it].isAlive())
-            _data->window.draw(_boardEntities[it].getSprite());
+	list<behavioredEntity>::iterator it = _boardEntities.begin();
+	while (it != _boardEntities.end()) {
+		if (_boardEntities[it].isAlive())
+			_data->window.draw(_boardEntities[it].getSprite());
 
-        it++;
-    }
+		it++;
+	}
 }
 
 // supprime de la liste les entités mortes
 void entityManager::cleanBoard()
 {
-    list<behavioredEntity>::iterator it = _boardEntities.begin();
-    while (it != _boardEntities.end()) {
-        if (!_boardEntities[it].isAlive())
-            it = _boardEntities.erase(it);
-        else {
-            _boardEntities[it].toggleNew();
-            it++;
-        }
-    }
+	list<behavioredEntity>::iterator it = _boardEntities.begin();
+	while (it != _boardEntities.end()) {
+		if (!_boardEntities[it].isAlive())
+			it = _boardEntities.erase(it);
+		else {
+			_boardEntities[it].toggleNew();
+			it++;
+		}
+	}
 }
 
 // remet à full HP les entities sur le board
 void entityManager::revitalizeEntities()
 {
-    list<behavioredEntity>::iterator it = _boardEntities.begin();
-    while (it != _boardEntities.end()) {
-        _boardEntities[it].healHP();
-        it++;
-    }
+	list<behavioredEntity>::iterator it = _boardEntities.begin();
+	while (it != _boardEntities.end()) {
+		_boardEntities[it].healHP();
+		it++;
+	}
 }
 
 // achète l'unité
 void entityManager::buyUnit(const cell& c, int& currency)
 {
-    currency -= _shopUnits[c.cellX].getCost();
+	currency -= _shopUnits[c.cellX].getCost();
 
-    if (currency < 0)
-        currency = 0;
+	if (currency < 0)
+		currency = 0;
 }
 
 void entityManager::sellUnit(const cell& c, int& currency)
 {
-    list<behavioredEntity>::iterator it = _boardEntities.begin();
-    while (it != _boardEntities.end()) {
-        if (_boardEntities[it].getCellX() == c.cellX && _boardEntities[it].getCellY() == c.cellY) {
-            if (_boardEntities[it].isNew())
-                currency += _boardEntities[it].getCost();
-            else
-                currency += _boardEntities[it].getCost() / 2;
+	list<behavioredEntity>::iterator it = _boardEntities.begin();
+	while (it != _boardEntities.end()) {
+		if (_boardEntities[it].getCellX() == c.cellX && _boardEntities[it].getCellY() == c.cellY) {
+			if (_boardEntities[it].isNew())
+				currency += _boardEntities[it].getCost();
+			else
+				currency += _boardEntities[it].getCost() / 2;
 
-            it = _boardEntities.erase(it);
-        }
-        else
-            it++;
-    }
+			it = _boardEntities.erase(it);
+		}
+		else
+			it++;
+	}
 }
 
 void entityManager::processEntityBehavior(void)
 {
-    //entity behavior
-    for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
+	//entity behavior
+	for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
 
 
 
-        //for every entity
-        for (list<behavioredMonster>::iterator itM = _boardMonster.begin(); itM != _boardMonster.end(); itM++) {
+		//for every entity
+		for (list<behavioredMonster>::iterator itM = _boardMonster.begin(); itM != _boardMonster.end(); itM++) {
 
-            //check si dans un certain range 2 case devant 1 diagonale + coté
-            if (_boardEntities[it].getCellY() == _boardMonster[itM].getCellY() && _boardMonster[itM].getCellX() - _boardEntities[it].getCellX() == 1) {
+			//check si dans un certain range 2 case devant 1 diagonale + coté
+			if (_boardEntities[it].getCellY() == _boardMonster[itM].getCellY() && _boardMonster[itM].getCellX() - _boardEntities[it].getCellX() == 1) {
 
-                _boardEntities[it].attackTarget(_boardMonster[itM]);
-                _boardEntities[it].setBehavior(characterBehavior::chargeAttack);
-            }
-        }
+				_boardEntities[it].attackTarget(_boardMonster[itM]);
+				_boardEntities[it].setBehavior(characterBehavior::chargeAttack);
+			}
+		}
 
-    }
+	}
 
-    //monster behavior va etre refait
-    for (list<behavioredMonster>::iterator itM = _boardMonster.begin(); itM != _boardMonster.end(); itM++) {
-
-
-        //va vers la gauche si un target est trouvé il va vers le target
-        for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
+	//monster behavior va etre refait
+	for (list<behavioredMonster>::iterator itM = _boardMonster.begin(); itM != _boardMonster.end(); itM++) {
 
 
-            if (_boardMonster[itM].getCellY() == _boardEntities[it].getCellY() && _boardMonster[itM].getCellX() - _boardEntities[it].getCellX()) {
-                _boardMonster[itM].attackTarget(_boardEntities[it]);
-                _boardMonster[itM].setBehavior(monsterBehavior::attackM);
-            }
-        }
+		//va vers la gauche si un target est trouvé il va vers le target
+		for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
 
 
-    }
+			if (_boardMonster[itM].getCellY() == _boardEntities[it].getCellY() && _boardMonster[itM].getCellX() - _boardEntities[it].getCellX()) {
+				_boardMonster[itM].attackTarget(_boardEntities[it]);
+				_boardMonster[itM].setBehavior(monsterBehavior::attackM);
+			}
+		}
+
+
+	}
 }
 
 void entityManager::update(float dt)
 {
-    for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
-        if (_boardEntities[it].getCurHP() > 0) {
-            if (_boardEntities[it].getBehavior() == characterBehavior::chargeAttack) {
-                //_boardEntities[it].setSprite();
-                _boardEntities[it].setBehavior(characterBehavior::attack);
-            }
-            else if (_boardEntities[it].getBehavior() == characterBehavior::attack) {
-                //_boardEntities[it].setSprite();
-                _boardEntities[it].setBehavior(characterBehavior::postAttack);
-            }
-            else if (_boardEntities[it].getBehavior() == characterBehavior::postAttack) {
-                //_boardEntities[it].setSprite();
-                _boardEntities[it].setBehavior(characterBehavior::idle);
-            }
-        }
-        else {
-            _boardEntities[it].setBehavior(characterBehavior::dead);
-        }
+	for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
+		if (_boardEntities[it].getCurHP() > 0) {
+			if (_boardEntities[it].getBehavior() == characterBehavior::chargeAttack) {
+				//_boardEntities[it].setSprite();
+				_boardEntities[it].setBehavior(characterBehavior::attack);
+			}
+			else if (_boardEntities[it].getBehavior() == characterBehavior::attack) {
+				//_boardEntities[it].setSprite();
+				_boardEntities[it].setBehavior(characterBehavior::postAttack);
+			}
+			else if (_boardEntities[it].getBehavior() == characterBehavior::postAttack) {
+				//_boardEntities[it].setSprite();
+				_boardEntities[it].setBehavior(characterBehavior::idle);
+			}
+		}
+		else {
+			_boardEntities[it].setBehavior(characterBehavior::dead);
+		}
 
-    }
-    for (list<behavioredMonster>::iterator itM = _boardMonster.begin(); itM != _boardMonster.end(); itM++) {
-        if (_boardMonster[itM].getCurHP() > 0) {
-            if (_boardMonster[itM].getBehavior() == monsterBehavior::moving) {
-                //_boardMonster[itM].setSprite();
-                //_boardMonster[itm].setposition();
-                
-            }
-            else if (_boardMonster[itM].getBehavior() == monsterBehavior::chargeAttackM) {
-                //_boardMonster[itM].setSprite();
-                _boardMonster[itM].setBehavior(monsterBehavior::attackM);
-            }
-            else if(_boardMonster[itM].getBehavior() == monsterBehavior::attackM){
-                _boardMonster[itM].setBehavior(monsterBehavior::postAttackM);
-            }
-            else if (_boardMonster[itM].getBehavior() == monsterBehavior::postAttackM) {
-                //_boardMonster[itM].setSprite();
-                _boardMonster[itM].setBehavior(monsterBehavior::idleM);
-            }
-        }
-        else {
-            _boardMonster[itM].setBehavior(monsterBehavior::deadM);
-        }
-    }
+	}
+	for (list<behavioredMonster>::iterator itM = _boardMonster.begin(); itM != _boardMonster.end(); itM++) {
+		if (_boardMonster[itM].getCurHP() > 0) {
+			if (_boardMonster[itM].getBehavior() == monsterBehavior::moving) {
+				//_boardMonster[itM].setSprite();
+				_boardMonster[itM].setCellX(_boardMonster[itM].getCellX() - 1);
+
+			}
+			else if (_boardMonster[itM].getBehavior() == monsterBehavior::chargeAttackM) {
+				//_boardMonster[itM].setSprite();
+				_boardMonster[itM].setBehavior(monsterBehavior::attackM);
+			}
+			else if (_boardMonster[itM].getBehavior() == monsterBehavior::attackM) {
+				_boardMonster[itM].setBehavior(monsterBehavior::postAttackM);
+			}
+			else if (_boardMonster[itM].getBehavior() == monsterBehavior::postAttackM) {
+				//_boardMonster[itM].setSprite();
+				_boardMonster[itM].setBehavior(monsterBehavior::idleM);
+			}
+		}
+		else {
+			_boardMonster[itM].setBehavior(monsterBehavior::deadM);
+		}
+	}
 
 
+}
+
+void entityManager::loadWave(int score)
+{
+	for (int i = 0; i < 5; i++) {
+		list<behavioredMonster>::iterator it;
+		//_boardMonster.insert(it, getRefEntity(3));
+	}
 }
 
 

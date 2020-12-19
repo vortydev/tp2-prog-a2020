@@ -66,4 +66,6 @@ public:
     void processEntityBehavior(void);
 
     void update(float dt);
+
+    void loadWave(int score);
 };
