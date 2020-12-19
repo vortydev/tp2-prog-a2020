@@ -311,6 +311,29 @@ void entityManager::update(float dt)
         }
 
     }
+    for (list<behavioredMonster>::iterator itM = _boardMonster.begin(); itM != _boardMonster.end(); itM++) {
+        if (_boardMonster[itM].getCurHP() > 0) {
+            if (_boardMonster[itM].getBehavior() == monsterBehavior::moving) {
+                //_boardMonster[itM].setSprite();
+                //_boardMonster[itm].setposition();
+                
+            }
+            else if (_boardMonster[itM].getBehavior() == monsterBehavior::chargeAttackM) {
+                //_boardMonster[itM].setSprite();
+                _boardMonster[itM].setBehavior(monsterBehavior::attackM);
+            }
+            else if(_boardMonster[itM].getBehavior() == monsterBehavior::attackM){
+                _boardMonster[itM].setBehavior(monsterBehavior::postAttackM);
+            }
+            else if (_boardMonster[itM].getBehavior() == monsterBehavior::postAttackM) {
+                //_boardMonster[itM].setSprite();
+                _boardMonster[itM].setBehavior(monsterBehavior::idleM);
+            }
+        }
+        else {
+            _boardMonster[itM].setBehavior(monsterBehavior::deadM);
+        }
+    }
 
 
 }
