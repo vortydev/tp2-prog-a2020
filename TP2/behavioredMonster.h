@@ -16,13 +16,15 @@
 class behavioredMonster : public entity{
 private:
     
-    characterBehavior _behavior;
+    monsterBehavior _behavior;
 
 public:
     behavioredMonster();
     ~behavioredMonster();
 
-    characterBehavior getBehavior();
-    
-    void setBehavior(characterBehavior behavior);
+    //behavior
+    void attackTarget(entity& target);
+
+    void setBehavior(monsterBehavior newBehavior);
+    monsterBehavior getBehavior();
 };

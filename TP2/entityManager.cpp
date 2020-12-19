@@ -256,54 +256,63 @@ void entityManager::processEntityBehavior(void)
     //entity behavior
     for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
 
-        if (_boardEntities[it].getBehavior() == characterBehavior::idle) {
+
+
+        //for every entity
+        for (list<behavioredMonster>::iterator itM = _boardMonster.begin(); itM != _boardMonster.end(); itM++) {
 
             //check si dans un certain range 2 case devant 1 diagonale + coté
-            for (list<behavioredMonster>::iterator itM = _boardMonster.begin(); itM != _boardMonster.end(); itM++) {
+            if (_boardEntities[it].getCellY() == _boardMonster[itM].getCellY() && _boardMonster[itM].getCellX() - _boardEntities[it].getCellX() == 1) {
 
-                /*va devenir it.isInRange(itM) dans le if*/
-                if (_boardEntities[it].getCellY() - _boardMonster[itM].getCellY()/* <= something */) {
-                    /* méthode it.chasing(itm) retient le target + change le behavior*/
-                    _boardEntities[it].setBehavior(characterBehavior::chasing);
-                }
+                _boardEntities[it].attackTarget(_boardMonster[itM]);
+                _boardEntities[it].setBehavior(characterBehavior::chargeAttack);
             }
         }
 
-        if (_boardEntities[it].getBehavior() == characterBehavior::chasing) {
-            //se deplace vers son target trouver dans idle moveTowardTarget()
-
-            //check si path bloqué utilise path alternatif
-        }
-
-        if (_boardEntities[it].getBehavior() == characterBehavior::attack) {
-            //attack le target lorsque in range     attackTarget()
-            //retourne un bool pour effacer le target et changer la behavior
-        }
     }
 
     //monster behavior va etre refait
     for (list<behavioredMonster>::iterator itM = _boardMonster.begin(); itM != _boardMonster.end(); itM++) {
 
-        if (_boardMonster[itM].getBehavior() == monsterBehavior::moving) {
-            //va vers la gauche si un target est trouvé il va vers le target
-            if (/*An enemy is in range*/false) {
 
+        //va vers la gauche si un target est trouvé il va vers le target
+        for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
+
+
+            if (_boardMonster[itM].getCellY() == _boardEntities[it].getCellY() && _boardMonster[itM].getCellX() - _boardEntities[it].getCellX()) {
+                _boardMonster[itM].attackTarget(_boardEntities[it]);
+                _boardMonster[itM].setBehavior(monsterBehavior::attackM);
             }
-            else {
-                /*move right*/
-            }
         }
 
-        else if (_boardMonster[itM].getBehavior() == monsterBehavior::engage) {
-            //se deplace vers son target trouver dans moving
 
-            //check si path bloqué utilise path alternatif
-        }
-
-        else if (_boardMonster[itM].getBehavior() == monsterBehavior::attacking) {
-            //attack le target lorsque in range
-        }
     }
+}
+
+void entityManager::update(float dt)
+{
+    for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
+        if (_boardEntities[it].getCurHP() > 0) {
+            if (_boardEntities[it].getBehavior() == characterBehavior::chargeAttack) {
+                //_boardEntities[it].setSprite();
+                _boardEntities[it].setBehavior(characterBehavior::attack);
+            }
+            else if (_boardEntities[it].getBehavior() == characterBehavior::attack) {
+                //_boardEntities[it].setSprite();
+                _boardEntities[it].setBehavior(characterBehavior::postAttack);
+            }
+            else if (_boardEntities[it].getBehavior() == characterBehavior::postAttack) {
+                //_boardEntities[it].setSprite();
+                _boardEntities[it].setBehavior(characterBehavior::idle);
+            }
+        }
+        else {
+            _boardEntities[it].setBehavior(characterBehavior::dead);
+        }
+
+    }
+
+
 }
 
 
