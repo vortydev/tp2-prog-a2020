@@ -13,7 +13,6 @@
 #include "game.h"
 #include "state.hpp"
 #include "mainMenuState.h"
-#include "gameState.h" // temp
 #include "splashSlime.h"
 
 using namespace sf;

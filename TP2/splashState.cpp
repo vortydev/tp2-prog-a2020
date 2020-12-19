@@ -29,7 +29,7 @@ void splashState::init()
     // load splashText
     _data->assets.loadFont("game font", GAME_FONT_FILEPATH);
     _loadingText.setFont(_data->assets.getFont("game font"));
-    _loadingText.setString("Loading ");
+    _loadingText.setString("Loading");
     _loadingText.setCharacterSize(24);
     _loadingText.setFillColor(Color::White);
     _loadingText.setOrigin(_loadingText.getGlobalBounds().width / 2, _loadingText.getGlobalBounds().height / 2);
@@ -57,8 +57,7 @@ void splashState::update(float dt)
 
     if (_clock.getElapsedTime().asSeconds() > 3.0)
     {
-        //_data->machine.addState(stateRef(new mainMenuState(_data)), true);
-        _data->machine.addState(stateRef(new gameState(_data)), true); // temp while main menu not done
+        _data->machine.addState(stateRef(new mainMenuState(_data)), true);
     }
 }
 

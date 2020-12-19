@@ -1,7 +1,2 @@
-﻿  splashState.cpp
-C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\TP2\splashState.cpp(36,60): warning C4244: 'argument' : conversion de 'T' en 'float', perte possible de données
-          with
-          [
-              T=unsigned int
-          ]
+﻿  mainMenuState.cpp
   TP2.vcxproj -> C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\Debug\TP2.exe

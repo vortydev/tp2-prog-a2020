@@ -153,6 +153,7 @@
     <ClCompile Include="inputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainMenuState.cpp" />
+    <ClCompile Include="mainMenuTitle.cpp" />
     <ClCompile Include="splashSlime.cpp" />
     <ClCompile Include="splashState.cpp" />
     <ClCompile Include="stateMachine.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="grid.h" />
     <ClInclude Include="inputManager.h" />
     <ClInclude Include="mainMenuState.h" />
+    <ClInclude Include="mainMenuTitle.h" />
     <ClInclude Include="splashSlime.h" />
     <ClInclude Include="splashState.h" />
     <ClInclude Include="state.hpp" />

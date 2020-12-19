@@ -12,6 +12,9 @@
 #define ENTITY_LIST_FILEPATH "Resources/entityList.txt"
 
 #define SPLASH_SLIME_ANIMATION_DURATION 1.0f
+#define TITLE_ANIMATION_DELAY 1.0f
+#define TITLE_ANIMATION_DURATION 2.0f
+#define MAIN_MENU_BUTTON_FILEPATH "Resources/res/main_menu_button.png"
 
 // gameState
 enum gameStates {

@@ -13,6 +13,7 @@
 #include "game.h"
 #include "state.hpp"
 #include "gameState.h"
+#include "mainMenuTitle.h"
 
 using namespace sf;
 using namespace std;
@@ -22,12 +23,23 @@ using namespace std;
 class mainMenuState : public state
 {
 private:
-    gameDataRef _data;  //chaque state recevra le pointeur sur la gameData qui
-                        //donne accès au stateMachine, au RenderWindow, au
-                        //assertManager et au inputManager
+    gameDataRef _data;
+    Clock _clock;
+
+    Sprite _background;
+
+    mainMenuTitle* _title;
+
+    bool _buttonDelay;
+    button _playButton;
+    button _creditButton;
+
+    bool _creditsShown;
+    Text _credits;
 
 public:
     mainMenuState(gameDataRef data);
+    ~mainMenuState();
 
     void init();
     void handleInput();
