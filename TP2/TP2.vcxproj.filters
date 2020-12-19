@@ -66,6 +66,9 @@
     <ClCompile Include="mainMenuTitle.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="actionGuide.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="assetManager.h">
@@ -122,8 +125,12 @@
     <ClInclude Include="mainMenuTitle.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="actionGuide.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\entityList.txt" />
+    <Text Include="Resources\instructionList.txt" />
   </ItemGroup>
 </Project>

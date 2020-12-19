@@ -18,6 +18,7 @@
 #include "gameMenu.h"
 #include "entityManager.h"
 #include "waveManager.h"
+#include "actionGuide.h"
 
 using namespace sf;
 using namespace std;
@@ -50,6 +51,7 @@ private:
     gameMenu* _menu;    // pointeur sur le menu
     entityManager* _entityManager;
     waveManager* _waveManager;
+    actionGuide* _actionGuide;
 
 public:
     gameState(gameDataRef data);

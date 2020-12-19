@@ -64,5 +64,4 @@ public:
     void sellUnit(const cell& c, int& currency); 
 
     void processEntityBehavior(void);
-    
 };

@@ -23,6 +23,7 @@ gameState::~gameState()
     delete _menu;
     delete _entityManager;
     delete _waveManager;
+    delete _actionGuide;
 }
 
 void gameState::init()
@@ -78,6 +79,12 @@ void gameState::init()
     // load the waveManager
     _waveManager = new waveManager(_data);
 
+    // load le actionGuide
+    _data->assets.loadTexture("action cell off", GAME_ACTION_CELL_OFF);
+    _data->assets.loadTexture("action cell on", GAME_ACTION_CELL_ON);
+    _data->assets.loadTexture("action instruction", GAME_ACTION_INSTRUCTION);
+    _actionGuide = new actionGuide(_data);
+
     // set le game state et prepPhase
     _gameState = gameStates::prep;
     _prepPhase = prepPhases::unitSelection;
@@ -91,6 +98,10 @@ void gameState::handleInput()
     {
         if (event.type == Event::Closed)
             _data->window.close();
+        // click Help button
+        else if (_gameState == gameStates::prep && _data->input.isSpriteClicked(_actionGuide->getHelpSprite(), Mouse::Left, _data->window)) {
+            _actionGuide->toggleHelp();
+        }
         // click Cancel button
         else if (_gameState == gameStates::prep && _menu->isButtonEnabled(_menu->getCancelButton()) && _data->input.isSpriteClicked(_menu->getCancelButton().buttonSprite, Mouse::Left, _data->window)) {
             // if a unit was selected
@@ -132,8 +143,10 @@ void gameState::handleInput()
 
                 _prepPhase = prepPhases::awaitingWave;      //updates the prepPhase
             }
-            else if (_prepPhase == hold)
+            else if (_prepPhase == hold) {
                 _grid->toggleGrid();
+                _actionGuide->untoggleHelp();
+            }
 
             _menu->buttonVisibilityUpdate(_prepPhase);  // updates the buttons
         }
@@ -147,7 +160,7 @@ void gameState::handleInput()
             cell tempUnit = _entityManager->getShopUnitCell(_data);
             _entityManager->setSelected(tempUnit.cellX, _menu->getSelectedUnit());
         }
-        // prep::unitPlacement Select cell on grid
+        // Select cell on grid
         else if (_gameState == gameStates::prep && _data->input.isSpriteClicked(_grid->getCell(_data).sprite, Mouse::Left, _data->window)) {
             // prep::unitPlacement
             if (_menu->isUnitSelected()) {
@@ -180,7 +193,9 @@ void gameState::handleInput()
                     _grid->setSelected(tempCell.cellX, tempCell.cellY, _menu->getSelectedPlacement());
                 }
             }
-        }    
+        }
+
+        _actionGuide->updateInstructionsShown(_prepPhase, _menu->isButtonEnabled(_menu->getConfirmButton()), _menu->isButtonEnabled(_menu->getCancelButton()), _menu->isUnitSelected(), _menu->isPlacementSelected(), _entityManager->boardEntitiesSize());
     }
 }
 
@@ -210,6 +225,9 @@ void gameState::draw(float dt) const
     // shop
     _menu->drawMenu();
     _entityManager->drawShopUnits(_currency);
+
+    // help
+    _actionGuide->draw();
 
     _data->window.display();
 }

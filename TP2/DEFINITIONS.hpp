@@ -10,6 +10,7 @@
 #define SCREEN_HEIGHT 720
 #define GAME_FONT_FILEPATH "Resources/fonts/Planetesimal-Regular.ttf"
 #define ENTITY_LIST_FILEPATH "Resources/entityList.txt"
+#define INSTRUCTION_LIST_FILEPATH "Resources/instructionList.txt"
 
 #define SPLASH_SLIME_ANIMATION_DURATION 1.0f
 #define TITLE_ANIMATION_DELAY 1.0f
@@ -59,6 +60,11 @@ enum prepPhases {
 #define GAME_MENU_BODY_FILEPATH "Resources/res/game_menu_body.png"
 #define GAME_MENU_BUTTON_FILEPATH "Resources/res/game_menu_button.png"
 #define GAME_CURRENCY_FILEPATH "Resources/res/game_currency.png"
+
+// action guide
+#define GAME_ACTION_CELL_OFF "Resources/res/game_action_cell_off.png"
+#define GAME_ACTION_CELL_ON "Resources/res/game_action_cell_on.png"
+#define GAME_ACTION_INSTRUCTION "Resources/res/game_action_instruction.png"
 
 enum characterBehavior {
     idle,

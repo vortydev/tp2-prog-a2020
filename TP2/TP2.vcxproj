@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="actionGuide.cpp" />
     <ClCompile Include="assetManager.cpp" />
     <ClCompile Include="behavioredEntity.cpp" />
     <ClCompile Include="behavioredMonster.cpp" />
@@ -160,6 +161,7 @@
     <ClCompile Include="waveManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="actionGuide.h" />
     <ClInclude Include="assetManager.h" />
     <ClInclude Include="behavioredEntity.h" />
     <ClInclude Include="behavioredMonster.h" />
@@ -181,6 +183,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\entityList.txt" />
+    <Text Include="Resources\instructionList.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

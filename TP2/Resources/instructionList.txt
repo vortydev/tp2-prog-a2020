@@ -1,0 +1,10 @@
+- Select a unit.
+- Select another unit.
+- Select a placement.
+- Select another placement.
+- Click "Confirm" to place the selected unit.
+- Select a placed unit to sell.
+- Select another placed unit.
+- Click "Sell" to remove the selected unit.
+- Click "Wave" to start the next wave.
+- Click "Cancel" to cancel the current action.
