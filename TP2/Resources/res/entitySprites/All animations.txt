@@ -13,4 +13,6 @@ Slime
 **********
 
 Peasent
+- Attacking (2 frames)
 - Idle (1 frame)
+- Moving (4 frames)
