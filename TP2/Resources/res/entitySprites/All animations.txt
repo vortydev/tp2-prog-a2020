@@ -19,7 +19,9 @@ Orange Slime
 **********
 
 Knight
+- Attacking (4 frames)
 - Idle (4 frames)
+- Moving (4 frames)
 
 Peasant
 - Attacking (4 frames)
