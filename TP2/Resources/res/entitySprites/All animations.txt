@@ -19,5 +19,6 @@ Orange Slime
 **********
 
 Peasant
+- Attacking (4 frames)
 - Idle (4 frames)
 - Moving (4 frames)
