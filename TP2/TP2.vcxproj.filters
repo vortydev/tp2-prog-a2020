@@ -132,5 +132,6 @@
   <ItemGroup>
     <Text Include="Resources\entityList.txt" />
     <Text Include="Resources\instructionList.txt" />
+    <Text Include="Resources\monsterList.txt" />
   </ItemGroup>
 </Project>

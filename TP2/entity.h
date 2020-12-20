@@ -11,6 +11,7 @@
 #include <cassert>
 #include "DEFINITIONS.hpp"
 #include "game.h"
+#include "Resources\include\vecteur.hpp"
 
 using namespace sf;
 using namespace std;
@@ -22,6 +23,7 @@ protected:
     int _type;
     string _name;
     Sprite _sprite;
+    string _spriteName;
 
     // position sur la grid
     int _cellX;
@@ -41,6 +43,11 @@ protected:
     int _damage;
     int _movement;
 
+    
+    Clock _animationClock;
+    
+    int _animationIterator;
+
 public:
     entity();
     ~entity();
@@ -59,7 +66,9 @@ public:
 
     // sprite
     Sprite& getSprite();
-    void setSprite(gameDataRef data, string sprite, int type);
+    void setSprite(gameDataRef data, string sprite, int type, string behavior, string number);
+    void setSpriteName(string spriteName);
+    string getSpriteName();
 
     // position on grid
     int getCellX()const;
@@ -92,9 +101,16 @@ public:
 
     // damage
     int getDamage()const;
+    
     void setDamage(int damage);
 
     // movement
     int getMovement()const;
     void setMovement(int movement);
+
+    int getSpriteID();
+    void setSpriteID(int spriteID);
+
+    
+    
 };

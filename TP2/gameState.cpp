@@ -122,6 +122,7 @@ void gameState::handleInput()
 
                 _grid->setOccupied(_menu->getSelectedPlacement().cellX, _menu->getSelectedPlacement().cellY);
                 _grid->unSelectCell(_menu->getSelectedPlacement());
+                
             }
 
             _menu->clickConfirmButton(_prepPhase, _gameState);
@@ -146,6 +147,7 @@ void gameState::handleInput()
             else if (_prepPhase == hold) {
                 _grid->toggleGrid();
                 _actionGuide->untoggleHelp();
+                _gameState = gameStates::wave;
                 //spawn slime here
             }
 
@@ -195,7 +197,8 @@ void gameState::handleInput()
                 }
             }
         }
-
+        
+        
         _actionGuide->updateInstructionsShown(_prepPhase, _menu->isButtonEnabled(_menu->getConfirmButton()), _menu->isButtonEnabled(_menu->getCancelButton()), _menu->isUnitSelected(), _menu->isPlacementSelected(), _entityManager->boardEntitiesSize(), _currency);
     }
 }
@@ -203,19 +206,23 @@ void gameState::handleInput()
 // core update loop
 void gameState::update(float dt)
 {
+    
     if (_gameState == gameStates::wave) {
+        
         if (_clock.getElapsedTime().asSeconds() > BEHAVIOR_CLOCK) {
-            _entityManager->processEntityBehavior();
+            //_entityManager->processEntityBehavior();
 
             _clock.restart();
         }
         _entityManager->update(dt);
+        
     }
 }
 
 //clear, dessine le background et display la fenêtre. (dt n’est pas utilisé ici)
 void gameState::draw(float dt) const
 {
+    
     _data->window.clear();
 
     _data->window.draw(_background);

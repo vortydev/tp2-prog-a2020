@@ -27,12 +27,16 @@ void entityManager::loadRefEntities()
 		behavioredEntity tempEntity;
 
 		_entityList >> name >> sprite >> type >> cost >> hp >> range >> damage >> movement;
+		tempEntity.setBehavior(characterBehavior::idle);
+		tempEntity.setSpriteID(0);
+		tempEntity.loadAllSprite(_data,sprite);
 
 		// set les valeurs à l'entity temporaire
 		tempEntity.setID(id);
 		tempEntity.setType(type);
 		tempEntity.setName(name);
-		tempEntity.setSprite(_data, sprite, type);
+		tempEntity.setSprite(_data, sprite, type,"idle","0000");
+		tempEntity.setSpriteName(sprite);
 		tempEntity.setCost(cost);
 		tempEntity.setHP(hp);
 		tempEntity.setRange(range);
@@ -41,6 +45,37 @@ void entityManager::loadRefEntities()
 
 		// push back l'entity temp dans le vecteur de références
 		_refEntities.push_back(tempEntity);
+
+		id++;
+	}
+	_entityList.close();
+}
+
+void entityManager::loadRefMonster()
+{
+	int id = 0;
+	int type, cost, hp, range, damage, movement;
+	string name, sprite;
+
+	_entityList.open(MONTSER_LIST_FILEPATH);
+	while (!_entityList.eof()) {
+		behavioredMonster tempMonster;
+
+		_entityList >> name >> sprite >> type >> cost >> hp >> range >> damage >> movement;
+
+		// set les valeurs à l'entity temporaire
+		tempMonster.setID(id);
+		tempMonster.setType(type);
+		tempMonster.setName(name);
+		tempMonster.setSprite(_data, sprite, type,"moving","0000");
+		tempMonster.setCost(cost);
+		tempMonster.setHP(hp);
+		tempMonster.setRange(range);
+		tempMonster.setDamage(damage);
+		tempMonster.setMovement(movement);
+
+		// push back l'entity temp dans le vecteur de références
+		_refMonster.push_back(tempMonster);
 
 		id++;
 	}
@@ -58,9 +93,9 @@ const behavioredEntity& entityManager::getRefEntity(int id)
 void entityManager::loadShopUnits()
 {
 	for (int i = 0; i < _refEntities.size(); i++) {
-		if (_refEntities[i].getType() == 1) {
+		//if (_refEntities[i].getType() == 1) {
 			_shopUnits.push_back(getRefEntity(i));
-		}
+		//}
 	}
 }
 
@@ -253,6 +288,7 @@ void entityManager::sellUnit(const cell& c, int& currency)
 
 void entityManager::processEntityBehavior(void)
 {
+	
 	//entity behavior
 	for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
 
@@ -265,7 +301,7 @@ void entityManager::processEntityBehavior(void)
 			if (_boardEntities[it].getCellY() == _boardMonster[itM].getCellY() && _boardMonster[itM].getCellX() - _boardEntities[it].getCellX() == 1) {
 
 				_boardEntities[it].attackTarget(_boardMonster[itM]);
-				_boardEntities[it].setBehavior(characterBehavior::chargeAttack);
+				_boardEntities[it].setBehavior(characterBehavior::attack);
 			}
 		}
 
@@ -291,20 +327,36 @@ void entityManager::processEntityBehavior(void)
 
 void entityManager::update(float dt)
 {
-	for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
+	/*for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
 		if (_boardEntities[it].getCurHP() > 0) {
-			if (_boardEntities[it].getBehavior() == characterBehavior::chargeAttack) {
-				//_boardEntities[it].setSprite();
-				_boardEntities[it].setBehavior(characterBehavior::attack);
+			if (_boardEntities[it].getBehavior() == characterBehavior::idle) {
+				if (_boardEntities[it].getSpriteID() == zero) {
+					_boardEntities[it].setSprite(_data, _boardEntities[it].getSpriteName(), _boardEntities[it].getType(), "idle", "0000");
+					_boardEntities[it].setSpriteID(animationSpriteNumber::one);
+					cout << "zero" << endl;
+					
+				}else if (_boardEntities[it].getSpriteID() == one) {
+					_boardEntities[it].setSprite(_data, _boardEntities[it].getSpriteName(), _boardEntities[it].getType(), "idle", "0001");
+					_boardEntities[it].setSpriteID(animationSpriteNumber::two);
+					cout << "one" << endl;
+					
+				}else if (_boardEntities[it].getSpriteID() == two) {
+					_boardEntities[it].setSprite(_data, _boardEntities[it].getSpriteName(), _boardEntities[it].getType(), "idle", "0002");
+					_boardEntities[it].setSpriteID(animationSpriteNumber::three);
+					cout << "two" << endl;
+					
+				}else if (_boardEntities[it].getSpriteID() == three) {
+					_boardEntities[it].setSprite(_data, _boardEntities[it].getSpriteName(), _boardEntities[it].getType(), "idle", "0003");
+					_boardEntities[it].setSpriteID(animationSpriteNumber::zero);
+					cout << "three" << endl;
+					
+				}
 			}
 			else if (_boardEntities[it].getBehavior() == characterBehavior::attack) {
 				//_boardEntities[it].setSprite();
-				_boardEntities[it].setBehavior(characterBehavior::postAttack);
+				_boardEntities[it].setBehavior(characterBehavior::attack);
 			}
-			else if (_boardEntities[it].getBehavior() == characterBehavior::postAttack) {
-				//_boardEntities[it].setSprite();
-				_boardEntities[it].setBehavior(characterBehavior::idle);
-			}
+			
 		}
 		else {
 			_boardEntities[it].setBehavior(characterBehavior::dead);
@@ -318,24 +370,20 @@ void entityManager::update(float dt)
 				_boardMonster[itM].setCellX(_boardMonster[itM].getCellX() - 1);
 
 			}
-			else if (_boardMonster[itM].getBehavior() == monsterBehavior::chargeAttackM) {
+			else if (_boardMonster[itM].getBehavior() == monsterBehavior::attackM) {
 				//_boardMonster[itM].setSprite();
 				_boardMonster[itM].setBehavior(monsterBehavior::attackM);
 			}
-			else if (_boardMonster[itM].getBehavior() == monsterBehavior::attackM) {
-				_boardMonster[itM].setBehavior(monsterBehavior::postAttackM);
-			}
-			else if (_boardMonster[itM].getBehavior() == monsterBehavior::postAttackM) {
-				//_boardMonster[itM].setSprite();
-				_boardMonster[itM].setBehavior(monsterBehavior::idleM);
-			}
+			
 		}
 		else {
 			_boardMonster[itM].setBehavior(monsterBehavior::deadM);
 		}
+	}*/
+
+	for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
+		_boardEntities[it].animate(_data);
 	}
-
-
 }
 
 void entityManager::loadWave(int score)

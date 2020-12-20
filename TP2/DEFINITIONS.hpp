@@ -10,6 +10,7 @@
 #define SCREEN_HEIGHT 720
 #define GAME_FONT_FILEPATH "Resources/fonts/Planetesimal-Regular.ttf"
 #define ENTITY_LIST_FILEPATH "Resources/entityList.txt"
+#define MONTSER_LIST_FILEPATH "Resources/monsterList.txt"
 #define INSTRUCTION_LIST_FILEPATH "Resources/instructionList.txt"
 
 #define SPLASH_SLIME_ANIMATION_DURATION 1.0f
@@ -68,17 +69,20 @@ enum prepPhases {
 
 enum characterBehavior {
     idle,
-    chargeAttack,
     attack,
-    postAttack,
     dead
 };
 enum monsterBehavior {
     moving,
     idleM,
-    chargeAttackM,
     attackM,
-    postAttackM,
     deadM
 };
+enum animationSpriteNumber {
+    zero,
+    one,
+    two,
+    three,  
+};
 #define BEHAVIOR_CLOCK 1.0f
+#define UNIT_ANIMATION_DURATION 1.0f

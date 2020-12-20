@@ -31,6 +31,7 @@ private:
 
     ifstream _entityList;
     vecteur<behavioredEntity> _refEntities;
+    vecteur<behavioredMonster> _refMonster;
 
     vecteur<behavioredEntity> _shopUnits;
     vecteur<cell> _shopUnitsCells;
@@ -42,6 +43,7 @@ public:
     entityManager(gameDataRef data);
 
     void loadRefEntities();             // intialise et remplis le vecteur avec les entities dans une liste
+    void loadRefMonster();              //initialise et remplis un vecteur avec les monstres
     const behavioredEntity& getRefEntity(int id); // retourne l'entity avec l'id en paramètre
 
     void loadShopUnits();       // initialise le vecteur de shop units

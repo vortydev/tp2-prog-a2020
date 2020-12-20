@@ -16,6 +16,8 @@ class behavioredEntity : public entity{
 private:
     
     characterBehavior _behavior;
+    vecteur<Texture> _animationFramesIdle;
+    vecteur<Texture> _animationFramesAttack;
 
 public:
     behavioredEntity();
@@ -26,4 +28,9 @@ public:
 
     void setBehavior(characterBehavior newBehavior);
     characterBehavior getBehavior();
+
+    
+
+    void loadAllSprite(gameDataRef data, string sprite);
+    void animate(gameDataRef data);
 };
