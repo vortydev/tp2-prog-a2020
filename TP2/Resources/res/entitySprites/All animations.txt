@@ -19,4 +19,5 @@ Orange Slime
 **********
 
 Peasant
-- Idle (4 frame)
+- Idle (4 frames)
+- Moving (4 frames)
