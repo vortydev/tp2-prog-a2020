@@ -158,7 +158,6 @@
     <ClCompile Include="splashSlime.cpp" />
     <ClCompile Include="splashState.cpp" />
     <ClCompile Include="stateMachine.cpp" />
-    <ClCompile Include="waveManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="actionGuide.h" />
@@ -179,7 +178,6 @@
     <ClInclude Include="splashState.h" />
     <ClInclude Include="state.hpp" />
     <ClInclude Include="stateMachine.h" />
-    <ClInclude Include="waveManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\entityList.txt" />

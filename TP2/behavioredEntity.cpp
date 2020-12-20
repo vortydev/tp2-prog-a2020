@@ -47,7 +47,7 @@ void behavioredEntity::loadAllSprite(gameDataRef data, string sprite)
 		string animationName = sprite + "attack000" + to_string(i);
 		string path = "Resources/res/entitySprites/unit_" + sprite + "_" + "attacking" + "_" + "000" + to_string(i) + ".png";
 		data->assets.loadTexture(animationName, path);
-		_animationFramesIdle.push_back(data->assets.getTexture(animationName));
+		_animationFramesAttack.push_back(data->assets.getTexture(animationName));
 
 	}
 	

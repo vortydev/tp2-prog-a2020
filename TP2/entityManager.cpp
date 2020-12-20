@@ -89,6 +89,12 @@ const behavioredEntity& entityManager::getRefEntity(int id)
 	return _refEntities[id];
 }
 
+const behavioredMonster& entityManager::getRefMonster(int id)
+{
+	assert(id >= 0 && id < _refMonster.size());
+	return _refMonster[id];
+}
+
 // initialise le vecteur de shop units
 void entityManager::loadShopUnits()
 {
@@ -286,112 +292,16 @@ void entityManager::sellUnit(const cell& c, int& currency)
 	}
 }
 
-void entityManager::processEntityBehavior(void)
-{
-	
-	//entity behavior
-	for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
 
-
-
-		//for every entity
-		for (list<behavioredMonster>::iterator itM = _boardMonster.begin(); itM != _boardMonster.end(); itM++) {
-
-			//check si dans un certain range 2 case devant 1 diagonale + coté
-			if (_boardEntities[it].getCellY() == _boardMonster[itM].getCellY() && _boardMonster[itM].getCellX() - _boardEntities[it].getCellX() == 1) {
-
-				_boardEntities[it].attackTarget(_boardMonster[itM]);
-				_boardEntities[it].setBehavior(characterBehavior::attack);
-			}
-		}
-
-	}
-
-	//monster behavior va etre refait
-	for (list<behavioredMonster>::iterator itM = _boardMonster.begin(); itM != _boardMonster.end(); itM++) {
-
-
-		//va vers la gauche si un target est trouvé il va vers le target
-		for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
-
-
-			if (_boardMonster[itM].getCellY() == _boardEntities[it].getCellY() && _boardMonster[itM].getCellX() - _boardEntities[it].getCellX()) {
-				_boardMonster[itM].attackTarget(_boardEntities[it]);
-				_boardMonster[itM].setBehavior(monsterBehavior::attackM);
-			}
-		}
-
-
-	}
-}
 
 void entityManager::update(float dt)
 {
-	/*for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
-		if (_boardEntities[it].getCurHP() > 0) {
-			if (_boardEntities[it].getBehavior() == characterBehavior::idle) {
-				if (_boardEntities[it].getSpriteID() == zero) {
-					_boardEntities[it].setSprite(_data, _boardEntities[it].getSpriteName(), _boardEntities[it].getType(), "idle", "0000");
-					_boardEntities[it].setSpriteID(animationSpriteNumber::one);
-					cout << "zero" << endl;
-					
-				}else if (_boardEntities[it].getSpriteID() == one) {
-					_boardEntities[it].setSprite(_data, _boardEntities[it].getSpriteName(), _boardEntities[it].getType(), "idle", "0001");
-					_boardEntities[it].setSpriteID(animationSpriteNumber::two);
-					cout << "one" << endl;
-					
-				}else if (_boardEntities[it].getSpriteID() == two) {
-					_boardEntities[it].setSprite(_data, _boardEntities[it].getSpriteName(), _boardEntities[it].getType(), "idle", "0002");
-					_boardEntities[it].setSpriteID(animationSpriteNumber::three);
-					cout << "two" << endl;
-					
-				}else if (_boardEntities[it].getSpriteID() == three) {
-					_boardEntities[it].setSprite(_data, _boardEntities[it].getSpriteName(), _boardEntities[it].getType(), "idle", "0003");
-					_boardEntities[it].setSpriteID(animationSpriteNumber::zero);
-					cout << "three" << endl;
-					
-				}
-			}
-			else if (_boardEntities[it].getBehavior() == characterBehavior::attack) {
-				//_boardEntities[it].setSprite();
-				_boardEntities[it].setBehavior(characterBehavior::attack);
-			}
-			
-		}
-		else {
-			_boardEntities[it].setBehavior(characterBehavior::dead);
-		}
-
-	}
-	for (list<behavioredMonster>::iterator itM = _boardMonster.begin(); itM != _boardMonster.end(); itM++) {
-		if (_boardMonster[itM].getCurHP() > 0) {
-			if (_boardMonster[itM].getBehavior() == monsterBehavior::moving) {
-				//_boardMonster[itM].setSprite();
-				_boardMonster[itM].setCellX(_boardMonster[itM].getCellX() - 1);
-
-			}
-			else if (_boardMonster[itM].getBehavior() == monsterBehavior::attackM) {
-				//_boardMonster[itM].setSprite();
-				_boardMonster[itM].setBehavior(monsterBehavior::attackM);
-			}
-			
-		}
-		else {
-			_boardMonster[itM].setBehavior(monsterBehavior::deadM);
-		}
-	}*/
+	
 
 	for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
 		_boardEntities[it].animate(_data);
 	}
 }
 
-void entityManager::loadWave(int score)
-{
-	for (int i = 0; i < 5; i++) {
-		list<behavioredMonster>::iterator it;
-		//_boardMonster.insert(it, getRefEntity(3));
-	}
-}
 
 

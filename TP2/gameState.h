@@ -17,7 +17,6 @@
 #include "grid.h"
 #include "gameMenu.h"
 #include "entityManager.h"
-#include "waveManager.h"
 #include "actionGuide.h"
 
 using namespace sf;
@@ -50,7 +49,6 @@ private:
     grid* _grid;        // pointeur sur la grid
     gameMenu* _menu;    // pointeur sur le menu
     entityManager* _entityManager;
-    waveManager* _waveManager;
     actionGuide* _actionGuide;
 
 public:
@@ -61,4 +59,6 @@ public:
     void handleInput();
     void update(float dt);
     void draw(float dt) const;
+
+
 };

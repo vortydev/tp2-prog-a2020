@@ -1,2 +1,5 @@
-﻿  behavioredEntity.cpp
+﻿  grid.cpp
+C:\Users\piera\Desktop\school\Autumn 2020\Structure dans les jeux vidéo\Travail Pratique\tp2-prog-a2020\TP2\grid.cpp(27,65): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\piera\Desktop\school\Autumn 2020\Structure dans les jeux vidéo\Travail Pratique\tp2-prog-a2020\TP2\grid.cpp(27,51): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\piera\Desktop\school\Autumn 2020\Structure dans les jeux vidéo\Travail Pratique\tp2-prog-a2020\TP2\grid.cpp(179): warning C4715: 'grid::getCell' : les chemins de contrôle ne retournent pas tous une valeur
   TP2.vcxproj -> C:\Users\piera\Desktop\school\Autumn 2020\Structure dans les jeux vidéo\Travail Pratique\tp2-prog-a2020\Debug\TP2.exe

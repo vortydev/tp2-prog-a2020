@@ -22,7 +22,7 @@ gameState::~gameState()
     delete _grid;
     delete _menu;
     delete _entityManager;
-    delete _waveManager;
+    
     delete _actionGuide;
 }
 
@@ -76,8 +76,6 @@ void gameState::init()
     // load the entity manager
     _entityManager = new entityManager(_data);
 
-    // load the waveManager
-    _waveManager = new waveManager(_data);
 
     // load le actionGuide
     _data->assets.loadTexture("action cell off", GAME_ACTION_CELL_OFF);

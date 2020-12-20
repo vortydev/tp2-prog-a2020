@@ -1,5 +1,5 @@
 /*
- * Author:		Étienne Ménard
+ * Author:		Pier-Alexandre Caron
  * Date:		15/12/2020
  * File:		behavioredMonster.h
  * Description:	monstre ou une sprite leur sera assigné ainsi que de nombreuse variables qui lui
@@ -18,6 +18,9 @@ private:
     
     monsterBehavior _behavior;
 
+    vecteur<Texture> _animationFramesMoving;
+    vecteur<Texture> _animationFramesAttack;
+
 public:
     behavioredMonster();
     ~behavioredMonster();
@@ -27,4 +30,7 @@ public:
 
     void setBehavior(monsterBehavior newBehavior);
     monsterBehavior getBehavior();
+
+    void loadAllSprite(gameDataRef data, string sprite);
+    void animate(gameDataRef data);
 };

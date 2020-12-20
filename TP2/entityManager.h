@@ -45,6 +45,7 @@ public:
     void loadRefEntities();             // intialise et remplis le vecteur avec les entities dans une liste
     void loadRefMonster();              //initialise et remplis un vecteur avec les monstres
     const behavioredEntity& getRefEntity(int id); // retourne l'entity avec l'id en paramètre
+    const behavioredMonster& getRefMonster(int id);
 
     void loadShopUnits();       // initialise le vecteur de shop units
     void loadShopUnitsCells();
@@ -65,9 +66,9 @@ public:
     void buyUnit(const cell& c, int& currency);
     void sellUnit(const cell& c, int& currency); 
 
-    void processEntityBehavior(void);
+    
 
     void update(float dt);
-
-    void loadWave(int score);
+    
+    
 };

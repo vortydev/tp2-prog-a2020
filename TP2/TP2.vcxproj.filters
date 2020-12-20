@@ -51,9 +51,6 @@
     <ClCompile Include="behavioredEntity.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="waveManager.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="behavioredMonster.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -108,9 +105,6 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="behavioredEntity.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="waveManager.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="behavioredMonster.h">

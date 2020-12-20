@@ -27,6 +27,7 @@ grid::grid(gameDataRef data) : _data(data)
             _grid[i][j].sprite.setPosition(80 * j + 240, 80 * i + 50);
         }
     }
+    
 }
 
 // draw toutes les cases de la grid

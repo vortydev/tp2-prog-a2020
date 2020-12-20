@@ -29,8 +29,6 @@ public:
     void setBehavior(characterBehavior newBehavior);
     characterBehavior getBehavior();
 
-    
-
     void loadAllSprite(gameDataRef data, string sprite);
     void animate(gameDataRef data);
 };
