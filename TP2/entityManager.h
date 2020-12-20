@@ -69,6 +69,10 @@ public:
     
 
     void update(float dt);
-    
-    
+    void loadWave(int wave);
+    void checkMonsterInRange();                             //scroll la liste de monstre pour chaque entité
+                                                            //change la behavior et inflige du degats
+
+    void checkEntityInRange();                              //scroll la liste de entité pour chaque monstre
+                                                            //change la behavior et inflige du degats
 };

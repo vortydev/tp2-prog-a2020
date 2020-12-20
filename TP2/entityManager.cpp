@@ -10,6 +10,7 @@
 entityManager::entityManager(gameDataRef data) : _data(data)
 {
 	loadRefEntities();      // initialise le vecteur d'entities de référence
+	loadRefMonster();
 
 	loadShopUnits();        // initialise le vecteur de shop units
 	loadShopUnitsCells();   // initialise le vecteur de cells pour les shop units
@@ -62,6 +63,9 @@ void entityManager::loadRefMonster()
 		behavioredMonster tempMonster;
 
 		_entityList >> name >> sprite >> type >> cost >> hp >> range >> damage >> movement;
+		tempMonster.setBehavior(monsterBehavior::moving);
+		tempMonster.setSpriteID(0);
+		tempMonster.loadAllSprite(_data, sprite);
 
 		// set les valeurs à l'entity temporaire
 		tempMonster.setID(id);
@@ -268,6 +272,13 @@ void entityManager::drawBoardEntities()
 
 		it++;
 	}
+	list<behavioredMonster>::iterator itm = _boardMonster.begin();
+	while (itm != _boardMonster.end()) {
+		if (_boardMonster[itm].isAlive())
+			_data->window.draw(_boardMonster[itm].getSprite());
+
+		itm++;
+	}
 }
 
 // supprime de la liste les entités mortes
@@ -321,13 +332,71 @@ void entityManager::sellUnit(const cell& c, int& currency)
 }
 
 
-
 void entityManager::update(float dt)
 {
-	
-
+	//pour chaque unit
 	for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
 		_boardEntities[it].animate(_data);
+	}
+
+	//pour chaque monstres
+	for (list<behavioredMonster>::iterator itm = _boardMonster.begin(); itm != _boardMonster.end(); itm++) {
+		_boardMonster[itm].animate(_data);
+		
+	}
+	checkMonsterInRange();
+	checkEntityInRange();
+}
+
+void entityManager::loadWave(int wave)
+{
+	for (int i = 0; i < 5; i++) {
+		behavioredMonster temp = getRefMonster(0);
+		temp.setPosition(9, i);
+		list<behavioredMonster>::iterator itm = _boardMonster.begin();
+		_boardMonster.insert(itm, temp);
+	}
+}
+
+void entityManager::checkMonsterInRange()
+{
+	//pour chaque Entité
+	for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
+		
+		//pour chaque monstre
+		for (list<behavioredMonster>::iterator itm = _boardMonster.begin(); itm != _boardMonster.end(); itm++) {
+			if (_boardEntities[it].getCellY() == _boardMonster[itm].getCellY() &&
+				_boardEntities[it].getCellX() == _boardMonster[itm].getCellX() - 1)
+			{
+				_boardEntities[it].setBehavior(characterBehavior::attack);
+
+			}
+		}
+	}
+}
+
+void entityManager::checkEntityInRange()
+{
+	//pour tout les monstres
+	for (list<behavioredMonster>::iterator itm = _boardMonster.begin(); itm != _boardMonster.end(); itm++) {
+		
+		//si un entité enemmi est devant nou
+		for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
+
+			if (_boardEntities[it].getCellY() == _boardMonster[itm].getCellY() &&
+				_boardEntities[it].getCellX() == _boardMonster[itm].getCellX()-1)
+			{
+				_boardMonster[itm].setBehavior(monsterBehavior::attackM);
+				
+			}
+		}
+		//regarde si veut se deplacer
+		if (_boardMonster[itm].getBehavior() == monsterBehavior::moving) {
+			
+			//_boardMonster[itm].setCellX(_boardMonster[itm].getCellX() - 1);
+			_boardMonster[itm].move();
+		}
+
 	}
 }
 

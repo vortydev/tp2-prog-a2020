@@ -1,1 +1,2 @@
 Slime slime 2 0 5 1 2 1
+Slime orangeSlime 2 0 7 1 2 1

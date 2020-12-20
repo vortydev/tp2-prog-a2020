@@ -27,6 +27,7 @@ void behavioredMonster::attackTarget(entity& target)
 void behavioredMonster::setBehavior(monsterBehavior newBehavior)
 {
     _behavior = newBehavior;
+	
 }
 
 monsterBehavior behavioredMonster::getBehavior()
@@ -61,16 +62,26 @@ void behavioredMonster::animate(gameDataRef data)
 		}
 		switch (_behavior)
 		{
-		case characterBehavior::idle:
+		case monsterBehavior::moving:
 			_sprite.setTexture(_animationFramesMoving.at(_animationIterator));
 			_animationIterator++;
 			break;
-		case characterBehavior::attack:
-
+		case monsterBehavior::attackM:
+			_sprite.setTexture(_animationFramesAttack.at(_animationIterator));
+			_animationIterator++;
 			break;
 		default:
 			break;
 		}
 		_animationClock.restart();
+	}
+}
+
+void behavioredMonster::move()
+{
+	if (_moveClock.getElapsedTime().asSeconds() > UNIT_ANIMATION_DURATION )
+	{
+		setCellX(getCellX() - 1);
+		_moveClock.restart();
 	}
 }

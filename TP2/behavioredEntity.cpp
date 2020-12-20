@@ -68,6 +68,9 @@ void behavioredEntity::animate(gameDataRef data)
 			_animationIterator++;
 			break;
 		case characterBehavior::attack:
+			
+			_sprite.setTexture(_animationFramesAttack.at(_animationIterator));
+			_animationIterator++;
 
 			break;
 		default:

@@ -146,7 +146,7 @@ void gameState::handleInput()
                 _grid->toggleGrid();
                 _actionGuide->untoggleHelp();
                 _gameState = gameStates::wave;
-                //spawn slime here
+                _entityManager->loadWave(_score);
             }
 
             _menu->buttonVisibilityUpdate(_prepPhase);  // updates the buttons

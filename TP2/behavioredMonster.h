@@ -21,6 +21,8 @@ private:
     vecteur<Texture> _animationFramesMoving;
     vecteur<Texture> _animationFramesAttack;
 
+    Clock _moveClock;
+
 public:
     behavioredMonster();
     ~behavioredMonster();
@@ -33,4 +35,6 @@ public:
 
     void loadAllSprite(gameDataRef data, string sprite);
     void animate(gameDataRef data);
+    
+    void move();
 };
