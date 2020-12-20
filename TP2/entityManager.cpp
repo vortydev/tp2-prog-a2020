@@ -346,6 +346,8 @@ void entityManager::update(float dt)
 	}
 	checkMonsterInRange();
 	checkEntityInRange();
+	checkDeadEntity();
+	checkDeadMonster();
 }
 
 void entityManager::loadWave(int wave)
@@ -369,7 +371,23 @@ void entityManager::checkMonsterInRange()
 				_boardEntities[it].getCellX() == _boardMonster[itm].getCellX() - 1)
 			{
 				_boardEntities[it].setBehavior(characterBehavior::attack);
+				break;
+			}
+			else {
+				_boardEntities[it].setBehavior(characterBehavior::idle);
+			}
+		}
 
+		if (_boardEntities[it].getBehavior() == characterBehavior::attack) {
+
+			//cherche le entity qui est devant moi
+			for (list<behavioredMonster>::iterator itm = _boardMonster.begin(); itm != _boardMonster.end(); itm++) {
+				if (_boardEntities[it].getCellY() == _boardMonster[itm].getCellY() &&
+					_boardEntities[it].getCellX() == _boardMonster[itm].getCellX() - 1)
+				{
+					_boardMonster[itm].setCurHP(_boardMonster[itm].getCurHP() - _boardEntities[it].getDamage());
+					
+				}
 			}
 		}
 	}
@@ -387,7 +405,10 @@ void entityManager::checkEntityInRange()
 				_boardEntities[it].getCellX() == _boardMonster[itm].getCellX()-1)
 			{
 				_boardMonster[itm].setBehavior(monsterBehavior::attackM);
-				
+				break;
+			}
+			else {
+				_boardMonster[itm].setBehavior(monsterBehavior::moving);
 			}
 		}
 		//regarde si veut se deplacer
@@ -395,6 +416,38 @@ void entityManager::checkEntityInRange()
 			
 			//_boardMonster[itm].setCellX(_boardMonster[itm].getCellX() - 1);
 			_boardMonster[itm].move();
+		}
+		//si on veut attaquer
+		else if (_boardMonster[itm].getBehavior() == monsterBehavior::attackM) {
+
+			//cherche le entity qui est devant moi
+			for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
+				if (_boardEntities[it].getCellY() == _boardMonster[itm].getCellY() &&
+					_boardEntities[it].getCellX() == _boardMonster[itm].getCellX() - 1)
+				{
+					//_boardEntities[it].setCurHP(_boardEntities[it].getCurHP() - _boardMonster[itm].getDamage());
+					
+				}
+			}
+		}
+
+	}
+}
+
+void entityManager::checkDeadMonster()
+{
+	for (list<behavioredMonster>::iterator itm = _boardMonster.begin(); itm != _boardMonster.end(); itm++) {
+		if (_boardMonster[itm].getCurHP() <= 0) {
+			_boardMonster.erase(itm);
+		}
+	}
+}
+
+void entityManager::checkDeadEntity()
+{
+	for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
+		if (_boardEntities[it].getCurHP() <= 0) {
+			_boardEntities.erase(it);
 		}
 
 	}
