@@ -19,13 +19,17 @@ behavioredEntity::~behavioredEntity()
 
 }
 
+void behavioredEntity::attackTarget(entity& target)
+{
+    target.setHP(target.getCurHP() - getDamage());
+}
+
+void behavioredEntity::setBehavior(characterBehavior newBehavior)
+{
+    _behavior = newBehavior;
+}
 
 characterBehavior behavioredEntity::getBehavior()
 {
     return _behavior;
-}
-
-void behavioredEntity::setBehavior(characterBehavior behavior)
-{
-    _behavior = behavior;
 }

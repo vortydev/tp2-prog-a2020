@@ -68,11 +68,17 @@ enum prepPhases {
 
 enum characterBehavior {
     idle,
-    chasing,
-    attack
+    chargeAttack,
+    attack,
+    postAttack,
+    dead
 };
 enum monsterBehavior {
     moving,
-    engage,
-    attacking
+    idleM,
+    chargeAttackM,
+    attackM,
+    postAttackM,
+    deadM
 };
+#define BEHAVIOR_CLOCK 1.0f

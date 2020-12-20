@@ -19,12 +19,17 @@ behavioredMonster::~behavioredMonster()
 
 }
 
-characterBehavior behavioredMonster::getBehavior()
+void behavioredMonster::attackTarget(entity& target)
 {
-    return _behavior;
+    target.setHP(target.getCurHP() - getDamage());
 }
 
-void behavioredMonster::setBehavior(characterBehavior behavior)
+void behavioredMonster::setBehavior(monsterBehavior newBehavior)
 {
-    _behavior = behavior;
+    _behavior = newBehavior;
+}
+
+monsterBehavior behavioredMonster::getBehavior()
+{
+    return _behavior;
 }

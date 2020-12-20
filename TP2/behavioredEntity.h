@@ -21,7 +21,9 @@ public:
     behavioredEntity();
     ~behavioredEntity();
 
-    characterBehavior getBehavior();
+    //behavior
+    void attackTarget(entity& target);
 
-    void setBehavior(characterBehavior behavior);
+    void setBehavior(characterBehavior newBehavior);
+    characterBehavior getBehavior();
 };
