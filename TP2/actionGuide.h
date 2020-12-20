@@ -47,5 +47,5 @@ public:
     void untoggleHelp();
 
     void loadInstructions();
-    void updateInstructionsShown(int prepPhase, bool confirmButton, bool cancelButton, bool unitSelected, bool placementSelected, int boardEntities);
+    void updateInstructionsShown(int prepPhase, bool confirmButton, bool cancelButton, bool unitSelected, bool placementSelected, int boardEntities, int currency);
 };

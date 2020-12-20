@@ -195,7 +195,7 @@ void gameState::handleInput()
             }
         }
 
-        _actionGuide->updateInstructionsShown(_prepPhase, _menu->isButtonEnabled(_menu->getConfirmButton()), _menu->isButtonEnabled(_menu->getCancelButton()), _menu->isUnitSelected(), _menu->isPlacementSelected(), _entityManager->boardEntitiesSize());
+        _actionGuide->updateInstructionsShown(_prepPhase, _menu->isButtonEnabled(_menu->getConfirmButton()), _menu->isButtonEnabled(_menu->getCancelButton()), _menu->isUnitSelected(), _menu->isPlacementSelected(), _entityManager->boardEntitiesSize(), _currency);
     }
 }
 

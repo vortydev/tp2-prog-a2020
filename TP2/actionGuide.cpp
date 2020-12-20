@@ -15,6 +15,14 @@ actionGuide::actionGuide(gameDataRef data) : _data(data)
     _helpSprite.setTexture(_data->assets.getTexture("action cell off"));
     _helpSprite.setPosition(SCREEN_WIDTH - 10 - _helpSprite.getGlobalBounds().width, 10);
 
+    // load help text
+    _helpText.setFont(_data->assets.getFont("game font"));
+    _helpText.setString("?");
+    _helpText.setCharacterSize(36);
+    _helpText.setFillColor(Color::White);
+    _helpText.setOrigin(_helpText.getGlobalBounds().width / 2, _helpText.getGlobalBounds().height / 2);
+    _helpText.setPosition(SCREEN_WIDTH - 12 - _helpSprite.getGlobalBounds().width / 2, 2 + _helpSprite.getGlobalBounds().height / 2);
+
     // load instructions
     loadInstructions();
 }
@@ -23,7 +31,7 @@ actionGuide::actionGuide(gameDataRef data) : _data(data)
 void actionGuide::draw() const
 {
     _data->window.draw(_helpSprite);
-    // draw help text
+    _data->window.draw(_helpText);
 
     if (_helpToggled)   // only draw instuctions if help toggled
         drawInstructions();
@@ -104,7 +112,7 @@ void actionGuide::loadInstructions()
     }
 }
 
-void actionGuide::updateInstructionsShown(int prepPhase, bool confirmButton, bool cancelButton, bool unitSelected, bool placementSelected, int boardEntities)
+void actionGuide::updateInstructionsShown(int prepPhase, bool confirmButton, bool cancelButton, bool unitSelected, bool placementSelected, int boardEntities, int currency)
 {
     // reset toutes les instructions à false si elle était vraie
     for (int i = 0; i < _instructions.size(); i++) {
@@ -113,10 +121,12 @@ void actionGuide::updateInstructionsShown(int prepPhase, bool confirmButton, boo
     }
 
     if (prepPhase == prepPhases::unitSelection || prepPhase == prepPhases::awaitingWave) {
-        if (!unitSelected)
-            _instructions[0].shown = true;
-        else 
-            _instructions[1].shown = true;
+        if (currency >= 10) {
+            if (!unitSelected)
+                _instructions[0].shown = true;
+            else
+                _instructions[1].shown = true;
+        }
 
         if (!unitSelected && boardEntities != 0)
             _instructions[5].shown = true;
