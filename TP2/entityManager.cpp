@@ -219,6 +219,34 @@ const behavioredEntity& entityManager::getBoardEntity(cell c)
 	}
 }
 
+// retourne si il y a une unit sur la cell en paramètre
+const bool entityManager::isBoardUnitOnCell(cell c)
+{
+	list<behavioredEntity>::iterator it = _boardEntities.begin();
+	while (it != _boardEntities.end()) {
+		if (_boardEntities[it].getCellX() == c.cellX && _boardEntities[it].getCellY() == c.cellY)
+			return true;
+		else
+			it++;
+	}
+
+	return false;
+}
+
+// retourne si il y a un mob sur la cell en paramètre
+const bool entityManager::isBoardMobOnCell(cell c)
+{
+	list<behavioredMonster>::iterator it = _boardMonster.begin();
+	while (it != _boardMonster.end()) {
+		if (_boardMonster[it].getCellX() == c.cellX && _boardMonster[it].getCellY() == c.cellY)
+			return true;
+		else
+			it++;
+	}
+
+	return false;
+}
+
 // ajoutes l'unité dans la liste d'entités sur le board
 void entityManager::addUnitToBoard(const cell& cU, const cell& cP)
 {

@@ -180,7 +180,7 @@ void gameState::handleInput()
             // prep::unitSelling
             else {
                 cell tempCell = _grid->getCell(_data);
-                if (_grid->isOccupied(tempCell)) {
+                if (_grid->isOccupied(tempCell) && !(!_entityManager->isBoardUnitOnCell(tempCell) || _entityManager->isBoardMobOnCell(tempCell))) {
                     if (_prepPhase != prepPhases::unitSelling) {
                         _prepPhase = prepPhases::unitSelling;
                         _menu->buttonVisibilityUpdate(_prepPhase);

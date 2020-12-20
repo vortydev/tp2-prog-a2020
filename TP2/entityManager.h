@@ -25,8 +25,6 @@ using namespace std;
 class entityManager
 {
 private:
-    //struct entityVisualizer // to do?
-
     gameDataRef _data;
 
     ifstream _entityList;
@@ -58,6 +56,8 @@ public:
 
     const int boardEntitiesSize();
     const behavioredEntity& getBoardEntity(cell c);
+    const bool isBoardUnitOnCell(cell c);
+    const bool isBoardMobOnCell(cell c);
     void addUnitToBoard(const cell& cU, const cell& cP);
     void drawBoardEntities();
     void cleanBoard();

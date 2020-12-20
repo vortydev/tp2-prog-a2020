@@ -28,6 +28,10 @@ grid::grid(gameDataRef data) : _data(data)
         }
     }
     
+    // set les dernières cellules de la grid à occupied pour laisser de la place pour les mobs pour spawn
+    for (int i = 0; i < _grid.nbLine(); i++) {
+        _grid[i][_grid.nbCol() - 1].occupied = true;
+    }
 }
 
 // draw toutes les cases de la grid
