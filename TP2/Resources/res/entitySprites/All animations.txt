@@ -3,16 +3,20 @@
 *********
 
 Slime
-- Attacking (2 frames)
+- Attacking (4 frames)
 - Idle (1 frame)
-- Moving (2 frames)
-- Sleepy (46 frames !!4 fps!!)
+- Moving (4 frames)
+- Sleep (5 frames)
+- Sleepy (46 frames)
+
+Orange Slime
+- Attacking (4 frames)
+- Idle (1 frame)
+- Moving (4 frames)
 
 **********
 ** UNIT **
 **********
 
-Peasent
-- Attacking (2 frames)
-- Idle (1 frame)
-- Moving (4 frames)
+Peasant
+- Idle (4 frame)
