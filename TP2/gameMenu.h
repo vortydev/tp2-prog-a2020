@@ -24,6 +24,7 @@ class gameMenu
 {
 private:
     gameDataRef _data;
+    Clock _clock;
 
     Sprite _menuBody;
 

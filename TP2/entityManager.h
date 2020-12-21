@@ -60,7 +60,8 @@ public:
     const bool isBoardMobOnCell(cell c);
     void addUnitToBoard(const cell& cU, const cell& cP);
     void drawBoardEntities();
-    int cleanBoard();
+    int cleanBoard(grid* g);
+    void cleanLeakers();
     void revitalizeEntities();
 
     void buyUnit(const cell& c, int& currency);

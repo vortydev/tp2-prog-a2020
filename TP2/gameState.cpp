@@ -57,8 +57,6 @@ void gameState::init()
 	_coin.setTexture(_data->assets.getTexture("coin"));
 	_coin.setPosition(70, 85 - _coin.getGlobalBounds().height / 2);
 
-	
-
 	//load hearth sprite
 	_data->assets.loadTexture("heart", GAME_PLAYER_HP_FILEPATH);
 	_hearth.setTexture(_data->assets.getTexture("heart"));
@@ -234,7 +232,7 @@ void gameState::update(float dt)
 		_entityManager->update(dt);
 
 		
-		temp += _entityManager->cleanBoard();
+		temp += _entityManager->cleanBoard(_grid);
 		_currency += temp;
 		_score += temp;
 		_hearthText.setString(to_string(_playerHP));
@@ -245,7 +243,6 @@ void gameState::update(float dt)
 
 			if (_entityManager->boardEntitiesSize() == 0) 
 				_prepPhase = prepPhases::unitSelection;
-
 			else 
 				_prepPhase = prepPhases::awaitingWave;
 			

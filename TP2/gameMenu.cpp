@@ -113,11 +113,14 @@ void gameMenu::buttonVisibilityUpdate(int& prepPhase)
         _cancelButton.enabled = true;
     }
     else if (prepPhase == prepPhases::awaitingWave) {
-        _confirmButton.enabled = true;
-        _confirmButton.buttonText.setString("Wave");
-        _confirmButton.buttonText.setPosition(SCREEN_WIDTH - 65 - _confirmButton.buttonSprite.getGlobalBounds().width / 2, SCREEN_HEIGHT - 45 - _menuBody.getGlobalBounds().height + _confirmButton.buttonSprite.getGlobalBounds().height / 2);
-
         _cancelButton.enabled = false;
+
+        //if (_clock.getElapsedTime().asSeconds() > GAME_WAVE_BUTTON_DELAY) {
+            _confirmButton.enabled = true;
+            _confirmButton.buttonText.setString("Wave");
+            _confirmButton.buttonText.setPosition(SCREEN_WIDTH - 65 - _confirmButton.buttonSprite.getGlobalBounds().width / 2, SCREEN_HEIGHT - 45 - _menuBody.getGlobalBounds().height + _confirmButton.buttonSprite.getGlobalBounds().height / 2);
+
+        //}
     }
     else if (prepPhase == prepPhases::hold) {
         _confirmButton.enabled = false;
@@ -130,15 +133,12 @@ void gameMenu::clickConfirmButton(int& prepPhase, int& gameState)
 {
     if (prepPhase == prepPhases::unitPlacement) {
         prepPhase = prepPhases::unitTransaction;
-        buttonVisibilityUpdate(prepPhase);
     }
     else if (prepPhase == prepPhases::unitSelling) {
         prepPhase = prepPhases::unitSelection;
-        buttonVisibilityUpdate(prepPhase);
     }
     else if (prepPhase == prepPhases::awaitingWave) {
         prepPhase = prepPhases::hold;   // updates the prepPhase
-        buttonVisibilityUpdate(prepPhase);     // updates buttons
 
         gameState = gameStates::wave;   // updates the gameState
     }

@@ -1,7 +1,2 @@
-﻿  entityManager.cpp
-C:\Users\piera\Desktop\school\Autumn 2020\Structure dans les jeux vidéo\Travail Pratique\tp2-prog-a2020\TP2\entityManager.cpp(139,52): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-C:\Users\piera\Desktop\school\Autumn 2020\Structure dans les jeux vidéo\Travail Pratique\tp2-prog-a2020\TP2\entityManager.cpp(141,57): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-C:\Users\piera\Desktop\school\Autumn 2020\Structure dans les jeux vidéo\Travail Pratique\tp2-prog-a2020\TP2\entityManager.cpp(142,61): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-C:\Users\piera\Desktop\school\Autumn 2020\Structure dans les jeux vidéo\Travail Pratique\tp2-prog-a2020\TP2\entityManager.cpp(165): warning C4715: 'entityManager::getShopUnitCell' : les chemins de contrôle ne retournent pas tous une valeur
-C:\Users\piera\Desktop\school\Autumn 2020\Structure dans les jeux vidéo\Travail Pratique\tp2-prog-a2020\TP2\entityManager.cpp(224): warning C4715: 'entityManager::getBoardEntity' : les chemins de contrôle ne retournent pas tous une valeur
-  TP2.vcxproj -> C:\Users\piera\Desktop\school\Autumn 2020\Structure dans les jeux vidéo\Travail Pratique\tp2-prog-a2020\Debug\TP2.exe
+﻿  gameMenu.cpp
+  TP2.vcxproj -> C:\Users\Etienne\Documents\École\Cégep - Automne 2020\Structures de données dans les jeux\TP2\Debug\TP2.exe

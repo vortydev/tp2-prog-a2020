@@ -282,15 +282,16 @@ void entityManager::drawBoardEntities()
 }
 
 // supprime de la liste les entités mortes
-int entityManager::cleanBoard()
+int entityManager::cleanBoard(grid* g)
 {
 	int deadMobLoot = 0;
 
 	list<behavioredEntity>::iterator it = _boardEntities.begin();
 	while (it != _boardEntities.end()) {
-		if (!_boardEntities[it].isAlive())
-			
+		if (!_boardEntities[it].isAlive()) {
+			g->setOccupied(_boardEntities[it].getCellX(), _boardEntities[it].getCellY());
 			it = _boardEntities.erase(it);
+		}
 		else {
 			_boardEntities[it].toggleNew();
 			it++;
@@ -308,6 +309,20 @@ int entityManager::cleanBoard()
 		}
 	}
 	return deadMobLoot;
+}
+
+void entityManager::cleanLeakers()
+{
+	list<behavioredMonster>::iterator itm = _boardMonster.begin();
+	while (itm != _boardMonster.end()) {
+		if (!_boardMonster[itm].isAlive()) {
+			itm = _boardMonster.erase(itm);
+		}
+		else {
+			_boardMonster[itm].toggleNew();
+			itm++;
+		}
+	}
 }
 
 // remet à full HP les entities sur le board
@@ -528,7 +543,7 @@ int entityManager::leakingMonster()
 
 		}
 	}
-	cleanBoard();
+	cleanLeakers();
 
 	return hploss;
 }
