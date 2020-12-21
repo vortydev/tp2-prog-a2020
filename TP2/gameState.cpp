@@ -15,7 +15,8 @@ gameState::gameState(gameDataRef data) : _data(data)
 
 	_score = 0;
 	_currency = 100;
-	_playerHP = 5;
+	_playerHP = 25;
+	_waveNB = 0;
 }
 
 gameState::~gameState()
@@ -162,7 +163,8 @@ void gameState::handleInput()
 				_grid->toggleGrid();
 				_actionGuide->untoggleHelp();
 				_gameState = gameStates::wave;
-				_entityManager->loadWave(_score);
+				_waveNB++;
+				_entityManager->loadWave(_waveNB);
 			}
 
 			_menu->buttonVisibilityUpdate(_prepPhase);  // updates the buttons
