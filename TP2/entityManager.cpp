@@ -282,8 +282,10 @@ void entityManager::drawBoardEntities()
 }
 
 // supprime de la liste les entités mortes
-void entityManager::cleanBoard()
+int entityManager::cleanBoard()
 {
+	int deadMobLoot = 0;
+
 	list<behavioredEntity>::iterator it = _boardEntities.begin();
 	while (it != _boardEntities.end()) {
 		if (!_boardEntities[it].isAlive())
@@ -295,13 +297,17 @@ void entityManager::cleanBoard()
 	}
 	list<behavioredMonster>::iterator itm = _boardMonster.begin();
 	while (itm != _boardMonster.end()) {
-		if (!_boardMonster[itm].isAlive())
+		if (!_boardMonster[itm].isAlive()) {
+			deadMobLoot += (_boardMonster[itm].getID() * 3);
 			itm = _boardMonster.erase(itm);
+		}
+			
 		else {
 			_boardMonster[itm].toggleNew();
 			itm++;
 		}
 	}
+	return deadMobLoot;
 }
 
 // remet à full HP les entities sur le board
@@ -343,6 +349,7 @@ void entityManager::sellUnit(const cell& c, int& currency)
 
 void entityManager::update(float dt)
 {
+
 	//pour chaque unit
 	for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
 		_boardEntities[it].animate(_data);
@@ -355,7 +362,8 @@ void entityManager::update(float dt)
 	}
 	checkMonsterInRange();
 	checkEntityInRange();
-	cleanBoard();
+
+
 }
 
 void entityManager::loadWave(int wave)
@@ -441,6 +449,35 @@ void entityManager::checkEntityInRange()
 		}
 
 	}
+}
+
+gameStates entityManager::currentWaveStates()
+{
+	if (_boardMonster.empty()) {
+		return gameStates::prep;
+	}
+	else if (_boardEntities.empty()) {
+		return gameStates::prep;
+	}
+	else {
+		return gameStates::wave;
+	}
+}
+
+int entityManager::leakingMonster()
+{
+	int hploss=0;
+
+	for (list<behavioredMonster>::iterator itm = _boardMonster.begin(); itm != _boardMonster.end(); itm++) {
+		
+		if (_boardMonster[itm].getCellX() == 0) {
+			hploss += _boardMonster[itm].getID();
+			_boardMonster[itm].leaked();
+		}
+	}
+
+
+	return hploss;
 }
 
 

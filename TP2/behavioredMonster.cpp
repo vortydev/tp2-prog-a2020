@@ -85,3 +85,8 @@ void behavioredMonster::move()
 		_moveClock.restart();
 	}
 }
+
+void behavioredMonster::leaked()
+{
+	receiveDamage(getCurHP());
+}

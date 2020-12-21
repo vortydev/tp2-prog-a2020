@@ -214,6 +214,17 @@ void gameState::update(float dt)
         }
         _entityManager->update(dt);
         
+        _playerHP -= _entityManager->leakingMonster();
+        _currency += _entityManager->cleanBoard();
+        _gameState = _entityManager->currentWaveStates();
+
+        if (_gameState == gameStates::prep) {
+            _prepPhase = prepPhases::unitSelection;
+        }
+
+        if (_playerHP <= 25) {
+            _gameState == gameStates::gameOver;
+        }
     }
 }
 

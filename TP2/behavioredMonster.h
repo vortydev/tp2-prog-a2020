@@ -37,4 +37,5 @@ public:
     void animate(gameDataRef data);
     
     void move();
+    void leaked();
 };

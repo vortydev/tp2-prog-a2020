@@ -39,6 +39,8 @@ private:
     int _score;     // score du joueur
     int _currency;  // currency du joueur
 
+    int _playerHP = 25;
+
     Sprite _background;
     Sprite _playerZone;
     Sprite _enemyZone;

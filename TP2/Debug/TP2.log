@@ -1,4 +1,3 @@
-﻿  entity.cpp
-C:\Users\piera\Desktop\school\Autumn 2020\Structure dans les jeux vidéo\Travail Pratique\tp2-prog-a2020\TP2\entity.cpp(148,63): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-C:\Users\piera\Desktop\school\Autumn 2020\Structure dans les jeux vidéo\Travail Pratique\tp2-prog-a2020\TP2\entity.cpp(148,41): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+﻿  gameState.cpp
+C:\Users\piera\Desktop\school\Autumn 2020\Structure dans les jeux vidéo\Travail Pratique\tp2-prog-a2020\TP2\gameState.cpp(226,24): warning C4553: '==' : résultat de l'expression non utilisé ; souhaitiez-vous utiliser '=' ?
   TP2.vcxproj -> C:\Users\piera\Desktop\school\Autumn 2020\Structure dans les jeux vidéo\Travail Pratique\tp2-prog-a2020\Debug\TP2.exe

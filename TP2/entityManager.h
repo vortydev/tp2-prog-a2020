@@ -60,7 +60,7 @@ public:
     const bool isBoardMobOnCell(cell c);
     void addUnitToBoard(const cell& cU, const cell& cP);
     void drawBoardEntities();
-    void cleanBoard();
+    int cleanBoard();
     void revitalizeEntities();
 
     void buyUnit(const cell& c, int& currency);
@@ -70,11 +70,14 @@ public:
 
     void update(float dt);
     void loadWave(int wave);
+
     void checkMonsterInRange();                             //scroll la liste de monstre pour chaque entité
                                                             //change la behavior et inflige du degats
 
     void checkEntityInRange();                              //scroll la liste de entité pour chaque monstre
                                                             //change la behavior et inflige du degats
 
+    gameStates currentWaveStates();
+    int leakingMonster();
     
 };
