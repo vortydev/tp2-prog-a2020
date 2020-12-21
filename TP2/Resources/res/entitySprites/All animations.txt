@@ -24,6 +24,11 @@ Purple Slime
 - Idle (1 frame)
 - Moving (4 frames)
 
+Slime Of Primordial Evil
+- Attacking (4 frames)
+- Idle (1 frame)
+- Moving (4 frames)
+
 **********
 ** UNIT **
 **********
