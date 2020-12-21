@@ -76,6 +76,5 @@ public:
     void checkEntityInRange();                              //scroll la liste de entité pour chaque monstre
                                                             //change la behavior et inflige du degats
 
-    void checkDeadMonster();
-    void checkDeadEntity();
+    
 };

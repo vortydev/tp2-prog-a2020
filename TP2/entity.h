@@ -45,6 +45,7 @@ protected:
 
     
     Clock _animationClock;
+    Clock _attackClock;
     
     int _animationIterator;
 
@@ -111,6 +112,6 @@ public:
     int getSpriteID();
     void setSpriteID(int spriteID);
 
-    
-    
+    void receiveDamage(int dmg);
+    void attack(entity& entity);
 };

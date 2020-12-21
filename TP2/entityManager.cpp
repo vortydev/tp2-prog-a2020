@@ -293,6 +293,15 @@ void entityManager::cleanBoard()
 			it++;
 		}
 	}
+	list<behavioredMonster>::iterator itm = _boardMonster.begin();
+	while (itm != _boardMonster.end()) {
+		if (!_boardMonster[itm].isAlive())
+			itm = _boardMonster.erase(itm);
+		else {
+			_boardMonster[itm].toggleNew();
+			itm++;
+		}
+	}
 }
 
 // remet à full HP les entities sur le board
@@ -346,8 +355,7 @@ void entityManager::update(float dt)
 	}
 	checkMonsterInRange();
 	checkEntityInRange();
-	checkDeadEntity();
-	checkDeadMonster();
+	cleanBoard();
 }
 
 void entityManager::loadWave(int wave)
@@ -385,7 +393,8 @@ void entityManager::checkMonsterInRange()
 				if (_boardEntities[it].getCellY() == _boardMonster[itm].getCellY() &&
 					_boardEntities[it].getCellX() == _boardMonster[itm].getCellX() - 1)
 				{
-					_boardMonster[itm].setCurHP(_boardMonster[itm].getCurHP() - _boardEntities[it].getDamage());
+					
+					_boardEntities[it].attack(_boardMonster[itm]);
 					
 				}
 			}
@@ -414,7 +423,7 @@ void entityManager::checkEntityInRange()
 		//regarde si veut se deplacer
 		if (_boardMonster[itm].getBehavior() == monsterBehavior::moving) {
 			
-			//_boardMonster[itm].setCellX(_boardMonster[itm].getCellX() - 1);
+			
 			_boardMonster[itm].move();
 		}
 		//si on veut attaquer
@@ -425,7 +434,7 @@ void entityManager::checkEntityInRange()
 				if (_boardEntities[it].getCellY() == _boardMonster[itm].getCellY() &&
 					_boardEntities[it].getCellX() == _boardMonster[itm].getCellX() - 1)
 				{
-					//_boardEntities[it].setCurHP(_boardEntities[it].getCurHP() - _boardMonster[itm].getDamage());
+					_boardMonster[itm].attack(_boardEntities[it]);
 					
 				}
 			}
@@ -434,24 +443,6 @@ void entityManager::checkEntityInRange()
 	}
 }
 
-void entityManager::checkDeadMonster()
-{
-	for (list<behavioredMonster>::iterator itm = _boardMonster.begin(); itm != _boardMonster.end(); itm++) {
-		if (_boardMonster[itm].getCurHP() <= 0) {
-			_boardMonster.erase(itm);
-		}
-	}
-}
-
-void entityManager::checkDeadEntity()
-{
-	for (list<behavioredEntity>::iterator it = _boardEntities.begin(); it != _boardEntities.end(); it++) {
-		if (_boardEntities[it].getCurHP() <= 0) {
-			_boardEntities.erase(it);
-		}
-
-	}
-}
 
 
 

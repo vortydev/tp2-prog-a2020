@@ -246,7 +246,7 @@ int entity::getDamage() const
 // set le dommage de l'entity
 void entity::setDamage(int damage)
 {
-	assert(damage > 0);
+	//assert(damage > 0);
 	_damage = damage;
 }
 
@@ -271,6 +271,25 @@ int entity::getSpriteID()
 void entity::setSpriteID(int spriteID)
 {
 	_animationIterator = spriteID;
+}
+
+void entity::receiveDamage(int dmg)
+{
+	_curHP -= dmg;
+	if (_curHP <= 0) {
+		_alive = false;
+	}
+}
+
+void entity::attack(entity& entity)
+{
+
+	if (_attackClock.getElapsedTime().asSeconds() > UNIT_ANIMATION_DURATION)
+	{
+		entity.receiveDamage(_damage);
+		_attackClock.restart();
+	}
+	
 }
 
 
