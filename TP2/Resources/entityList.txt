@@ -1,2 +1,4 @@
 Peasant peasant 1 10 8 1 2 1
-Knight knight 1 30 20 1 4 1
+Knight knight 1 30 15 1 4 1
+Bourgeois bourgeois 1 50 25 1 5 1
+GoldenKnight goldenKnight 1 90 50 1 10 1

@@ -1,4 +1,5 @@
-Slime slime 2 0 5 1 2 1
+Slime slime 2 0 5 1 1 1
 Slime orangeSlime 2 0 10 1 3 1
-Slime greenSlime 2 0 20 1 5 1
-Slime purpleSlime 2 0 40 1 8 1
+Slime greenSlime 2 0 20 1 3 1
+Slime purpleSlime 2 0 30 1 5 1
+Slime slimeOfPrimordialEvil 2 0 50 1 10 1

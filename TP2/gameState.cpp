@@ -241,8 +241,11 @@ void gameState::update(float dt)
 
 		if (_gameState == gameStates::prep) {
 
-			if (_entityManager->boardEntitiesSize() == 0) 
+			if (_entityManager->boardEntitiesSize() == 0) {
+				_playerHP = _entityManager->massLeak();
 				_prepPhase = prepPhases::unitSelection;
+			}
+				
 			else 
 				_prepPhase = prepPhases::awaitingWave;
 			

@@ -80,5 +80,5 @@ public:
 
     gameStates currentWaveStates();
     int leakingMonster();
-    
+    int massLeak();
 };

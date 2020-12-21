@@ -300,7 +300,7 @@ int entityManager::cleanBoard(grid* g)
 	list<behavioredMonster>::iterator itm = _boardMonster.begin();
 	while (itm != _boardMonster.end()) {
 		if (!_boardMonster[itm].isAlive()) {
-			deadMobLoot += (_boardMonster[itm].getID() + 1) * 3;
+			deadMobLoot += (_boardMonster[itm].getID() + 1) * 5;
 			itm = _boardMonster.erase(itm);
 		}
 		else {
@@ -386,17 +386,17 @@ void entityManager::loadWave(int wave)
 {
 	list<behavioredMonster>::iterator itm = _boardMonster.begin();
 
-	int idL1 = 0 + (wave / 3);
-	if (idL1 >= 4) idL1 = 3;
+	int idL1 = 0 + (wave / 5);
+	if (idL1 >= 5) idL1 = 4;
 
-	int idL2 = 0 + (wave / 4);
-	if (idL2 >= 4) idL2 = 3;
+	int idL2 = 0 + (wave / 7);
+	if (idL2 >= 5) idL2 = 4;
 
-	int idL3 = 0 + (wave / 6);
-	if (idL3 >= 4) idL3 = 3;
+	int idL3 = 0 + (wave / 9);
+	if (idL3 >= 5) idL3 = 4;
 
-	int idL4 = 0 + (wave / 8);
-	if (idL4 >= 4) idL4 = 3;
+	int idL4 = 0 + (wave / 12);
+	if (idL4 >= 5) idL4 = 4;
 
 
 	for (int i = 0; i < 5; i++) {
@@ -405,7 +405,7 @@ void entityManager::loadWave(int wave)
 
 		itm = _boardMonster.insert(itm, temp);
 	}
-	if (wave > 4) {
+	if (wave >= 7) {
 		for (int i = 0; i < 5; i++) {
 			behavioredMonster temp = getRefMonster(idL2);
 			temp.setPosition(10, i);
@@ -413,7 +413,7 @@ void entityManager::loadWave(int wave)
 			itm = _boardMonster.insert(itm, temp);
 		}
 	}
-	if (wave > 6) {
+	if (wave >= 9) {
 		for (int i = 0; i < 5; i++) {
 			behavioredMonster temp = getRefMonster(idL3);
 			temp.setPosition(11, i);
@@ -421,7 +421,7 @@ void entityManager::loadWave(int wave)
 			itm = _boardMonster.insert(itm, temp);
 		}
 	}
-	if (wave > 8) {
+	if (wave >= 12) {
 		for (int i = 0; i < 5; i++) {
 			behavioredMonster temp = getRefMonster(idL4);
 			temp.setPosition(12, i);
@@ -546,6 +546,18 @@ int entityManager::leakingMonster()
 	cleanLeakers();
 
 	return hploss;
+}
+
+int entityManager::massLeak()
+{
+	int hpLoss = 0;
+	for (list<behavioredMonster>::iterator itm = _boardMonster.begin(); itm != _boardMonster.end(); itm++) {
+		hpLoss += (_boardMonster[itm].getID() + 1);
+		_boardMonster[itm].leaked();
+	}
+	cleanLeakers();
+
+	return hpLoss;
 }
 
 
