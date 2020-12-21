@@ -42,3 +42,8 @@ Peasant
 - Attacking (4 frames)
 - Idle (4 frames)
 - Moving (4 frames)
+
+Bourgeois
+- Attacking (4 frames)
+- Idle (4 frames)
+- Moving (4 frames)
