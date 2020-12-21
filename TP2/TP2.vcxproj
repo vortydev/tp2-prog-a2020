@@ -149,6 +149,7 @@
     <ClCompile Include="entityManager.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gameMenu.cpp" />
+    <ClCompile Include="gameOverState.cpp" />
     <ClCompile Include="gameState.cpp" />
     <ClCompile Include="grid.cpp" />
     <ClCompile Include="inputManager.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="entityManager.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameMenu.h" />
+    <ClInclude Include="gameOverState.h" />
     <ClInclude Include="gameState.h" />
     <ClInclude Include="grid.h" />
     <ClInclude Include="inputManager.h" />

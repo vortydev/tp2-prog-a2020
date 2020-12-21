@@ -368,11 +368,12 @@ void entityManager::update(float dt)
 
 void entityManager::loadWave(int wave)
 {
+	list<behavioredMonster>::iterator itm = _boardMonster.begin();
 	for (int i = 0; i < 5; i++) {
-		behavioredMonster temp = getRefMonster(0);
+		behavioredMonster temp = getRefMonster(1);
 		temp.setPosition(9, i);
-		list<behavioredMonster>::iterator itm = _boardMonster.begin();
-		_boardMonster.insert(itm, temp);
+		
+		itm = _boardMonster.insert(itm, temp);
 	}
 }
 
@@ -473,9 +474,10 @@ int entityManager::leakingMonster()
 		if (_boardMonster[itm].getCellX() == 0) {
 			hploss += (_boardMonster[itm].getID()+1);
 			_boardMonster[itm].leaked();
+			
 		}
 	}
-
+	cleanBoard();
 
 	return hploss;
 }

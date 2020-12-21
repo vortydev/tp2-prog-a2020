@@ -13,6 +13,7 @@
 #include "DEFINITIONS.hpp"
 #include "game.h"
 #include "state.hpp"
+#include "gameOverState.h"
 
 #include "grid.h"
 #include "gameMenu.h"
@@ -39,13 +40,15 @@ private:
     int _score;     // score du joueur
     int _currency;  // currency du joueur
 
-    int _playerHP = 25;
+    int _playerHP;
+    Text _hearthText;
 
     Sprite _background;
     Sprite _playerZone;
     Sprite _enemyZone;
 
     Sprite _coin;
+    Sprite _hearth;
     Text _currencyText;
 
     grid* _grid;        // pointeur sur la grid
