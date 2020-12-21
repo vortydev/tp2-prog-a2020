@@ -19,7 +19,9 @@ private:
     monsterBehavior _behavior;
 
     vecteur<Texture> _animationFramesMoving;
+    vecteur<Texture> _animationFramesIdle;
     vecteur<Texture> _animationFramesAttack;
+
 
     Clock _moveClock;
 

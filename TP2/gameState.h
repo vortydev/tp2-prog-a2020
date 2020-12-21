@@ -56,6 +56,8 @@ private:
     entityManager* _entityManager;
     actionGuide* _actionGuide;
 
+    int _waveNB;
+
 public:
     gameState(gameDataRef data);
     ~gameState();

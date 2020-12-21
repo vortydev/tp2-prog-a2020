@@ -8,6 +8,9 @@
 
 #include "gameOverState.h"
 #include "gameState.h"
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
 
 
@@ -77,5 +80,6 @@ void gameOverState::draw(float dt) const
 	_data->window.draw(_retryButton.buttonSprite);
 	_data->window.draw(_retryButton.buttonText);
 	_data->window.draw(_scoreText);
+	
 	_data->window.display();
 }

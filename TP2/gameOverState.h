@@ -33,8 +33,10 @@ private:
 	button _retryButton;
 
 	Text _scoreText;
+
 	
 	int _score;
+
 
 public:
 	gameOverState(gameDataRef data,int score);

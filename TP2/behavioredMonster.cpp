@@ -39,9 +39,13 @@ void behavioredMonster::loadAllSprite(gameDataRef data, string sprite)
 {
 	for (int i = 0; i < 4; i++) {
 		string animationName = sprite + "moving000" + to_string(i);
+		string idleAnimationName = sprite + "idle000" + to_string(i);
 		string path = "Resources/res/entitySprites/mob_" + sprite + "_" + "moving" + "_" + "000" + to_string(i) + ".png";
+		string idleAnimationPath = "Resources/res/entitySprites/mob_" + sprite + "_" + "moving" + "_" + "000" + to_string(i) + ".png";
 		data->assets.loadTexture(animationName, path);
+		data->assets.loadTexture(idleAnimationName, idleAnimationPath);
 		_animationFramesMoving.push_back(data->assets.getTexture(animationName));
+		_animationFramesIdle.push_back(data->assets.getTexture(idleAnimationName));
 	}
 
 	for (int i = 0; i < 4; i++) {
@@ -68,6 +72,10 @@ void behavioredMonster::animate(gameDataRef data)
 			break;
 		case monsterBehavior::attackM:
 			_sprite.setTexture(_animationFramesAttack.at(_animationIterator));
+			_animationIterator++;
+			break;
+		case monsterBehavior::idleM:
+			_sprite.setTexture(_animationFramesIdle.at(_animationIterator));
 			_animationIterator++;
 			break;
 		default:
