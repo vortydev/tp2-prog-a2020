@@ -298,10 +298,9 @@ int entityManager::cleanBoard()
 	list<behavioredMonster>::iterator itm = _boardMonster.begin();
 	while (itm != _boardMonster.end()) {
 		if (!_boardMonster[itm].isAlive()) {
-			deadMobLoot += (_boardMonster[itm].getID() * 3);
+			deadMobLoot += (_boardMonster[itm].getID()+1) * 3;
 			itm = _boardMonster.erase(itm);
 		}
-			
 		else {
 			_boardMonster[itm].toggleNew();
 			itm++;
@@ -315,6 +314,7 @@ void entityManager::revitalizeEntities()
 {
 	list<behavioredEntity>::iterator it = _boardEntities.begin();
 	while (it != _boardEntities.end()) {
+		_boardEntities[it].setSprite(_data, _boardEntities[it].getSpriteName(),1, "idle", "0000");
 		_boardEntities[it].healHP();
 		it++;
 	}
@@ -399,7 +399,7 @@ void entityManager::checkMonsterInRange()
 			//cherche le entity qui est devant moi
 			for (list<behavioredMonster>::iterator itm = _boardMonster.begin(); itm != _boardMonster.end(); itm++) {
 				if (_boardEntities[it].getCellY() == _boardMonster[itm].getCellY() &&
-					_boardEntities[it].getCellX() == _boardMonster[itm].getCellX() - 1)
+					_boardEntities[it].getCellX() == _boardMonster[itm].getCellX() - 1 )
 				{
 					
 					_boardEntities[it].attack(_boardMonster[itm]);
@@ -471,7 +471,7 @@ int entityManager::leakingMonster()
 	for (list<behavioredMonster>::iterator itm = _boardMonster.begin(); itm != _boardMonster.end(); itm++) {
 		
 		if (_boardMonster[itm].getCellX() == 0) {
-			hploss += _boardMonster[itm].getID();
+			hploss += (_boardMonster[itm].getID()+1);
 			_boardMonster[itm].leaked();
 		}
 	}
